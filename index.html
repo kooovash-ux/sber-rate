@@ -749,14 +749,14 @@ function av(){
   var ins=avIns&&g>0?Math.round(g*.00085):0;
   var hs=document.getElementById('av-hs'),dutyPct=avBrk&&hs?DUTY[hs.value].d:0;
   var brkFee=avBrk?300:0,duty=avBrk&&g>0?Math.round((g+fr)*dutyPct/100):0;
-  var vat=avBrk&&g>0?Math.round((g+fr+duty)*0.20):0;
+  var vat=avBrk&&g>0?Math.round((g+fr+duty)*0.22):0;
   var sub=fr+ins+brkFee+duty+vat+(avBrk&&g>0?g:0);
   if(avInc==='exw')sub+=th+ec+df+vt+am;
   var h='';
   h+='<div class="rrow"><span>Авиафрахт</span><span>'+usd(fr)+'</span></div>';
   if(vol>w&&vol>0)h+='<div class="rrow dim"><span>Объёмный вес '+num(vol)+' кг</span><span></span></div>';
   if(avInc==='exw')h+='<div class="rrow"><span>Терминал + сборы EXW</span><span>'+usd(th+ec+df+vt+am)+'</span></div>';
-  if(avBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 20%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brkFee)+'</span></div>';}
+  if(avBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 22%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brkFee)+'</span></div>';}
   if(ins>0)h+='<div class="rrow"><span>Страхование 0,085%</span><span>'+usd(ins)+'</span></div>';
   h+='<div class="big">'+usd(sub)+'<small>≈ '+rub(sub*U)+' · '+num(Math.round(sub*U/(w||1)))+' ₽/кг</small></div>';
   h+='<div class="rtotal"><span>ИТОГО · '+avInc.toUpperCase()+'</span><span>'+usd(sub)+'</span></div>';
@@ -794,12 +794,12 @@ function lcl(){
   var ins=lIns&&g>0?Math.round(g*.00085):0,brk=lBrk?300:0;
   var hs=document.getElementById('l-hs'),dutyPct=lBrk&&hs?DUTY[hs.value].d:0;
   var duty=lBrk&&g>0?Math.round((g+fr)*dutyPct/100):0;
-  var vat=lBrk&&g>0?Math.round((g+fr+duty)*0.20):0;
+  var vat=lBrk&&g>0?Math.round((g+fr+duty)*0.22):0;
   var tot=fr+ins+brk+duty+vat;if(lBrk&&g>0)tot+=g;
   var h='<div class="rrow"><span>Морфрахт · '+v+' CBM</span><span>'+usd(fr)+'</span></div>';
   h+='<div class="rrow dim"><span>Ставка '+num(r)+' $/CBM</span><span></span></div>';
   if(ins>0)h+='<div class="rrow"><span>Страхование 0,085%</span><span>'+usd(ins)+'</span></div>';
-  if(lBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 20%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';}
+  if(lBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 22%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';}
   else if(lBrk)h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';
   h+='<div class="big">'+usd(tot)+'<small>≈ '+rub(tot*U)+' · '+num(Math.round(tot*U/(w||1)))+' ₽/кг</small></div>';
   h+='<div class="rtotal"><span>ИТОГО · FOB</span><span>'+usd(tot)+'</span></div>';
@@ -833,11 +833,11 @@ function fcl(){
   var g=parseFloat((document.getElementById('f-g')||{}).value||0)||0;
   var hs=document.getElementById('f-hs'),dutyPct=fBrk&&hs?DUTY[hs.value].d:0;
   var duty=fBrk&&g>0?Math.round((g+fr)*dutyPct/100):0;
-  var vat=fBrk&&g>0?Math.round((g+fr+duty)*0.20):0;
+  var vat=fBrk&&g>0?Math.round((g+fr+duty)*0.22):0;
   var tot=fr+ins+brk+duty+vat;if(fBrk&&g>0)tot+=g;
   var h='<div class="rrow"><span>Фрахт '+(fB===20?'20ft':'40ft')+' · FOB</span><span>'+usd(fr)+'</span></div>';
   if(fIns)h+='<div class="rrow"><span>Страхование 0,5%</span><span>'+usd(ins)+'</span></div>';
-  if(fBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 20%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';}
+  if(fBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 22%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';}
   else if(fBrk)h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';
   h+='<div class="big">'+usd(tot)+'<small>≈ '+rub(tot*U)+' · '+num(Math.round(tot*U/(w||1)))+' ₽/кг</small></div>';
   h+='<div class="rtotal"><span>ИТОГО · FOB</span><span>'+usd(tot)+'</span></div>';
@@ -883,13 +883,13 @@ function cmpCalc(){
   if(!w||!v){document.getElementById('cmp-result').innerHTML='<p style="color:#CCCCCC;font-size:13px;grid-column:1/-1;padding:20px 0">Заполните вес и объём</p>';return;}
   // AVIA
   var avCh=Math.max(w,Math.round(v*167)),avFr=Math.max(Math.round(avCh*5.5),150);
-  var avD=g>0?Math.round((g+avFr)*dp/100):0,avV=g>0?Math.round((g+avFr+avD)*0.20):0;
+  var avD=g>0?Math.round((g+avFr)*dp/100):0,avV=g>0?Math.round((g+avFr+avD)*0.22):0;
   var avT=avFr+(g>0?g+avD+avV+300:0);
   // LCL
-  var lFr=Math.round(v*lR(v)),lD=g>0?Math.round((g+lFr)*dp/100):0,lV=g>0?Math.round((g+lFr+lD)*0.20):0;
+  var lFr=Math.round(v*lR(v)),lD=g>0?Math.round((g+lFr)*dp/100):0,lV=g>0?Math.round((g+lFr+lD)*0.22):0;
   var lT=lFr+(g>0?g+lD+lV+300:0);
   // FCL 20ft
-  var fFr=4550,fD=g>0?Math.round((g+fFr)*dp/100):0,fV=g>0?Math.round((g+fFr+fD)*0.20):0;
+  var fFr=4550,fD=g>0?Math.round((g+fFr)*dp/100):0,fV=g>0?Math.round((g+fFr+fD)*0.22):0;
   var fT=fFr+(g>0?g+fD+fV+300:0);
   var mn=Math.min(avT,lT,fT);
   var rows=[{mode:'Авиа',price:avT,days:'5–7 дней'},{mode:'⚓ LCL · море',price:lT,days:'35–45 дней'},{mode:'FCL 20ft',price:fT,days:'18–22 дня'}];
