@@ -1,0 +1,43 @@
+/* ═══════════════════════════════════════════════════════════════
+   TradeRate — TYPOGRAPHY TOKENS
+   Single family: Inter (variable optical-size). Tight tracking on
+   large/bold text; uppercase micro-labels on form fields.
+═══════════════════════════════════════════════════════════════ */
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ── Weights ── */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium: 500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold: 700; /* @kind font */
+  --fw-black: 800; /* @kind font */
+
+  /* ── Type scale (px) ── */
+  --fs-display: 42px;   /* hero number / currency screen */
+  --fs-bignum: 36px;    /* result total figure */
+  --fs-h1: 22px;        /* logo / page title */
+  --fs-h2: 20px;        /* card title */
+  --fs-h3: 16px;        /* section heading */
+  --fs-lg: 15px;        /* emphasized body */
+  --fs-base: 14px;      /* body / inputs */
+  --fs-sm: 13px;        /* secondary body / tabs */
+  --fs-xs: 12px;        /* meta / captions */
+  --fs-2xs: 11px;       /* fine print */
+  --fs-micro: 10.5px;   /* uppercase field labels */
+
+  /* ── Line heights ── */
+  --lh-tight: 1.2; /* @kind font */
+  --lh-snug: 1.4; /* @kind font */
+  --lh-body: 1.6; /* @kind font */
+
+  /* ── Letter spacing ── */
+  --ls-tighter: -0.6px;  /* display / logo / big numbers */
+  --ls-tight: -0.3px;    /* headings */
+  --ls-label: 0.6px;     /* uppercase micro-labels */
+
+  /* ── Semantic roles ── */
+  --text-logo: var(--fw-black) var(--fs-h1)/1 var(--font-sans);
+  --text-card-title: var(--fw-bold) var(--fs-h2)/1.3 var(--font-sans);
+  --text-label-caps: var(--fw-semibold) var(--fs-micro)/1.4 var(--font-sans);
+}

@@ -1,0 +1,41 @@
+/* ═══════════════════════════════════════════════════════════════
+   TradeRate — SPACING, RADII, SHADOWS, MOTION
+═══════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Spacing scale (px) ── */
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 18px;
+  --space-7: 20px;
+  --space-8: 24px;
+  --space-9: 32px;
+  --space-10: 48px;
+
+  /* ── Radii ── */
+  --radius: 14px;       /* cards, large surfaces */
+  --radius-sm: 10px;    /* inputs, buttons, chips */
+  --radius-xs: 6px;     /* tiny tags, file inputs */
+  --radius-pill: 999px;
+
+  /* ── Borders ── */
+  --border-width: 1.5px;   /* controls (inputs, buttons, tabs) */
+  --border-hair: 1px;      /* dividers, card outlines */
+
+  /* ── Shadows ── */
+  --shadow-card: 0 1px 2px rgba(10,30,61,.04), 0 8px 24px rgba(10,30,61,.06);
+  --shadow-elevated: 0 4px 12px rgba(10,30,61,.08), 0 16px 40px rgba(10,30,61,.06);
+  --shadow-modal: 0 20px 60px rgba(0,0,0,.20);
+  --shadow-green: 0 4px 16px rgba(33,160,56,.25);
+  --shadow-tab-active: 0 2px 8px rgba(10,30,61,.25);
+
+  /* ── Motion ── */
+  --transition: 180ms ease; /* @kind other */
+  --transition-fast: 120ms ease; /* @kind other */
+
+  /* ── Layout ── */
+  --max-width: 1200px;
+  --header-height: 68px;
+}

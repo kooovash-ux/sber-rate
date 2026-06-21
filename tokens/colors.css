@@ -1,0 +1,61 @@
+/* ═══════════════════════════════════════════════════════════════
+   TradeRate — COLOR TOKENS
+   Base palette + semantic aliases.
+   Derived from the TradeRate logistics calculator product.
+═══════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Brand: signature green (primary action / accent) ── */
+  --green-500: #21A038;        /* primary brand green */
+  --green-600: #1A8A2E;        /* hover / pressed */
+  --green-050: rgba(33, 160, 56, 0.08);  /* tinted fill / focus halo */
+
+  /* ── Brand: deep navy (headers, dark surfaces, active states) ── */
+  --navy-900: #0A1E3D;         /* primary dark surface */
+  --navy-800: #0F2A4F;         /* secondary dark surface */
+
+  /* ── Brand: orange accent (logo dot, highlights — used sparingly) ── */
+  --orange-500: #FF9933;
+
+  /* ── Neutrals / ink ── */
+  --ink-900: #1A1A2E;          /* body text */
+  --ink-600: #5A6072;          /* muted / secondary text */
+  --ink-400: #9CA3AF;          /* ghost / placeholder / hints */
+  --line-200: #E5E7EB;         /* borders / dividers */
+  --surface-50: #F5F7FA;       /* app background / inset panels */
+  --white: #FFFFFF;
+
+  /* ── Semantic status ── */
+  --warn-bg: #FFF8F0;          /* dangerous-goods panel bg */
+  --warn-line: #F0D080;        /* dangerous-goods panel border */
+  --warn-text: #C00000;        /* warning text */
+
+  /* ═══════════════ SEMANTIC ALIASES ═══════════════ */
+  --color-primary: var(--green-500);
+  --color-primary-hover: var(--green-600);
+  --color-primary-tint: var(--green-050);
+  --color-accent: var(--orange-500);
+
+  --bg-app: var(--surface-50);
+  --surface-card: var(--white);
+  --surface-inset: var(--surface-50);
+  --surface-dark: var(--navy-900);
+  --surface-dark-2: var(--navy-800);
+
+  --text-heading: var(--navy-900);
+  --text-body: var(--ink-900);
+  --text-muted: var(--ink-600);
+  --text-ghost: var(--ink-400);
+  --text-on-dark: var(--white);
+
+  --border-default: var(--line-200);
+  --border-focus: var(--green-500);
+
+  /* On-dark transparencies (for navy surfaces) */
+  --on-dark-70: rgba(255, 255, 255, 0.70);
+  --on-dark-55: rgba(255, 255, 255, 0.55);
+  --on-dark-45: rgba(255, 255, 255, 0.45);
+  --on-dark-30: rgba(255, 255, 255, 0.30);
+  --on-dark-12: rgba(255, 255, 255, 0.12);
+  --on-dark-08: rgba(255, 255, 255, 0.08);
+  --on-dark-06: rgba(255, 255, 255, 0.06);
+}
