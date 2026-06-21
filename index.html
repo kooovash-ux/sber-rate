@@ -751,11 +751,15 @@ function lcl(){
   var r=lR(v),fr=Math.round(v*r);
   var g=parseFloat((document.getElementById('l-g')||{}).value||0)||0;
   var ins=lIns&&g>0?Math.round(g*.00085):0,brk=lBrk?300:0;
-  var tot=fr+ins+brk;
+  var hs=document.getElementById('l-hs'),dutyPct=lBrk&&hs?DUTY[hs.value].d:0;
+  var duty=lBrk&&g>0?Math.round((g+fr)*dutyPct/100):0;
+  var vat=lBrk&&g>0?Math.round((g+fr+duty)*0.20):0;
+  var tot=fr+ins+brk+duty+vat;if(lBrk&&g>0)tot+=g;
   var h='<div class="rrow"><span>Морфрахт · '+v+' CBM</span><span>'+usd(fr)+'</span></div>';
   h+='<div class="rrow dim"><span>Ставка '+num(r)+' $/CBM</span><span></span></div>';
-  if(ins>0)h+='<div class="rrow"><span>Страхование</span><span>'+usd(ins)+'</span></div>';
-  if(lBrk)h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';
+  if(ins>0)h+='<div class="rrow"><span>Страхование 0,085%</span><span>'+usd(ins)+'</span></div>';
+  if(lBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 20%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';}
+  else if(lBrk)h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';
   h+='<div class="big">'+usd(tot)+'<small>≈ '+rub(tot*U)+' · '+num(Math.round(tot*U/(w||1)))+' ₽/кг</small></div>';
   h+='<div class="rtotal"><span>ИТОГО · FOB</span><span>'+usd(tot)+'</span></div>';
   h+='<div class="rnote">FOB Нава-Шева · '+num(w)+' кг · '+v+' CBM</div>';
@@ -784,10 +788,16 @@ function fBrkTg(){fBrk=!fBrk;document.getElementById('f-brk-p').classList.toggle
 function uFG(){up('f-g');fcl();}function uFW(){up('f-w');fcl();} function uFV(){var el=document.getElementById('f-v');var v=parseFloat(el.value)||0;document.getElementById('f-v-v').textContent=v.toFixed(1);fillSl(el);var wEl=document.getElementById('f-v-W');if(wEl){wEl.classList.add('flash');setTimeout(function(){wEl.classList.remove('flash')},300);}fcl();}
 function fcl(){
   var w=parseInt(document.getElementById('f-w').value)||0,v=parseFloat(document.getElementById('f-v').value)||0;
-  var fr=fB===20?4550:5450,ins=fIns?Math.round(fr*.005):0,brk=fBrk?300:0,tot=fr+ins+brk;
+  var fr=fB===20?4550:5450,ins=fIns?Math.round(fr*.005):0,brk=fBrk?300:0;
+  var g=parseFloat((document.getElementById('f-g')||{}).value||0)||0;
+  var hs=document.getElementById('f-hs'),dutyPct=fBrk&&hs?DUTY[hs.value].d:0;
+  var duty=fBrk&&g>0?Math.round((g+fr)*dutyPct/100):0;
+  var vat=fBrk&&g>0?Math.round((g+fr+duty)*0.20):0;
+  var tot=fr+ins+brk+duty+vat;if(fBrk&&g>0)tot+=g;
   var h='<div class="rrow"><span>Фрахт '+(fB===20?'20ft':'40ft')+' · FOB</span><span>'+usd(fr)+'</span></div>';
   if(fIns)h+='<div class="rrow"><span>Страхование 0,5%</span><span>'+usd(ins)+'</span></div>';
-  if(fBrk)h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';
+  if(fBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 20%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';}
+  else if(fBrk)h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';
   h+='<div class="big">'+usd(tot)+'<small>≈ '+rub(tot*U)+' · '+num(Math.round(tot*U/(w||1)))+' ₽/кг</small></div>';
   h+='<div class="rtotal"><span>ИТОГО · FOB</span><span>'+usd(tot)+'</span></div>';
   h+='<div class="rnote">FOB Нава-Шева — Новороссийск · '+(fB===20?'20ft':'40ft')+' · '+num(w)+' кг · '+v+' CBM</div>';
