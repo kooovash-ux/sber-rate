@@ -318,7 +318,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 <!-- ═══ ZOOM HERO ═══ -->
 <section class="zh-wrap" id="zhWrap">
   <div class="zh-stage" id="zhStage">
-    <video id="heroBg" class="zh-video" autoplay muted loop playsinline>
+    <video id="heroBg" class="zh-video" autoplay muted loop playsinline preload="auto" poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'><rect fill='%230c1118' width='1920' height='1080'/></svg>">
       <source src="https://videos.pexels.com/video-files/6618038/6618038-hd_1920_1080_24fps.mp4" type="video/mp4">
     </video>
     <div class="zh-veil"></div>
@@ -514,7 +514,9 @@ function changeHeroWord(idx){
   if(vid){
     vid.addEventListener('canplay',function(){vid.style.opacity='1';},{ once:true });
     // fallback
-    setTimeout(function(){if(vid)vid.style.opacity='1';},1500);
+    setTimeout(function(){if(vid){vid.style.opacity='1'}},500);
+    // force show on mobile immediately
+    if(window.innerWidth<640)vid.style.opacity='1';
   }
 })();
 
