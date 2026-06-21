@@ -362,7 +362,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
     </div>
   </div>
   <div class="cnt" id="mainCnt">
-    <div class="tab-pg active" id="page-0"><div class="card"><div class="card-ttl">Авиаперевозка Индия - Россия</div><div class="card-sub">Срочные грузы 5–7 дней. Расчёт по большему из фактического и объёмного веса (1 CBM = 167 кг).</div><div class="grid" id="avia-root"></div></div></div>
+    <div class="tab-pg active" id="page-0"><div class="card"><div class="card-ttl">Авиаперевозка Индия - Россия</div><div class="grid" id="avia-root"></div></div></div>
     <div class="tab-pg" id="page-1"><div class="card"><div class="card-ttl">Сборные морские грузы · LCL</div><div class="card-sub">Оплата за фактический объём. FOB Нава-Шева (Мумбаи). Транзит ~35–45 дней.</div><div class="grid" id="lcl-root"></div></div></div>
     <div class="tab-pg" id="page-2"><div class="card"><div class="card-ttl">Целые контейнеры · FCL</div><div class="card-sub">20ft / 40ft, фиксированная ставка за контейнер. Прямое судно ~18 дней.</div><div class="grid" id="fcl-root"></div></div></div>
     <div class="tab-pg" id="page-3"><div class="card"><div class="card-ttl">Доставка образцов · курьер</div><div class="card-sub">Экспресс Мумбаи - Москва ~14 дней. Требуется инвойс поставщика.</div><div class="grid" id="smp-root"></div></div></div>
@@ -687,7 +687,7 @@ function avHtml(){
   h+='<button class="dashed-btn" id="av-dg-b" onclick="avDgTg()">Опасный груз (ADR)</button>';
   h+='<div id="av-dg-p" class="hidden dg-panel"><div style="font-size:13px;color:#c00;font-weight:500;margin-bottom:10px">⚠ Требуется паспорт безопасности MSDS</div><input type="file"><button class="btn-a" style="width:100%" onclick="alert(\'Свяжитесь: @ko_vash\')">Связаться с менеджером</button></div>';
   h+='</div>';
-  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="av-res"></div><div class="share-row"><button class="share-btn" onclick="shareCalc(\'0\')">Поделиться расчётом</button></div></div>';
+  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="av-res"></div><div class="share-row"><button class="share-btn" onclick="shareCalc(\'0\')">Поделиться расчётом</button></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Бронирование зависит от наличия места на рейсе.<br>Паллетирование груза выполняется при необходимости.<br>Если размеры груза изменятся хотя бы на 1 см, тариф будет пересчитан.<br>Рейсы сильно перегружены. Перед отправкой груза в аэропорт просьба уточнять у нас план отгрузки.<br>Приём груза осуществляется строго при наличии места. Сроки доставки до пункта назначения не гарантируются из-за ограничений по доступной загрузке воздушных судов в высокий сезон.<br>Все бронирования и приём груза зависят от наличия мест, подтверждения бронирования и текущего спроса.<br><br>Мумбаи - Баку - Москва (AZAL) - 3-4 рейса в неделю, транзит 3-6 дней.<br>Дели - Ташкент - Москва (Uzbekistan Airways) - 3-4 рейса в неделю, транзит 3-6 дней.</div></div>';
   document.getElementById('avia-root').innerHTML=h;
   avFill();avHs();
 }
