@@ -570,22 +570,22 @@ function changeHeroWord(idx){
   window.addEventListener('scroll',tick,{passive:true});
   tick();
 
-  /* AUTO-ZOOM after 5s if no scroll */
+  /* AUTO-ZOOM after 5s if no scroll — 7 steps */
   var autoZoomed=false;
   var autoTimer=setTimeout(function(){
     if(!autoZoomed&&window.scrollY<80){
       autoZoomed=true;
-      var target=wrap.offsetHeight-window.innerHeight;
-      var start=window.scrollY,t0=null,dur=3800;
-      function step(ts){
-        if(!t0)t0=ts;
-        var p=Math.min((ts-t0)/dur,1);
-        var e=p<0.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
-        window.scrollTo(0,start+(target-start)*e);
-        if(p<1)requestAnimationFrame(step);
-        else setTimeout(scrollToCalc,400);
+      var total=wrap.offsetHeight-window.innerHeight;
+      var stepSize=total/7;
+      var currentStep=0;
+      function doStep(){
+        if(currentStep>=7){setTimeout(scrollToCalc,400);return}
+        currentStep++;
+        var target=stepSize*currentStep;
+        window.scrollTo({top:target,behavior:'smooth'});
+        setTimeout(doStep,700);
       }
-      requestAnimationFrame(step);
+      doStep();
     }
   },5000);
   window.addEventListener('scroll',function(){
