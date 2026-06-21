@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>TradeRate — Себестоимость импорта Индия - Россия</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,8 +18,8 @@
   --max:1200px;--serif:'Playfair Display',Georgia,serif;--tr:160ms ease;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-family:'Inter',system-ui,sans-serif;background:#FAFAFA;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100vw}
+html{scroll-behavior:smooth}
+body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-family:'Inter',system-ui,sans-serif;background:#FAFAFA;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
 
 /* ─── HEADER ─── */
 .hdr{background: var(--glass); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border);position:fixed;top:0;left:0;right:0;z-index:200;background:transparent;border-bottom:1px solid transparent;transition:background .4s ease,border-color .4s ease,box-shadow .4s ease}
@@ -73,51 +72,12 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 .btn-nav svg{width:14px;height:14px}
 @media(max-width:1024px){.hbadge{display:none}}
 @media(max-width:860px){.ticker{display:none}.own .av-n,.own .av-s{display:none}}
-@media(max-width:640px){
-  *,*::before,*::after{max-width:100%}
-  body,html{overflow-x:hidden!important;width:100%}
-  .hdr-in{padding:0 12px;height:56px}
-  .btn-nav{padding:8px 12px;font-size:11px}
-  .logo{font-size:18px}
-  .zh-wrap{height:200vh}
-  .zh-stage{background:#0c1118}
-  .zh-video{object-fit:cover;width:auto;height:100%;min-width:100%}
-  .zh-title h1{font-size:clamp(22px,6vw,30px)}
-  .zh-title p{font-size:12px}
-  .zh-chips{gap:6px}
-  .zh-chip{font-size:10px;padding:6px 10px}
-  .tabs-in{padding:0 8px}
-  .tabs{padding:10px 0;gap:3px}
-  .tabs button{padding:7px 11px;font-size:11px;white-space:nowrap}
-  .cnt{padding:16px 10px 40px}
-  .grid{grid-template-columns:1fr!important;gap:16px}
-  .card{padding:18px 14px}
-  .card-ttl{font-size:18px}
-  .two{grid-template-columns:1fr!important;gap:10px}
-  select,input[type=text]{font-size:16px;width:100%}
-  .sl-wrap{padding:12px}
-  .sl-val{font-size:18px}
-  .big{font-size:28px}
-  .cmp-grid{grid-template-columns:1fr!important}
-  .pf-hero{grid-template-columns:1fr!important}
-  .pf-photo{height:200px}
-  .pf-body{padding:18px 14px}
-  .pf-name{font-size:22px}
-  .pf-stats{grid-template-columns:1fr 1fr!important}
-  .pf-2col{grid-template-columns:1fr!important}
-  .trk-grid{grid-template-columns:1fr!important}
-  .cur-card{padding:20px}
-  .cur-ttl{font-size:28px}
-  .cur-row{flex-direction:column;gap:8px}
-  .cur-eq{text-align:center;padding:0}
-}
+@media(max-width:640px){.hdr-in{padding:0 16px;height:60px}.btn-nav{padding:9px 14px;font-size:12px}}
 
 /* ─── ZOOM HERO ─── */
 .zh-wrap{height:300vh;position:relative}
 .zh-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#2c3e50;display:flex;align-items:center;justify-content:center}
 .zh-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 44%;will-change:transform;z-index:0;opacity:0;transition:opacity 1.2s ease}
-.zh-video-fallback{position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,#0c1118 0%,#0d1525 30%,#0f1b2e 60%,#0c1118 100%);background-size:400% 400%;animation:drift 20s ease infinite}
-@keyframes drift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .zh-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,16,30,.5) 0%,rgba(8,16,30,.3) 44%,rgba(8,16,30,.66) 100%)}
 .zh-title{position:relative;z-index:2;text-align:center;color:#f0f2f5;padding:0 24px;max-width:1040px;will-change:transform,opacity}
 .zh-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#f0f2f5;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);padding:8px 18px;border-radius:999px;margin-bottom:26px}
@@ -370,11 +330,10 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 <!-- ═══ ZOOM HERO ═══ -->
 <section class="zh-wrap" id="zhWrap">
   <div class="zh-stage" id="zhStage">
-  <div class="zh-video-fallback"></div>
-  <video id="heroBg" class="zh-video" autoplay muted loop playsinline poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'><rect fill='%230c1118' width='1920' height='1080'/></svg>">
-    <source src="https://videos.pexels.com/video-files/6618038/6618038-hd_1920_1080_24fps.mp4" type="video/mp4">
-  </video>
-  <div class="zh-veil"></div>
+    <video id="heroBg" class="zh-video" autoplay muted loop playsinline>
+      <source src="https://videos.pexels.com/video-files/6618038/6618038-hd_1920_1080_24fps.mp4" type="video/mp4">
+    </video>
+    <div class="zh-veil"></div>
     <div class="zh-title" id="zhTitle">
       <span class="zh-eyebrow">Индия&nbsp;-&nbsp;Россия · калькулятор ВЭД</span>
       <h1>Полная себестоимость<br><span class="zh-line2"><span id="zhWord">импорта</span> за 30 секунд</span></h1>
