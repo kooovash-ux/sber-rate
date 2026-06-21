@@ -541,11 +541,11 @@ function changeHeroWord(idx){
     var wordIdx=Math.floor((p-0.08)/0.16);if(wordIdx<0)wordIdx=0;if(wordIdx>4)wordIdx=4;
     changeHeroWord(wordIdx);
     // tabs fade in at 72%+ (когда калькулятор появляется)
-    var tabsOpacity = Math.max(0, (p - 0.72) / 0.28);
+    var tabsOpacity = Math.max(0, (p - 0.60) / 0.20);
     var tabsBar = document.getElementById('tabsBar');
     if(tabsBar) tabsBar.style.opacity = tabsOpacity.toFixed(3);
         // fade to calculator bg at 72%+
-    var fp=Math.max(0,(p-0.72)/0.28);
+    var fp=Math.max(0,(p-0.60)/0.20);
     fade.style.opacity=fp;
     // CTA at 82%+
     var cp=Math.max(0,(p-0.82)/0.18);
@@ -555,10 +555,10 @@ function changeHeroWord(idx){
     hint.style.opacity=Math.max(0,1-p/0.06);
     // header transparent over video, solid when zoomed in
     hdr.classList.toggle('solid',p>0.6);
-    // auto-scroll to calculator when title is gone
-    if(p>0.80&&!hdr._scrolled){
+    // auto-scroll to calculator when title is gone - faster
+    if(p>0.70&&!hdr._scrolled){
       hdr._scrolled=true;
-      setTimeout(function(){scrollToCalc()},300);
+      setTimeout(function(){scrollToCalc()},150);
     }
     if(p<0.5)hdr._scrolled=false;
     // auto-scroll to top when scrolling back — faster trigger
