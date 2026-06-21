@@ -731,7 +731,7 @@ function lR(cbm){if(cbm<=4)return 440;if(cbm>=13)return Math.round(223*13/cbm);f
 function lclHtml(){
   var h='<div>';
   h+='<div class="tg mb"><button class="active">FOB</button><button disabled>EXW</button></div>';
-  h+='<div class="two"><div class="mb"><label>Откуда</label><select><option>Нава-Шева (Мумбаи)</option><option>Мундра</option></select></div><div class="mb"><label>Куда</label><select onchange="lcl()"><option>Санкт-Петербург</option><option>Новороссийск</option></select></div></div>';
+  h+='<div class="two"><div class="mb"><label>Откуда</label><select><option>Нава-Шева (Мумбаи)</option><option>Мундра</option></select></div><div class="mb"><label>Куда</label><select onchange="lcl()"><option>Санкт-Петербург</option><option disabled style="color:#aaa">Новороссийск</option></select></div></div>';
   h+=slider('l-w','Вес брутто',1,15000,2700,1,'кг',['1','5к','10к','15к'],'uLW');
   h+=slider('l-v','Объём груза',0.5,30,10,0.1,'CBM',['0.5','10','20','30'],'uLV');
   h+=slider('l-p','Количество мест',1,300,4,1,'мест',['1','100','200','300'],'uLP');
