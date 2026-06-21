@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,maximum-scale=5"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#FBF8F4">
 <title>TradeRate — Себестоимость импорта Индия - Россия</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,7 +145,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .dashed-btn svg{width:15px;height:15px;flex-shrink:0}
 .dashed-btn:hover{border-color:#F59246;color:#F59246;background:rgba(245,146,69,.15)}
 .dashed-btn.on{border-style:solid;border-color:#F59246;color:#F59246;background:rgba(245,146,69,.15)}
-.btn-a{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;background:#F59246;color:#fff;border:none;border-radius:var(--rsm);cursor:pointer;font-weight:600;font-size:13px}t-size:13px;font-family:inherit;transition:all var(--tr)}
+.btn-a{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 22px;background:#F59246;color:#fff;border:none;border-radius:var(--rsm);cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;transition:all var(--tr)}
 .btn-a:hover{background:#E88436;box-shadow:0 4px 16px rgba(245,146,69,.3)}
 .btn-a svg{width:14px;height:14px}
 .share-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:#FAFAFA;border:1.5px solid #E0E0E0;border-radius:var(--rsm);font-size:12px;font-weight:500;color:#888888;cursor:pointer;font-family:inherit;transition:all var(--tr)}
@@ -166,7 +166,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 .rnote{font-size:11.5px;color:#CCCCCC;padding:10px 14px;background:#FAFAFA;border-radius:var(--rsm);margin-top:12px;line-height:1.6}
 .share-row{display:flex;gap:10px;margin-top:14px}
 .panel{background:#FAFAFA;border:1.5px solid #E0E0E0;border-radius:var(--rsm);padding:16px;margin:-2px 0 12px}
-.dg-panel{background:#f0f2f58f0;border:1px solid #f0d080;border-radius:var(--rsm);padding:16px;margin:-2px 0 12px}
+.dg-panel{background:rgba(255,247,210,.2);border:1px solid rgba(220,180,80,.45);border-radius:var(--rsm);padding:16px;margin:-2px 0 12px}
 .info-box{font-size:12px;color:#888888;line-height:1.6;padding:12px 14px;background:#FAFAFA;border-radius:var(--rsm);margin-top:10px}
 
 /* ─── COMPARISON ─── */
@@ -293,6 +293,61 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 .p-signal{left:50%;transform:translateX(-50%);bottom:calc(100% + .04em);width:1.2em;height:.64em}
 </style>
 
+
+<style>
+/* === ENHANCED UI: Glass & Mobile === */
+body{background:linear-gradient(155deg,#F9F8F6 0%,#F3F5FA 52%,#F8F5F2 100%) fixed}
+.card{background:rgba(255,255,255,.90);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 1px 2px rgba(10,30,61,.03),0 6px 20px rgba(10,30,61,.06),0 24px 56px rgba(10,30,61,.06),inset 0 1px 0 rgba(255,255,255,.9);border-color:rgba(224,228,238,.8)}
+.slw{background:rgba(250,251,253,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(220,225,234,.7);box-shadow:inset 0 1px 3px rgba(10,30,61,.04)}
+.panel{background:rgba(250,251,253,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(220,225,234,.6)}
+.trk-card{background:rgba(255,255,255,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 1px 2px rgba(10,30,61,.03),0 6px 20px rgba(10,30,61,.06),0 24px 56px rgba(10,30,61,.06)}
+.pf-card,.pf-hero,.pf-stat{background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.tg{background:rgba(246,247,250,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 2px rgba(10,30,61,.05)}
+.share-btn{background:rgba(250,250,250,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .18s ease}
+.info-box{background:rgba(250,251,253,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.dg-panel{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+select,input[type=text]{background:rgba(255,255,255,.9);transition:border-color var(--tr),box-shadow var(--tr)}
+select:focus,input[type=text]:focus{background:#fff;box-shadow:0 0 0 3px rgba(245,146,69,.16),0 1px 4px rgba(10,30,61,.08)}
+.dashed-btn{transition:all .18s cubic-bezier(.22,1,.36,1)}
+.card-sub,.info-box,.rnote,.exp-list li,.pf-role{text-wrap:pretty;line-height:1.65}
+@media(max-width:900px){.tabs-bar::after{content:'';position:absolute;right:0;top:0;bottom:0;width:44px;background:linear-gradient(to right,transparent,rgba(240,242,245,.97));pointer-events:none;z-index:2}}
+@media(max-width:640px){.tabs-bar{top:60px}.tabs-in{padding:0 12px}.tabs{padding:11px 0;gap:6px}.cnt{padding:14px 12px 72px}.big{font-size:34px;padding:16px 0 8px;letter-spacing:-.6px}.rrow{font-size:13px;padding:8px 0}.rtotal{font-size:13px}.card-ttl{font-size:20px}.trk-grid{grid-template-columns:1fr;gap:12px}.card-sub{font-size:12px;margin-bottom:20px}}
+@media(max-width:440px){.two{grid-template-columns:1fr}}
+@media(max-width:780px){.cmp-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.cmp-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.pf-stats{grid-template-columns:1fr 1fr}}
+@media(pointer:coarse){input[type=range]::-webkit-slider-thumb{width:26px;height:26px}input[type=range]::-moz-range-thumb{width:24px;height:24px}input[type=range]{height:6px;margin:14px 0 8px}.dashed-btn{min-height:48px}.btn-a{min-height:44px}select,input[type=text]{font-size:16px}.tabs button{min-height:38px}}
+@media(min-width:1200px){.card{padding:40px 44px}.grid{gap:52px}}
+</style>
+<style>
+/* === iOS OPTIMIZATION === */
+html{-webkit-text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+/* dvh fixes 100vh address-bar jump */
+.zh-wrap{height:300svh}
+.zh-stage{height:100svh;height:100dvh}
+/* safe-area for notch */
+.hdr-in{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+@media(min-width:641px){.hdr-in{padding-left:max(32px,env(safe-area-inset-left));padding-right:max(32px,env(safe-area-inset-right))}}
+.cnt{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+.footer{padding-bottom:max(28px,calc(env(safe-area-inset-bottom) + 16px))}
+/* momentum scroll on tab strip */
+.tabs{-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.tabs button{scroll-snap-align:start}
+/* kill iOS select/input default chrome */
+select,input[type=text]{-webkit-appearance:none;appearance:none;border-radius:var(--rsm)}
+/* remove sticky :hover stick on touch */
+@media(hover:none){
+  .cmp-card:hover{transform:none;box-shadow:var(--sh);border-color:#E0E0E0}
+  .dashed-btn:hover{border-color:#E0E0E0;color:#888888;background:#FFFFFF}
+  .dashed-btn.on:hover{border-color:#F59246;color:#F59246;background:rgba(245,146,69,.15)}
+  .btn-a:hover{background:#F59246;box-shadow:none}
+}
+/* active feedback for touch */
+@media(hover:none){
+  .tabs button:active,.tg button:active,.dashed-btn:active,.btn-a:active,.share-btn:active,.cmp-card:active{transform:scale(.97);transition:transform .08s}
+}
+</style>
 </head>
 <body>
 
@@ -366,14 +421,14 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
     <div class="tab-pg" id="page-pf">
       <div class="pf">
         <div class="pf-hero">
-          <div class="pf-photo"><img src="assets/konstantin.jpg" alt="Константин Вашкевич"></div>
+          <div class="pf-photo"><img src="assets/konstantin.jpg" alt="Константин Вашкевич" onerror="this.style.display='none'"></div>
           <div class="pf-body">
             <div class="pf-ey">Портфолио · автор TradeRate</div>
             <div class="pf-name">Константин Вашкевич, 30 лет</div>
             <div class="pf-role">Руководитель проектов по логистике / Product Manager</div>
             <div class="pf-links">
               <a href="tel:+79992059760">+7 999 205 97 60</a>
-              <a href="mailto:89992059760@bk.ru">89992059760@bk.ru</a>
+              <a href="/cdn-cgi/l/email-protection#dce4e5e5e5eeece9e5ebeaec9cbeb7f2aea9"><span class="__cf_email__" data-cfemail="ba82838383888a8f838d8c8afad8d194c8cf">[email&#160;protected]</span></a>
               <a href="https://t.me/ko_vash" target="_blank">@ko_vash</a>
             </div>
             <div class="pf-meta">
@@ -452,7 +507,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
           <p>Открыт к предложениям · готов к переезду в Москву</p>
           <div class="pf-cta-row">
             <a class="btn-lt" href="https://t.me/ko_vash" target="_blank">Написать в Telegram</a>
-            <a class="btn-ol" href="mailto:89992059760@bk.ru">Отправить письмо</a>
+            <a class="btn-ol" href="/cdn-cgi/l/email-protection#122a2b2b2b2022272b2524225270793c6067">Отправить письмо</a>
           </div>
         </div>
       </div>
@@ -461,7 +516,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 </section>
 <footer class="footer"><p>Сервис носит демонстрационный характер. Расчёты основаны на среднерыночных ставках и могут отличаться от итоговых коммерческих предложений. Проект для портфолио.</p></footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ─── GLOBALS ─── */
 var U=85,liveUsd=85,liveInr=0.81;
 function usd(v){return'$'+Math.round(v).toLocaleString('ru-RU')}
@@ -593,7 +648,8 @@ function changeHeroWord(idx){
 function scrollToCalc(e){
   if(e)e.preventDefault();
   var el=document.getElementById('calcSection');
-  window.scrollTo({top:el.offsetTop-72,behavior:'smooth'});
+  var hh=(document.getElementById('hdr')||{}).offsetHeight||72;
+  window.scrollTo({top:el.offsetTop-hh,behavior:'smooth'});
 }
 
 /* ─── TABS ─── */
@@ -618,17 +674,18 @@ function trkShip(){var a=document.getElementById('vessel-input').value.trim();if
     liveUsd=u;liveInr=inr;U=u;
     document.getElementById('rate-usd').textContent=u.toFixed(2);
     document.getElementById('rate-inr').textContent=inr.toFixed(2);
-    document.getElementById('cur-rate').textContent=inr.toFixed(2);
-    document.getElementById('cur-usd').textContent=u.toFixed(2);
-    curConv();buildAll();
+    var crEl=document.getElementById('cur-rate');if(crEl)crEl.textContent=inr.toFixed(2);
+    var cuEl=document.getElementById('cur-usd');if(cuEl)cuEl.textContent=u.toFixed(2);
+    buildAll();
   }).catch(function(){});
 })();
 function curConv(){
-  var inr=parseFloat((document.getElementById('c-inr').value||'').replace(/\s/g,'').replace(',','.'))||0;
+  var inrEl=document.getElementById('c-inr');if(!inrEl)return;
+  var inr=parseFloat((inrEl.value||'').replace(/\s/g,'').replace(',','.'))||0;
   var r=inr*liveInr;
-  document.getElementById('c-rub').value=num(Math.round(r));
-  document.getElementById('c-usd').value=num(Math.round(r/liveUsd));
-  document.getElementById('c-usdrub').value=num(Math.round(r));
+  var re=document.getElementById('c-rub');if(re)re.value=num(Math.round(r));
+  var ue=document.getElementById('c-usd');if(ue)ue.value=num(Math.round(r/liveUsd));
+  var ure=document.getElementById('c-usdrub');if(ure)ure.value=num(Math.round(r));
 }
 
 /* ─── DATA ─── */
