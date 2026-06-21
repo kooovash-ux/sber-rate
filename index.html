@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<meta name="referrer" content="no-referrer-when-downgrade">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>TradeRate — Себестоимость импорта Индия - Россия</title>
@@ -88,7 +89,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .zh-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.85);border-bottom:2px solid rgba(255,255,255,.85);transform:rotate(45deg);animation:bounce 1.6s ease-in-out infinite}
 @keyframes bounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
 .zh-fade{position:absolute;inset:0;background:var(--bg);opacity:0;pointer-events:none;z-index:5}
-@keyframes drift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .zh-chips{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);display:flex;flex-wrap:wrap;gap:12px;justify-content:center;z-index:3}
 .zh-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:10px 16px;border-radius:8px;font-size:13px;color:rgba(255,255,255,.9);opacity:0;will-change:opacity,transform}
 .zh-cta{position:absolute;bottom:15%;left:50%;transform:translateX(-50%);opacity:0;pointer-events:none;text-align:center;transition:opacity .4s;z-index:6}
@@ -303,7 +303,10 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid var(--
 
 <!-- ═══ ZOOM HERO ═══ -->
 <section class="zh-wrap" id="zhWrap">
-  <div class="zh-stage" id="zhStage" style="background:linear-gradient(135deg,#0c1118 0%,#0d1525 30%,#0f1b2e 60%,#0c1118 100%);background-size:400% 400%;animation:drift 20s ease infinite">
+  <div class="zh-stage" id="zhStage">
+  <video id="heroBg" class="zh-video" autoplay muted loop playsinline>
+    <source src="https://videos.pexels.com/video-files/6618038/6618038-hd_1920_1080_24fps.mp4" type="video/mp4">
+  </video>
   <div class="zh-veil"></div>
     <div class="zh-title" id="zhTitle">
       
@@ -493,12 +496,18 @@ function rub(v){return Math.round(v).toLocaleString('ru-RU')+' ₽'}
 function num(v){return Number(v).toLocaleString('ru-RU')}
 
 /* ─── VIDEO FADE IN ─── */
-// Video removed - Pexels blocked hotlinking, using CSS animated gradient instead
+(function(){
+  var vid=document.getElementById('heroBg');
+  if(vid){
+    vid.addEventListener('canplay',function(){vid.style.opacity='1';},{ once:true });
+    setTimeout(function(){if(vid)vid.style.opacity='1';},1500);
+  }
+})();
 
 /* ─── ZOOM ANIMATION ─── */
 (function(){
   var wrap=document.getElementById('zhWrap');
-  var video=document.getElementById('heroBg')||{style:{}};
+  var video=document.getElementById('heroBg');
   var title=document.getElementById('zhTitle');
   var hint=document.getElementById('zhHint');
   var fade=document.getElementById('zhFade');
