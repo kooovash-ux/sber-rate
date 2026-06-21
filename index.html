@@ -114,6 +114,8 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 .zh-wrap{height:300vh;position:relative}
 .zh-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#2c3e50;display:flex;align-items:center;justify-content:center}
 .zh-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 44%;will-change:transform;z-index:0;opacity:0;transition:opacity 1.2s ease}
+.zh-video-fallback{position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,#0c1118 0%,#0d1525 30%,#0f1b2e 60%,#0c1118 100%);background-size:400% 400%;animation:drift 20s ease infinite}
+@keyframes drift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .zh-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,16,30,.5) 0%,rgba(8,16,30,.3) 44%,rgba(8,16,30,.66) 100%)}
 .zh-title{position:relative;z-index:2;text-align:center;color:#f0f2f5;padding:0 24px;max-width:1040px;will-change:transform,opacity}
 .zh-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#f0f2f5;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);padding:8px 18px;border-radius:999px;margin-bottom:26px}
@@ -366,10 +368,11 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 <!-- ═══ ZOOM HERO ═══ -->
 <section class="zh-wrap" id="zhWrap">
   <div class="zh-stage" id="zhStage">
-    <video id="heroBg" class="zh-video" autoplay muted loop playsinline>
-      <source src="https://videos.pexels.com/video-files/6618038/6618038-hd_1920_1080_24fps.mp4" type="video/mp4">
-    </video>
-    <div class="zh-veil"></div>
+  <div class="zh-video-fallback"></div>
+  <video id="heroBg" class="zh-video" autoplay muted loop playsinline poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'><rect fill='%230c1118' width='1920' height='1080'/></svg>">
+    <source src="https://videos.pexels.com/video-files/6618038/6618038-hd_1920_1080_24fps.mp4" type="video/mp4">
+  </video>
+  <div class="zh-veil"></div>
     <div class="zh-title" id="zhTitle">
       <span class="zh-eyebrow">Индия&nbsp;-&nbsp;Россия · калькулятор ВЭД</span>
       <h1>Полная себестоимость<br><span class="zh-line2"><span id="zhWord">импорта</span> за 30 секунд</span></h1>
