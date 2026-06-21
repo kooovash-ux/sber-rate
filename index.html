@@ -567,7 +567,7 @@ function changeHeroWord(idx){
     // header transparent over video, solid when zoomed in
     hdr.classList.toggle('solid',p>0.6);
     // auto-scroll to calculator when title is gone
-    if(p>0.92&&!hdr._scrolled){
+    if(p>0.80&&!hdr._scrolled){
       hdr._scrolled=true;
       setTimeout(function(){scrollToCalc()},300);
     }
