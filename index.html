@@ -662,7 +662,7 @@ function uAVW(){up('av-w');av();} function uAVV(){up('av-v');av();} function uAV
 function av(){
   var w=parseFloat(document.getElementById('av-w').value)||0,v=parseFloat(document.getElementById('av-v').value)||0;
   var vol=Math.round(v*167),ch=Math.max(w,vol);
-  var fr=Math.max(Math.round(ch*5.5),150),th=Math.round(ch*.22),ec=110,df=55,vt=77,am=28;
+  var fr=Math.max(Math.round(ch*6.0),150),th=Math.round(ch*.20),ec=110,df=55,vt=77,am=28;
   var g=parseFloat((document.getElementById('av-g')||{}).value||0)||0;
   var ins=avIns&&g>0?Math.round(g*.00085):0;
   var hs=document.getElementById('av-hs'),dutyPct=avBrk&&hs?DUTY[hs.value].d:0;
@@ -673,7 +673,7 @@ function av(){
   var h='';
   h+='<div class="rrow"><span>Авиафрахт</span><span>'+usd(fr)+'</span></div>';
   if(vol>w&&vol>0)h+='<div class="rrow dim"><span>Объёмный вес '+num(vol)+' кг</span><span></span></div>';
-  if(avInc==='exw')h+='<div class="rrow"><span>Терминал + сборы EXW</span><span>'+usd(th+ec+df+vt+am)+'</span></div>';
+  if(avInc==='exw'){h+='<div class="rrow"><span>Терминальная обработка</span><span>'+usd(th)+'</span></div>';h+='<div class="rrow"><span>Экспортное оформление</span><span>'+usd(ec)+'</span></div>';h+='<div class="rrow"><span>Сбор VTT</span><span>'+usd(vt)+'</span></div>';h+='<div class="rrow"><span>Сбор AMS</span><span>'+usd(am)+'</span></div>';h+='<div class="rrow"><span>Документальное оформление</span><span>'+usd(df)+'</span></div>';}
   if(avBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 20%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Брокер</span><span>'+usd(brkFee)+'</span></div>';}
   if(ins>0)h+='<div class="rrow"><span>Страхование 0,085%</span><span>'+usd(ins)+'</span></div>';
   h+='<div class="big">'+usd(sub)+'<small>≈ '+rub(sub*U)+' · '+num(Math.round(sub*U/(w||1)))+' ₽/кг</small></div>';
