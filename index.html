@@ -714,7 +714,7 @@ function av(){
   if(avInc==='exw')h+='<div class="rrow"><span>Терминал + сборы EXW</span><span>'+usd(th+ec+df+vt+am)+'</span></div>';
   if(avBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 22%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brkFee)+'</span></div>';}
   if(ins>0)h+='<div class="rrow"><span>Страхование 0,085%</span><span>'+usd(ins)+'</span></div>';
-  h+='<div class="big">'+usd(sub)+'<small>≈ '+rub(sub*U)+' · '+num(Math.round(sub*U/(w||1)))+' ₽/кг</small></div>';
+  h+='<div class="big">'+usd(sub)+'</div>';
   h+='<div class="rtotal"><span>ИТОГО · '+avInc.toUpperCase()+'</span><span>'+usd(sub)+'</span></div>';
   var fsel=document.getElementById('av-f');
   h+='<div class="rnote">'+(fsel&&fsel.options[fsel.selectedIndex]?fsel.options[fsel.selectedIndex].text:'')+' — Москва · оплачиваемый вес '+num(ch)+' кг</div>';
@@ -757,7 +757,7 @@ function lcl(){
   if(ins>0)h+='<div class="rrow"><span>Страхование 0,085%</span><span>'+usd(ins)+'</span></div>';
   if(lBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 22%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';}
   else if(lBrk)h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';
-  h+='<div class="big">'+usd(tot)+'<small>≈ '+rub(tot*U)+' · '+num(Math.round(tot*U/(w||1)))+' ₽/кг</small></div>';
+  h+='<div class="big">'+usd(tot)+'</div>';
   h+='<div class="rtotal"><span>ИТОГО · FOB</span><span>'+usd(tot)+'</span></div>';
   h+='<div class="rnote">FOB Нава-Шева · '+num(w)+' кг · '+v+' CBM</div>';
   document.getElementById('l-res').innerHTML=h;
@@ -795,7 +795,7 @@ function fcl(){
   if(fIns)h+='<div class="rrow"><span>Страхование 0,5%</span><span>'+usd(ins)+'</span></div>';
   if(fBrk&&g>0){h+='<div class="rrow"><span>Товар · FOB</span><span>'+usd(g)+'</span></div>';h+='<div class="rrow"><span>Пошлина '+dutyPct+'% · ТН ВЭД '+(hs?hs.value:'')+'</span><span>'+usd(duty)+'</span></div>';h+='<div class="rrow"><span>НДС 22%</span><span>'+usd(vat)+'</span></div>';h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';}
   else if(fBrk)h+='<div class="rrow"><span>Таможенная декларация</span><span>'+usd(brk)+'</span></div>';
-  h+='<div class="big">'+usd(tot)+'<small>≈ '+rub(tot*U)+' · '+num(Math.round(tot*U/(w||1)))+' ₽/кг</small></div>';
+  h+='<div class="big">'+usd(tot)+'</div>';
   h+='<div class="rtotal"><span>ИТОГО · FOB</span><span>'+usd(tot)+'</span></div>';
   h+='<div class="rnote">FOB Нава-Шева — Новороссийск · '+(fB===20?'20ft':'40ft')+' · '+num(w)+' кг · '+v+' CBM</div>';
   document.getElementById('f-res').innerHTML=h;
@@ -819,7 +819,7 @@ function uSW(){up('s-w');smp();}
 function smp(){
   var w=parseFloat(document.getElementById('s-w').value)||0,p=sP(w),tot=p;
   var h='<div class="rrow"><span>Курьерская доставка</span><span>'+rub(tot)+'</span></div>';
-  h+='<div class="big">'+rub(tot)+'<small>≈ $'+num(Math.round(tot/U))+' · '+num(Math.round(tot/(w||1)))+' ₽/кг</small></div>';
+  h+='<div class="big">'+rub(tot)+'</div>';
   h+='<div class="rtotal"><span>ИТОГО</span><span>'+rub(tot)+'</span></div>';
   h+='<div class="rnote">Мумбаи — Москва · '+w+' кг · ~14 дней</div>';
   document.getElementById('s-res').innerHTML=h;
