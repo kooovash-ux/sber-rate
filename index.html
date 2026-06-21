@@ -664,7 +664,7 @@ function toast(msg){
 var avInc='fob',avIns=false,avBrk=false,avDg=false;
 function avHtml(){
   var h='<div>';
-  h+='<div class="tg mb" id="av-tg"><button class="active" style="background:#F59246;border-color:#F59246;color:#fff" onclick="avSet(\'fob\')">FOB · только фрахт</button><button style="background:transparent;border-color:#F59246;color:#F59246" onclick="avSet(\'exw\')">EXW · полный расчёт</button></div>';
+  h+='<div class="tg mb" id="av-tg"><button class="active" onclick="avSet(\'fob\')">FOB · только фрахт</button><button onclick="avSet(\'exw\')">EXW · полный расчёт</button></div>';
   h+='<div class="two"><div class="mb"><label>Откуда</label><select id="av-f" onchange="av()"></select></div><div class="mb"><label>Куда</label><select onchange="av()"><option>Москва</option><option>Санкт-Петербург</option></select></div></div>';
   h+=slider('av-w','Вес брутто',1,1000,120,1,'кг',['1','250','500','1000'],'uAVW');
   h+=slider('av-v','Объём',0,10,0.7,0.1,'CBM',['0','2.5','5','10'],'uAVV');
