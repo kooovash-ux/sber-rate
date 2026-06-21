@@ -736,14 +736,14 @@ function lclHtml(){
   h+=slider('l-v','Объём груза',0.5,30,10,0.1,'CBM',['0.5','10','20','30'],'uLV');
   h+=slider('l-p','Количество мест',1,300,4,1,'мест',['1','100','200','300'],'uLP');
   h+='<button class="dashed-btn" id="l-ins-b" onclick="lInsTg()">Страхование груза</button>';
-  h+='<div id="l-ins-p" class="hidden panel">'+slider('l-g','Стоимость товара',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uLG')+'</div>';
   h+='<button class="dashed-btn" id="l-brk-b" onclick="lBrkTg()">Таможенное оформление</button>';
+  h+='<div id="l-ins-p" class="hidden panel">'+slider('l-g','Стоимость товара (FOB)',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uLG')+'</div>';
   h+='<div id="l-brk-p" class="hidden panel"><label>Код ТН ВЭД</label><input type="text" placeholder="Поиск по коду или названию..." oninput="searchHS(this,\'l-hs\')" style="margin-bottom:6px"><select id="l-hs" onchange="lcl()" style="height:100px" size="5"></select></div>';
   h+='</div>';
   h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="l-res"></div><div class="share-row"><button class="share-btn" onclick="shareCalc(\'1\')">Поделиться расчётом</button></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Груз принимается как неопасный, штабелируемый, в упаковке, пригодной для морской перевозки и размещения в 20-футовом контейнере. Деревянная упаковка и палеты должны соответствовать стандарту ISPM 15.<br><br>В ставку включено:<br>- морской фрахт<br>- обработка груза в порту Санкт-Петербурга<br>- документационный сбор<br>- фотоотчёт при растарке<br>- 6 дней бесплатного хранения после растарки<br><br>В ставку не включено:<br>- досмотры и дополнительные проверки<br>- дегазация контейнера (при необходимости)<br>- услуги терминала по требованию таможенных органов<br><br>Транзитный срок: около 30 дней порт-порт. Перевозка осуществляется без перетарки.</div></div>';
   document.getElementById('lcl-root').innerHTML=h;
 }
-function lInsTg(){lIns=!lIns;document.getElementById('l-ins-p').classList.toggle('hidden',!lIns);document.getElementById('l-ins-b').classList.toggle('on',lIns);lcl();}
+function lInsTg(){lIns=!lIns;document.getElementById('l-ins-p').classList.toggle('hidden',!lIns&&!lBrk);document.getElementById('l-ins-b').classList.toggle('on',lIns);lcl();}
 function lBrkTg(){lBrk=!lBrk;document.getElementById('l-brk-p').classList.toggle('hidden',!lBrk);document.getElementById('l-ins-p').classList.toggle('hidden',!lBrk&&!lIns);document.getElementById('l-brk-b').classList.toggle('on',lBrk);if(lBrk){var hs=document.getElementById('l-hs');if(hs&&!hs.options.length)Object.keys(DUTY).sort().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k+' - '+DUTY[k].t+' · '+DUTY[k].d+'%';hs.appendChild(o)});}lcl();}
 function uLW(){up('l-w');lcl();} function uLV(){up('l-v');lcl();} function uLP(){up('l-p');lcl();} function uLG(){up('l-g');lcl();}
 function lcl(){
