@@ -744,7 +744,7 @@ function lclHtml(){
   document.getElementById('lcl-root').innerHTML=h;
 }
 function lInsTg(){lIns=!lIns;document.getElementById('l-ins-p').classList.toggle('hidden',!lIns);document.getElementById('l-ins-b').classList.toggle('on',lIns);lcl();}
-function lBrkTg(){lBrk=!lBrk;document.getElementById('l-brk-p').classList.toggle('hidden',!lBrk);document.getElementById('l-brk-b').classList.toggle('on',lBrk);if(lBrk){var hs=document.getElementById('l-hs');if(hs&&!hs.options.length)Object.keys(DUTY).sort().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k+' - '+DUTY[k].t+' · '+DUTY[k].d+'%';hs.appendChild(o)});}lcl();}
+function lBrkTg(){lBrk=!lBrk;document.getElementById('l-brk-p').classList.toggle('hidden',!lBrk);document.getElementById('l-ins-p').classList.toggle('hidden',!lBrk&&!lIns);document.getElementById('l-brk-b').classList.toggle('on',lBrk);if(lBrk){var hs=document.getElementById('l-hs');if(hs&&!hs.options.length)Object.keys(DUTY).sort().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k+' - '+DUTY[k].t+' · '+DUTY[k].d+'%';hs.appendChild(o)});}lcl();}
 function uLW(){up('l-w');lcl();} function uLV(){up('l-v');lcl();} function uLP(){up('l-p');lcl();} function uLG(){up('l-g');lcl();}
 function lcl(){
   var w=parseFloat(document.getElementById('l-w').value)||0,v=parseFloat(document.getElementById('l-v').value)||0,p=parseInt(document.getElementById('l-p').value)||1;
@@ -773,7 +773,7 @@ function fclHtml(){
   h+='<div class="mb"><label>Объём загрузки</label><div class="slw"><div class="slv" id="f-v-W"><span id="f-v-v">33</span><span class="u"> CBM</span></div><input type="range" id="f-v" min="1" max="33" step="0.5" value="33" oninput="uFV()"><div class="sl-lbl"><span>1</span><span id="f-max">33</span></div></div></div>';
   h+='<button class="dashed-btn" id="f-ins-b" onclick="fInsTg()">Страхование груза (0,5%)</button>';
   h+='<button class="dashed-btn" id="f-brk-b" onclick="fBrkTg()">Таможенное оформление</button>';
-  h+='<div id="f-brk-p" class="hidden panel"><label>Код ТН ВЭД</label><input type="text" placeholder="Поиск по коду или названию..." oninput="searchHS(this,\'f-hs\')" style="margin-bottom:6px"><select id="f-hs" onchange="fcl()" style="height:100px" size="5"></select></div>';
+  h+='<div id="f-brk-p" class="hidden panel"><label>Код ТН ВЭД</label><input type="text" placeholder="Поиск по коду или названию..." oninput="searchHS(this,\'f-hs\')" style="margin-bottom:6px"><select id="f-hs" onchange="fcl()" style="height:100px" size="5"></select>'+slider('f-g','Стоимость товара (FOB)',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uFG')+'</div>';
   h+='</div>';
   h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="f-res"></div><div class="share-row"><button class="share-btn" onclick="shareCalc(\'2\')">Поделиться расчётом</button></div></div>';
   document.getElementById('fcl-root').innerHTML=h;
@@ -781,7 +781,7 @@ function fclHtml(){
 function fSet(b){fB=b;document.getElementById('f20').classList.toggle('active',b===20);document.getElementById('f40').classList.toggle('active',b===40);var s=document.getElementById('f-v'),m=b===20?33:76;s.max=m;if(parseFloat(s.value)>m)s.value=m;document.getElementById('f-max').textContent=m;up('f-v');fcl();}
 function fInsTg(){fIns=!fIns;document.getElementById('f-ins-b').classList.toggle('on',fIns);fcl();}
 function fBrkTg(){fBrk=!fBrk;document.getElementById('f-brk-p').classList.toggle('hidden',!fBrk);document.getElementById('f-brk-b').classList.toggle('on',fBrk);if(fBrk){var hs=document.getElementById('f-hs');if(hs&&!hs.options.length)Object.keys(DUTY).sort().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k+' - '+DUTY[k].t+' · '+DUTY[k].d+'%';hs.appendChild(o)});}fcl();}
-function uFW(){up('f-w');fcl();} function uFV(){var el=document.getElementById('f-v');var v=parseFloat(el.value)||0;document.getElementById('f-v-v').textContent=v.toFixed(1);fillSl(el);var wEl=document.getElementById('f-v-W');if(wEl){wEl.classList.add('flash');setTimeout(function(){wEl.classList.remove('flash')},300);}fcl();}
+function uFG(){up('f-g');fcl();}function uFW(){up('f-w');fcl();} function uFV(){var el=document.getElementById('f-v');var v=parseFloat(el.value)||0;document.getElementById('f-v-v').textContent=v.toFixed(1);fillSl(el);var wEl=document.getElementById('f-v-W');if(wEl){wEl.classList.add('flash');setTimeout(function(){wEl.classList.remove('flash')},300);}fcl();}
 function fcl(){
   var w=parseInt(document.getElementById('f-w').value)||0,v=parseFloat(document.getElementById('f-v').value)||0;
   var fr=fB===20?4550:5450,ins=fIns?Math.round(fr*.005):0,brk=fBrk?300:0,tot=fr+ins+brk;
