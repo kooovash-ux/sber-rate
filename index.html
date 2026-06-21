@@ -680,7 +680,7 @@ function av(){
   h+='<div class="big">'+usd(sub)+'<small>≈ '+rub(sub*U)+' · '+num(Math.round(sub*U/(w||1)))+' ₽/кг</small></div>';
   h+='<div class="rtotal"><span>ИТОГО · '+avInc.toUpperCase()+'</span><span>'+usd(sub)+'</span></div>';
   var fsel=document.getElementById('av-f');
-  h+='<div class="rnote">'+(fsel&&fsel.options[fsel.selectedIndex]?fsel.options[fsel.selectedIndex].text:'')+' — Москва · оплачиваемый вес '+num(ch)+' кг</div>';
+  h+='<div class="rnote">'+(fsel&&fsel.options[fsel.selectedIndex]?fsel.options[fsel.selectedIndex].text:'')+' — Москва · оплачиваемый вес '+num(ch)+' кг · Транзит: Мумбаи через Баку (AZAL, 3-4 рейса/день), Дели через Ташкент (Uzbekistan Airways, 2 рейса/день), срок 3-6 дней</div>';
   document.getElementById('av-res').innerHTML=h;
 }
 
