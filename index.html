@@ -74,7 +74,8 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 @media(max-width:1024px){.hbadge{display:none}}
 @media(max-width:860px){.ticker{display:none}.own .av-n,.own .av-s{display:none}}
 @media(max-width:640px){
-  body{overflow-x:hidden}
+  *,*::before,*::after{max-width:100%}
+  body,html{overflow-x:hidden!important;width:100%}
   .hdr-in{padding:0 12px;height:56px}
   .btn-nav{padding:8px 12px;font-size:11px}
   .logo{font-size:18px}
