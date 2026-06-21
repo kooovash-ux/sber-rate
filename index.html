@@ -777,7 +777,7 @@ function fclHtml(){
   var h='<div>';
   h+='<div class="tg mb"><button class="active">FOB</button><button disabled>EXW</button></div>';
   h+='<div class="mb"><label>Тип контейнера</label><div class="tg"><button class="active" id="f20" onclick="fSet(20)">20ft · до 28 т</button><button id="f40" onclick="fSet(40)">40ft · до 26 т</button></div></div>';
-  h+='<div class="two"><div class="mb"><label>Порт отправления</label><select><option>Нава-Шева</option><option>Мундра</option></select></div><div class="mb"><label>Куда</label><select><option>Новороссийск</option><option>Санкт-Петербург</option></select></div></div>';
+  h+='<div class="two"><div class="mb"><label>Порт отправления</label><select><option>Нава-Шева</option><option>Мундра</option></select></div><div class="mb"><label>Куда</label><select><option>Новороссийск</option><option disabled style="color:#aaa">Санкт-Петербург</option></select></div></div>';
   h+=slider('f-w','Вес груза',1000,28000,15000,100,'кг',['1т','10т','20т','28т'],'uFW');
   h+='<div class="mb"><label>Объём загрузки</label><div class="slw"><div class="slv" id="f-v-W"><span id="f-v-v">33</span><span class="u"> CBM</span></div><input type="range" id="f-v" min="1" max="33" step="0.5" value="33" oninput="uFV()"><div class="sl-lbl"><span>1</span><span id="f-max">33</span></div></div></div>';
   h+='<button class="dashed-btn" id="f-ins-b" onclick="fInsTg()">Страхование груза</button>';
