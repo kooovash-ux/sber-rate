@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Образцы Индия-РФ | Калькулятор доставки</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:20px;background:#fff;color:#111}
+label{display:block;margin-bottom:2px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:#444}
+input,select{width:100%;padding:8px 10px;font-size:14px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}
+input[type=range]{padding:0;border:none}
+select{cursor:pointer}
+.form-group{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#result-content{border-top:2px solid #333;margin-top:16px;padding-top:12px;font-size:14px;line-height:1.6}
+#result-content .row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #eee}
+#result-content .total{border-top:2px solid #333;margin-top:8px;padding-top:10px;font-weight:700;font-size:16px}
+#total-amount{font-size:32px;font-weight:300;text-align:center;padding:16px 0}
+#total-amount small{display:block;font-size:13px;color:#666;font-weight:400}
+.slider-wrap{background:#f5f7fa;border:1px solid #ddd;border-radius:6px;padding:14px;text-align:center}
+.slider-val{font-size:26px;font-weight:300;margin-bottom:6px}
+.slider-val .unit{font-size:13px;color:#666}
+.slider-labels{display:flex;justify-content:space-between;font-size:10px;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+
+<h2>Калькулятор доставки образцов Индия - РФ</h2>
+
+<div class="btns" style="margin-bottom:16px">
+ <button class="active" style="cursor:default">Курьерская доставка</button>
+ <button disabled style="opacity:0.5;cursor:help;position:relative" title=" В разработке">Почтовая доставка</button>
+</div>
+
+<div class="row">
+ <!-- LEFT: Inputs -->
+ <div>
+ <div class="form-group">
+ <label>Откуда (Индия)</label>
+ <select id="origin-select" style="height:200px">
+ </select>
+ </div>
+
+ <div class="form-group">
+ <label>Куда (РФ)</label>
+ <select id="dest-select" style="height:200px">
+ </select>
+ </div>
+
+ <div class="form-group">
+ <label> Вес (кг)</label>
+ <div class="slider-wrap">
+ <div class="slider-val"><span id="weight-value">1.0</span><span class="unit"> кг</span></div>
+ <input type="range" id="weight" min="0.5" max="60" step="0.5" value="1" oninput="onWeightChange()">
+ <div class="slider-labels"><span>0.5</span><span>15</span><span>30</span><span>60</span></div>
+ </div>
+ </div>
+
+ <div class="form-group">
+ <label style="display:flex;align-items:center;gap:8px;text-transform:none;font-weight:400;font-size:13px;cursor:pointer">
+ <input type="checkbox" id="dg-check" onchange="dgToggle()"> Опасный груз
+ </label>
+ <div id="dg-msg" class="hidden" style="font-size:12px;color:#c00;padding:6px 10px;background:#fff0f0;border:1px solid #fcc;border-radius:4px;margin-top:4px">
+ Для проверки груза требуется <strong>MSDS</strong> (паспорт безопасности)
+ </div>
+ </div>
+
+ <div style="font-size:13px;color:#666;padding:8px;background:#f0f4ff;border-radius:4px;line-height:1.5">
+ Требуется инвойс от поставщика<br>
+ Доставка 14 дней от поставщика до получателя
+ </div>
+ </div>
+
+ <!-- RIGHT: Results -->
+ <div>
+ <h3 style="font-weight:400;margin-top:0">Стоимость доставки</h3>
+ <div id="result-content">
+ <div style="color:#888;font-size:14px">Выберите параметры</div>
+ </div>
+ </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// Топ-100 городов Индии
+// ═══════════════════════════════════════════════════
+const INDIA_CITIES = [
+ "Мумбаи (Махараштра)","Дели","Бангалор","Хайдарабад","Ахмадабад","Ченнаи","Калькутта","Пуна","Джайпур","Лакхнау",
+ "Сурат","Нагпур","Индаур","Бхопал","Вадодара","Вишакхапатнам","Падна","Тхане","Лудхиана","Агра",
+ "Нашик","Раджкот","Мадурай","Варанаси","Мират","Фаридабад","Газиабад","Амритсар","Аурангабад","Сринагар",
+ "Аллахабад","Ранчи","Джамшедпур","Коимбатур","Джабалпур","Гвалиор","Канпур","Чандигарх","Солапур","Хубдли",
+ "Майсур","Тируванантапурам","Кожикоде","Гая","Тируччираппалли","Бхавнагар","Багалкот","Горакхпур","Колхапур","Биласпур",
+ "Дург","Асансол","Багалгунт","Джаландхар","Бхагалпур","Кота","Аджмер","Удайпур","Нандед","Сангали",
+ "Гулбарга","Джодхпур","Уттара-Прадеш","Мангалор","Делийский НКР","Роуркела","Кожикоде","Силвасса","Пондичерри","Озхук",
+ "Карнал","Курнул","Тутикорин","Дера-Дун","Бурханпур","Хисар","Патана","Махадайпур","Свай-Мадхопур","Байкунтхпур",
+ "Райпур","Бхиванди","Нойда","Грейтер-Нойда","Гургаон","Бангалор сельский","Бхилаи","Силчар","Гувахати","Айджал",
+ "Импхал","Агартала","Кохма","Дибругарх","Шиллонг","Тезпур","Порт-Блэр","Джамму","Катхва","Анантнаг"
+];
+
+// Топ-100 городов РФ
+const RUSSIA_CITIES = [
+ "Москва"
+];
+
+// ═══════════════════════════════════════════════════
+// Стоимость доставки по весу (РУБ)
+// ═══════════════════════════════════════════════════
+const PRICE_TABLE = [
+ { kg: 0.5, rub: 11404 }, { kg: 1.0, rub: 13899 }, { kg: 1.5, rub: 16075 },
+ { kg: 2.0, rub: 18251 }, { kg: 2.5, rub: 20428 }, { kg: 3.0, rub: 22265 },
+ { kg: 3.5, rub: 24101 }, { kg: 4.0, rub: 25938 }, { kg: 4.5, rub: 27775 },
+ { kg: 5.0, rub: 29611 }, { kg: 5.5, rub: 31416 }, { kg: 6.0, rub: 33221 },
+ { kg: 6.5, rub: 35026 }, { kg: 7.0, rub: 36831 }, { kg: 7.5, rub: 38636 },
+ { kg: 8.0, rub: 40441 }, { kg: 8.5, rub: 42246 }, { kg: 9.0, rub: 44051 },
+ { kg: 9.5, rub: 45856 }, { kg: 10.0, rub: 47661 }, { kg: 10.5, rub: 48904 },
+ { kg: 11.0, rub: 50146 }, { kg: 11.5, rub: 51389 }, { kg: 12.0, rub: 52632 },
+ { kg: 12.5, rub: 53874 }, { kg: 13.0, rub: 55117 }, { kg: 13.5, rub: 56359 },
+ { kg: 14.0, rub: 57602 }, { kg: 14.5, rub: 58844 }, { kg: 15.0, rub: 60087 },
+ { kg: 15.5, rub: 61329 }, { kg: 16.0, rub: 62572 }, { kg: 16.5, rub: 63814 },
+ { kg: 17.0, rub: 65057 }, { kg: 17.5, rub: 66300 }, { kg: 18.0, rub: 67542 },
+ { kg: 18.5, rub: 68785 }, { kg: 19.0, rub: 70027 }, { kg: 19.5, rub: 71270 },
+ { kg: 20.0, rub: 72512 }, { kg: 20.5, rub: 73680 }, { kg: 21.0, rub: 74848 },
+ { kg: 21.5, rub: 76016 }, { kg: 22.0, rub: 77184 }, { kg: 22.5, rub: 78352 },
+ { kg: 23.0, rub: 79520 }, { kg: 23.5, rub: 80688 }, { kg: 24.0, rub: 81856 },
+ { kg: 24.5, rub: 83024 }, { kg: 25.0, rub: 84192 }, { kg: 25.5, rub: 85360 },
+ { kg: 26.0, rub: 86528 }, { kg: 26.5, rub: 87696 }, { kg: 27.0, rub: 88864 },
+ { kg: 27.5, rub: 90032 }, { kg: 28.0, rub: 91199 }, { kg: 28.5, rub: 92367 },
+ { kg: 29.0, rub: 93535 }, { kg: 29.5, rub: 94703 }, { kg: 30.0, rub: 95871 },
+ { kg: 31.0, rub: 97815 }, { kg: 32.0, rub: 99759 }, { kg: 33.0, rub: 101702 },
+ { kg: 34.0, rub: 103646 }, { kg: 35.0, rub: 105590 }, { kg: 36.0, rub: 107533 },
+ { kg: 37.0, rub: 109477 }, { kg: 38.0, rub: 111421 }, { kg: 39.0, rub: 113364 },
+ { kg: 40.0, rub: 115308 }, { kg: 41.0, rub: 117252 }, { kg: 42.0, rub: 119195 },
+ { kg: 43.0, rub: 121139 }, { kg: 44.0, rub: 123083 }, { kg: 45.0, rub: 125026 },
+ { kg: 46.0, rub: 126970 }, { kg: 47.0, rub: 128914 }, { kg: 48.0, rub: 130857 },
+ { kg: 49.0, rub: 132801 }, { kg: 50.0, rub: 134745 }, { kg: 51.0, rub: 136688 },
+ { kg: 52.0, rub: 138632 }, { kg: 53.0, rub: 140576 }, { kg: 54.0, rub: 142519 },
+ { kg: 55.0, rub: 144463 }, { kg: 56.0, rub: 146406 }, { kg: 57.0, rub: 148350 },
+ { kg: 58.0, rub: 150294 }, { kg: 59.0, rub: 152237 }, { kg: 60.0, rub: 154181 },
+];
+
+const USD_RATE = 85;
+
+// ═══════════════════════════════════════════════════
+// UTILITY
+// ═══════════════════════════════════════════════════
+
+function $(id) { return document.getElementById(id); }
+
+function fmt(v) {
+ return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
+}
+
+// ═══════════════════════════════════════════════════
+// HANDLERS
+// ═══════════════════════════════════════════════════
+
+function onWeightChange() {
+ $('weight-value').textContent = parseFloat($('weight').value).toFixed(1);
+ calculate();
+}
+
+function dgToggle() {
+ $('dg-msg').style.display = $('dg-check').checked ? 'block' : 'none';
+ calculate();
+}
+
+// ═══════════════════════════════════════════════════
+// Цена по весу (интерполяция)
+// ═══════════════════════════════════════════════════
+
+function getPrice(kg) {
+ if (kg <= PRICE_TABLE[0].kg) return PRICE_TABLE[0].rub;
+ if (kg >= PRICE_TABLE[PRICE_TABLE.length - 1].kg) return PRICE_TABLE[PRICE_TABLE.length - 1].rub;
+ for (let i = 0; i < PRICE_TABLE.length - 1; i++) {
+ const a = PRICE_TABLE[i], b = PRICE_TABLE[i + 1];
+ if (kg >= a.kg && kg <= b.kg) {
+ const t = (kg - a.kg) / (b.kg - a.kg);
+ return Math.round(a.rub + t * (b.rub - a.rub));
+ }
+ }
+ return PRICE_TABLE[PRICE_TABLE.length - 1].rub;
+}
+
+// ═══════════════════════════════════════════════════
+// CALCULATE
+// ═══════════════════════════════════════════════════
+
+function calculate() {
+ const weight = parseFloat($('weight').value) || 0;
+ const originName = $('origin-select').options[$('origin-select').selectedIndex].text;
+ const destName = $('dest-select').options[$('dest-select').selectedIndex].text;
+
+ // Базовая цена по весу
+ const baseRub = getPrice(weight);
+ // +10%
+ const totalRub = Math.round(baseRub * 1.1);
+ const rubPerKg = weight > 0 ? Math.round(totalRub / weight) : 0;
+ const totalUsd = Math.round(totalRub / USD_RATE);
+
+ // ── Render ──
+ let html = '';
+
+ html += `<div class="row"><span> Доставка образца</span><span>${fmt(totalRub)}</span></div>`;
+ html += `<div class="row"><span> ${rubPerKg.toLocaleString('ru-RU')} ₽/кг</span><span>≈ $${totalUsd.toLocaleString('ru-RU')}</span></div>`;
+
+ html += `<div id="total-amount">${fmt(totalRub)}<small>≈ $${totalUsd.toLocaleString('ru-RU')} · ${rubPerKg.toLocaleString('ru-RU')} ₽/кг</small></div>`;
+ html += `<div class="row total"><span>ИТОГО</span><span>${fmt(totalRub)}</span></div>`;
+
+ html += `<div style="font-size:12px;color:#555;padding:8px;background:#f0f4ff;border-radius:4px;margin-top:8px;line-height:1.5">
+ Требуется инвойс от поставщика · Доставка 14 дней
+ </div>`;
+
+ $('result-content').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+
+(function() {
+ const origSel = $('origin-select');
+ INDIA_CITIES.forEach((c, i) => {
+ const o = document.createElement('option');
+ o.value = c; o.textContent = c;
+ if (i === 0) o.selected = true;
+ origSel.appendChild(o);
+ });
+ const destSel = $('dest-select');
+ RUSSIA_CITIES.forEach((c, i) => {
+ const o = document.createElement('option');
+ o.value = c; o.textContent = c;
+ if (i === 0) o.selected = true;
+ destSel.appendChild(o);
+ });
+ calculate();
+})();
+</script>
+</body>
+</html>

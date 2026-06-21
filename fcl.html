@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>FCL Индия-Россия | Расчет ставки на контейнер</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:20px;background:#fff;color:#111}
+label{display:block;margin-bottom:2px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:#444}
+input,select{width:100%;padding:8px 10px;font-size:14px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}
+input[type=range]{padding:0;border:none}
+select{cursor:pointer}
+.form-group{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btns{display:flex;gap:0;border:1px solid #ccc;border-radius:4px;overflow:hidden;margin-bottom:12px}
+.btns button{flex:1;padding:10px;font-size:14px;border:none;cursor:pointer;background:#f5f5f5}
+.btns button.active{background:#333;color:#fff}
+.btns button:disabled{opacity:.5;cursor:not-allowed}
+.hidden{display:none}
+#result-content{border-top:2px solid #333;margin-top:16px;padding-top:12px;font-size:14px;line-height:1.6}
+#result-content .row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #eee}
+#result-content .total{border-top:2px solid #333;margin-top:8px;padding-top:10px;font-weight:700;font-size:16px}
+#total-amount{font-size:32px;font-weight:300;text-align:center;padding:16px 0}
+#total-amount small{display:block;font-size:13px;color:#666;font-weight:400}
+.slider-wrap{background:#f5f7fa;border:1px solid #ddd;border-radius:6px;padding:14px;text-align:center}
+.slider-val{font-size:26px;font-weight:300;margin-bottom:6px}
+.slider-val .unit{font-size:13px;color:#666}
+.slider-labels{display:flex;justify-content:space-between;font-size:10px;color:#888;margin-top:2px}
+.dashed-btn{background:none;border:1px dashed #ccc;border-radius:4px;padding:8px 14px;font-size:13px;cursor:pointer;width:100%}
+.delivery-box{background:#f0f4ff;border:1px solid #ddd;border-radius:6px;padding:14px;margin-bottom:12px}
+.delivery-box .stats{display:flex;justify-content:space-between;font-size:13px;margin-top:6px}
+</style>
+</head>
+<body>
+
+<h2>Расчет ставки на целый контейнер Индия - Россия</h2>
+
+<!-- Incoterms -->
+<div class="btns" style="margin-bottom:12px">
+ <button class="active" style="cursor:default">FOB</button>
+ <button disabled style="opacity:0.5;cursor:help;position:relative" title=" В разработке">EXW</button>
+</div>
+
+<div class="row">
+ <!-- LEFT: Inputs -->
+ <div>
+ <!-- Тип контейнера -->
+ <div class="form-group">
+ <label>Тип контейнера</label>
+ <div class="btns" id="container-toggle">
+ <button class="active" data-box="20" onclick="setContainer('20')">20ft</button>
+ <button data-box="40" onclick="setContainer('40')">40ft</button>
+ </div>
+ </div>
+
+ <!-- Порт отправления -->
+ <div class="form-group">
+ <label>Порт отправления (Индия)</label>
+ <select id="origin-select" onchange="calculate()">
+ <option value="ns"> Нава-Шева (Мумбаи)</option>
+ <option value="mundra"> Мундра</option>
+ </select>
+ </div>
+
+ <!-- Порт назначения -->
+ <div class="form-group">
+ <label>Порт назначения (РФ)</label>
+ <select id="dest-select" onchange="onDestChange()">
+ <option value="novo"> Новороссийск</option>
+ <option value="spb" disabled style="color:#aaa" title=" Добавлю попозже"> Санкт-Петербург</option>
+ <option value="vlad" disabled style="color:#aaa" title=" Добавлю попозже"> Владивосток</option>
+ </select>
+ <div style="margin-top:4px;font-size:12px;color:#666" id="route-display">Нава-Шева - Новороссийск</div>
+ </div>
+
+ <!-- Тип судна -->
+ <div class="form-group">
+ <label>Тип судна</label>
+ <div class="btns" id="vessel-toggle">
+ <button class="active" onclick="setVessel('direct')"> Прямое судно</button>
+ <button disabled style="opacity:0.5;cursor:help" title=" В разработке"> Трансшиппинг</button>
+ </div>
+ </div>
+
+ <!-- Вес -->
+ <div class="form-group">
+ <label> Вес груза (кг)</label>
+ <div class="slider-wrap">
+ <div class="slider-val"><span id="weight-value">15 000</span><span class="unit"> кг</span></div>
+ <input type="range" id="weight" min="1000" max="28000" step="100" value="15000" oninput="onWeightChange()">
+ <div class="slider-labels"><span>1 000</span><span>10 000</span><span>20 000</span><span>28 000</span></div>
+ </div>
+ </div>
+
+ <!-- Объём -->
+ <div class="form-group">
+ <label> Объём груза (CBM)</label>
+ <div class="slider-wrap">
+ <div class="slider-val"><span id="volume-value">33.0</span><span class="unit"> CBM</span></div>
+ <input type="range" id="volume" min="1" max="76" step="0.5" value="33" oninput="onVolumeChange()">
+ <div class="slider-labels"><span id="vol-min">1</span><span id="vol-mid">~</span><span id="vol-max">76</span></div>
+ </div>
+ </div>
+
+ <!-- Страхование toggle -->
+ <button class="dashed-btn" id="insure-toggle-btn" onclick="toggleInsure()" style="margin-bottom:8px"> Страхование</button>
+ <div id="insure-section" class="hidden" style="margin-bottom:8px">
+
+ </div>
+
+ <!-- Таможенное оформление toggle -->
+ <button class="dashed-btn" id="customs-toggle-btn" onclick="toggleBroker()" style="margin-bottom:8px"> Таможенное оформление</button>
+ <div id="customs-section" class="hidden" style="margin-bottom:8px">
+
+ </div>
+
+ <!-- Общий блок: стоимость товара + ТН ВЭД (для страховки/таможни) -->
+ <div id="goods-section" class="hidden" style="margin-bottom:8px">
+ <div class="delivery-box">
+ <div class="btns" id="currency-toggle" style="margin-bottom:10px">
+ <button class="active" data-currency="usd" onclick="setCurrency('usd')"> USD</button>
+ <button data-currency="inr" onclick="setCurrency('inr')"> INR</button>
+ </div>
+ <div class="form-group" style="margin-bottom:10px">
+ <label> Стоимость товара</label>
+ <div class="slider-wrap">
+ <div class="slider-val"><span id="goods-value-display">15 000</span><span class="unit" id="goods-currency-label">$</span></div>
+ <input type="range" id="goods-value" min="100" max="200000" step="500" value="15000" oninput="onGoodsValueChange()">
+ <div class="slider-labels"><span id="goods-min-label">$100</span><span id="goods-mid-label">$50k</span><span id="goods-max-label">$200k</span></div>
+ </div>
+ </div>
+ <div id="hs-row" class="hidden">
+ <div class="form-group" style="margin-bottom:0">
+ <label> Код ТН ВЭД (для расчёта пошлины)</label>
+ <select id="hs-code" style="height:80px" onchange="calculate()"></select>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Доставка по РФ toggle -->
+ <button class="dashed-btn" id="delivery-toggle-btn" onclick="toggleDeliveryBtn()" style="margin-bottom:8px"> Доставка по России</button>
+ <div id="delivery-calc" class="hidden" style="margin-bottom:8px">
+ <div class="delivery-box">
+ <label style="font-size:11px;font-weight:600;text-transform:uppercase;color:#444"> Доставка по России</label>
+ <div class="row" style="margin-top:6px">
+ <div class="form-group" style="margin-bottom:6px">
+ <label>Откуда</label>
+ <div style="padding:8px 10px;border:1px solid #ccc;border-radius:4px;font-size:13px;background:#f8faff" id="delivery-from-display">Санкт-Петербург</div>
+ <input type="hidden" id="delivery-from" value="spb">
+ </div>
+ <div class="form-group" style="margin-bottom:6px">
+ <label>Город доставки</label>
+ <select id="delivery-city" onchange="onDeliveryChange()">
+ <option value="">— Выберите —</option>
+ </select>
+ </div>
+ </div>
+ <div class="stats">
+ <span> <strong id="delivery-km-display">0 км</strong></span>
+ <span> <strong id="delivery-cost-display">—</strong></span>
+ </div>
+ </div>
+ </div>
+
+ <!-- Опасный груз -->
+ <button class="dashed-btn" id="dg-toggle-btn" onclick="toggleDG()" style="margin-top:8px"> Опасный груз</button>
+ <div id="dg-section" class="hidden" style="margin-top:8px;padding:12px;background:#fff8f0;border:1px solid #f0d080;border-radius:6px">
+ <div style="font-size:13px;color:#c00;margin-bottom:8px"> Для опасного груза требуется паспорт безопасности (MSDS)</div>
+ <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:4px">Загрузить MSDS</label>
+ <input type="file" id="msds-upload" accept=".pdf,.doc,.docx,.xls,.xlsx" style="margin-bottom:8px;text-transform:none;font-weight:400;font-size:12px">
+ <button onclick="contactManager()" style="width:100%;padding:10px;background:#333;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px"> Связь с менеджером</button>
+ </div>
+
+ <div style="font-size:12px;color:#666;padding:8px;background:#f5f7fa;border-radius:4px;margin-top:8px;line-height:1.5">
+ <strong> В ставку входит:</strong> морской фрахт, контейнер, терминальная обработка в порту назначения, выгрузка с судна, погрузка контейнера на авто<br>
+ <strong> Условия:</strong> ставка при наличии оборудования · генгруз · отмена <7 дн = штраф $500/TEU · пересчёт по курсу ЦБ
+ </div>
+ </div>
+
+ <!-- RIGHT: Results -->
+ <div>
+ <h3 style="font-weight:400;margin-top:0">Стоимость перевозки</h3>
+ <div id="result-content">
+ <div style="color:#888;font-size:14px">Выберите параметры</div>
+ </div>
+ </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+
+// Тарифы FCL из Индии в РФ ($) — [direct, transship]
+// Трансшиппинг пока не активен
+const FCL_RATES = {
+ ns: { spb: { '20': [4550, 4550], '40': [5450, 5450] }, novo: { '20': [4550, 4550], '40': [5450, 5450] }, vlad: { '20': [4550, 4550], '40': [5450, 5450] } },
+ mundra: { spb: { '20': [4550, 4550], '40': [5450, 5450] }, novo: { '20': [4550, 4550], '40': [5450, 5450] }, vlad: { '20': [4550, 4550], '40': [5450, 5450] } },
+};
+
+const EUROPE_CITIES = [
+ { n: 'Москва', km: 700 }, { n: 'Великий Новгород', km: 190 }, { n: 'Псков', km: 280 },
+ { n: 'Петрозаводск', km: 430 }, { n: 'Мурманск', km: 1350 }, { n: 'Архангельск', km: 1200 },
+ { n: 'Вологда', km: 650 }, { n: 'Ярославль', km: 600 }, { n: 'Кострома', km: 700 },
+ { n: 'Иваново', km: 650 }, { n: 'Владимир', km: 750 }, { n: 'Нижний Новгород', km: 800 },
+ { n: 'Киров', km: 1100 }, { n: 'Тверь', km: 500 }, { n: 'Смоленск', km: 650 },
+ { n: 'Брянск', km: 850 }, { n: 'Калуга', km: 800 }, { n: 'Тула', km: 800 },
+ { n: 'Рязань', km: 850 }, { n: 'Липецк', km: 950 }, { n: 'Воронеж', km: 1100 },
+ { n: 'Тамбов', km: 1000 }, { n: 'Орёл', km: 850 }, { n: 'Курск', km: 950 },
+ { n: 'Белгород', km: 1050 }, { n: 'Пенза', km: 1200 }, { n: 'Самара', km: 1500 },
+ { n: 'Тольятти', km: 1450 }, { n: 'Саратов', km: 1400 }, { n: 'Волгоград', km: 1500 },
+ { n: 'Ростов-на-Дону', km: 1600 }, { n: 'Краснодар', km: 1700 }, { n: 'Новороссийск', km: 1700 },
+ { n: 'Сочи', km: 1900 }, { n: 'Ставрополь', km: 1900 }, { n: 'Калининград', km: 900 },
+ { n: 'Казань', km: 1200 }, { n: 'Ульяновск', km: 1200 }, { n: 'Чебоксары', km: 1000 },
+ { n: 'Ижевск', km: 1500 }, { n: 'Пермь', km: 1700 }, { n: 'Уфа', km: 1700 },
+ { n: 'Екатеринбург', km: 2000 }, { n: 'Челябинск', km: 2200 }, { n: 'Гатчина', km: 50 },
+ { n: 'Астрахань', km: 1800 }, { n: 'Владикавказ', km: 2200 }, { n: 'Махачкала', km: 2400 },
+];
+
+const ASIA_CITIES = [
+ { n: 'Владивосток', km: 0 }, { n: 'Уссурийск', km: 100 }, { n: 'Находка', km: 180 },
+ { n: 'Хабаровск', km: 760 }, { n: 'Биробиджан', km: 700 }, { n: 'Благовещенск', km: 1600 },
+ { n: 'Чита', km: 2500 }, { n: 'Улан-Удэ', km: 3500 }, { n: 'Иркутск', km: 3700 },
+ { n: 'Красноярск', km: 4700 }, { n: 'Новосибирск', km: 5000 }, { n: 'Якутск', km: 2300 },
+ { n: 'Южно-Сахалинск', km: 1000 },
+];
+
+const USD_RATE = 85;
+const PORT_NAMES = { ns: 'Нава-Шева', mundra: 'Мундра', spb: 'Санкт-Петербург', novo: 'Новороссийск', vlad: 'Владивосток' };
+const ORIG_NAMES = { ns: 'Нава-Шева', mundra: 'Мундра' };
+const VOL_MAX = { '20': 33, '40': 76 };
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+
+let currentBox = '20';
+let currentVessel = 'direct';
+let currentCurrency = 'usd';
+let goodsVisible = false;
+let insureOpen = false;
+let brokerOpen = false;
+let deliveryVisible = false;
+let deliveryCost = 0;
+
+// ═══════════════════════════════════════════════════
+// UTILITY
+// ═══════════════════════════════════════════════════
+
+function $(id) { return document.getElementById(id); }
+
+function fmt(v) {
+ return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
+}
+
+// ═══════════════════════════════════════════════════
+// HANDLERS
+// ═══════════════════════════════════════════════════
+
+function setContainer(box) {
+ currentBox = box;
+ document.querySelectorAll('#container-toggle button').forEach(b =>
+ b.classList.toggle('active', b.dataset.box === box));
+ const max = VOL_MAX[box];
+ const volSlider = $('volume');
+ const curVal = parseFloat(volSlider.value);
+ volSlider.max = max;
+ if (curVal > max) volSlider.value = max;
+ $('vol-max').textContent = max;
+ $('vol-mid').textContent = Math.round(max / 2);
+ onVolumeChange();
+}
+
+function setVessel(type) {
+ currentVessel = type;
+ document.querySelectorAll('#vessel-toggle button').forEach(b =>
+ b.classList.toggle('active', b.dataset.type === type));
+ calculate();
+}
+
+function onWeightChange() {
+ $('weight-value').textContent = parseInt($('weight').value).toLocaleString('ru-RU');
+ calculate();
+}
+
+function onVolumeChange() {
+ $('volume-value').textContent = parseFloat($('volume').value).toFixed(1);
+ calculate();
+}
+
+function onDestChange() {
+ const dest = $('dest-select').value;
+ const orig = $('origin-select').value;
+ $('route-display').textContent = ORIG_NAMES[orig] + ' - ' + PORT_NAMES[dest];
+ $('delivery-from').value = dest;
+ $('delivery-from-display').textContent = PORT_NAMES[dest];
+ const sel = $('delivery-city');
+ const cities = dest === 'vlad' ? ASIA_CITIES : EUROPE_CITIES;
+ sel.innerHTML = '<option value="">— Выберите —</option>';
+ cities.forEach(c => { const o = document.createElement('option'); o.value = c.n; o.textContent = c.n; sel.appendChild(o); });
+ if (deliveryVisible) onDeliveryChange();
+ calculate();
+}
+
+function toggleDeliveryBtn() {
+ deliveryVisible = !deliveryVisible;
+ $('delivery-calc').style.display = deliveryVisible ? 'block' : 'none';
+ $('delivery-toggle-btn').textContent = deliveryVisible ? ' Доставка по России' : ' Доставка по России';
+ if (!deliveryVisible) { deliveryCost = 0; calculate(); }
+}
+
+function onDeliveryChange() {
+ const from = $('delivery-from').value;
+ const cityName = $('delivery-city').value;
+ const cities = from === 'vlad' ? ASIA_CITIES : EUROPE_CITIES;
+ const city = cities.find(c => c.n === cityName);
+ if (!city) {
+ deliveryCost = 0;
+ $('delivery-km-display').textContent = '0 км';
+ $('delivery-cost-display').textContent = '—';
+ calculate();
+ return;
+ }
+ const rate = from === 'vlad' ? 0.7 : (from === 'spb' ? 1.0 : 0.8);
+ deliveryCost = Math.round(city.km * rate);
+ $('delivery-km-display').textContent = city.km.toLocaleString('ru-RU') + ' км';
+ $('delivery-cost-display').textContent = (deliveryCost * USD_RATE).toLocaleString('ru-RU') + ' ₽';
+ calculate();
+}
+
+// Insurance & Customs toggle
+function toggleInsure() {
+ insureOpen = !insureOpen;
+ $('insure-toggle-btn').textContent = insureOpen ? ' Страхование' : ' Страхование';
+ updateGoodsSection();
+ calculate();
+}
+
+function toggleBroker() {
+ brokerOpen = !brokerOpen;
+ $('customs-toggle-btn').textContent = brokerOpen ? ' Таможенное оформление' : ' Таможенное оформление';
+ updateGoodsSection();
+ calculate();
+}
+
+function updateGoodsSection() {
+ const show = insureOpen || brokerOpen;
+ $('goods-section').style.display = show ? 'block' : 'none';
+ $('hs-row').style.display = brokerOpen ? 'block' : 'none';
+ goodsVisible = show;
+}
+
+function setCurrency(curr) {
+ const slider = $('goods-value');
+ const oldVal = parseInt(slider.value) || 15000;
+ if (curr === 'inr') {
+ const newVal = Math.round(oldVal * 85 / 1000) * 1000;
+ slider.min = 8500; slider.max = 17000000; slider.step = 1000;
+ slider.value = Math.min(Math.max(newVal, 8500), 17000000);
+ $('goods-currency-label').textContent = '₹';
+ $('goods-min-label').textContent = '₹8.5k';
+ $('goods-mid-label').textContent = '₹5M';
+ $('goods-max-label').textContent = '₹17M';
+ } else {
+ const newVal = Math.round(oldVal / 85 / 500) * 500;
+ slider.min = 100; slider.max = 200000; slider.step = 500;
+ slider.value = Math.min(Math.max(newVal, 100), 200000);
+ $('goods-currency-label').textContent = '$';
+ $('goods-min-label').textContent = '$100';
+ $('goods-mid-label').textContent = '$50k';
+ $('goods-max-label').textContent = '$200k';
+ }
+ currentCurrency = curr;
+ document.querySelectorAll('#currency-toggle button').forEach(b =>
+ b.classList.toggle('active', b.dataset.currency === curr));
+ onGoodsValueChange();
+}
+
+function onGoodsValueChange() {
+ const raw = parseInt($('goods-value').value) || 0;
+ $('goods-value-display').textContent = raw.toLocaleString('ru-RU');
+ calculate();
+}
+
+// Dangerous goods
+function toggleDG() {
+ const sec = $('dg-section');
+ const btn = $('dg-toggle-btn');
+ const open = sec.style.display === 'block';
+ sec.style.display = open ? 'none' : 'block';
+ btn.textContent = open ? ' Опасный груз' : ' Опасный груз';
+}
+
+function contactManager() {
+ alert('Свяжитесь с менеджером');
+}
+
+// ═══════════════════════════════════════════════════
+// ТН ВЭД СТАВКИ
+// ═══════════════════════════════════════════════════
+
+const DUTY = {
+ '8471': { d: 0, nds: 22, name: 'Вычислительные машины' },
+ '8473': { d: 5, nds: 22, name: 'Части для выч. машин' },
+ '3926': { d: 6.5, nds: 22, name: 'Изделия из пластмасс' },
+ '7326': { d: 8, nds: 22, name: 'Изделия из черных металлов' },
+ '8409': { d: 5, nds: 22, name: 'Части двигателей' },
+ '8413': { d: 5, nds: 22, name: 'Насосы' },
+ '8414': { d: 5, nds: 22, name: 'Компрессоры' },
+ '8421': { d: 5, nds: 22, name: 'Фильтры, центрифуги' },
+ '8424': { d: 5, nds: 22, name: 'Распылители' },
+ '8431': { d: 5, nds: 22, name: 'Части машин' },
+ '8462': { d: 5, nds: 22, name: 'Станки кузнечные' },
+ '8481': { d: 5, nds: 22, name: 'Арматура трубопроводная' },
+ '8482': { d: 5, nds: 22, name: 'Подшипники' },
+ '8483': { d: 5, nds: 22, name: 'Валы, шестерни' },
+ '8501': { d: 5, nds: 22, name: 'Электродвигатели' },
+ '8504': { d: 5, nds: 22, name: 'Трансформаторы' },
+ '8517': { d: 0, nds: 22, name: 'Аппаратура связи' },
+ '8523': { d: 5, nds: 22, name: 'Носители информации' },
+ '8525': { d: 0, nds: 22, name: 'Передающая аппаратура' },
+ '8536': { d: 5, nds: 22, name: 'Аппаратура до 1000В' },
+ '8537': { d: 5, nds: 22, name: 'Пульты, панели' },
+ '8541': { d: 0, nds: 22, name: 'Полупроводники' },
+ '8542': { d: 0, nds: 22, name: 'Микросхемы' },
+ '8708': { d: 8, nds: 22, name: 'Части автомобилей' },
+ '9001': { d: 5, nds: 22, name: 'Оптические волокна' },
+ '9018': { d: 5, nds: 10, name: 'Медицинские приборы' },
+ '9026': { d: 5, nds: 22, name: 'Контрольно-измерительные' },
+ '9030': { d: 5, nds: 22, name: 'Измерительные приборы' },
+ '9032': { d: 5, nds: 22, name: 'Регуляторы' },
+ '9401': { d: 8, nds: 22, name: 'Мебель для сидения' },
+ '9403': { d: 8, nds: 22, name: 'Мебель прочая' },
+ '9503': { d: 8, nds: 22, name: 'Игрушки' },
+ '6110': { d: 10, nds: 22, name: 'Свитеры, джемперы' },
+ '6204': { d: 10, nds: 22, name: 'Костюмы женские' },
+ '6403': { d: 10, nds: 22, name: 'Обувь кожаная' },
+ '2106': { d: 12, nds: 10, name: 'Пищевые добавки' },
+ '2922': { d: 5, nds: 10, name: 'Амино-соединения' },
+ '2933': { d: 5, nds: 10, name: 'Гетероциклы с N' },
+ '3808': { d: 8, nds: 22, name: 'Пестициды' },
+ '3822': { d: 5, nds: 22, name: 'Диагностические реагенты' },
+ '3901': { d: 6.5, nds: 22, name: 'Полимеры этилена' },
+ '3902': { d: 6.5, nds: 22, name: 'Полимеры пропилена' },
+ '3903': { d: 6.5, nds: 22, name: 'Полимеры стирола' },
+ '3907': { d: 6.5, nds: 22, name: 'Полиацетали' },
+ '3917': { d: 6.5, nds: 22, name: 'Трубы пластмассовые' },
+ '3920': { d: 6.5, nds: 22, name: 'Листы пластмассовые' },
+ '3923': { d: 6.5, nds: 22, name: 'Тара пластмассовая' },
+ '3924': { d: 6.5, nds: 22, name: 'Посуда пластмассовая' },
+ '3925': { d: 6.5, nds: 22, name: 'Детали стр.' },
+ '4011': { d: 5, nds: 22, name: 'Шины' },
+ '4016': { d: 5, nds: 22, name: 'Изделия из резины' },
+ '4202': { d: 5, nds: 22, name: 'Сумки, чемоданы' },
+ '4407': { d: 5, nds: 22, name: 'Пиломатериалы' },
+ '4412': { d: 5, nds: 22, name: 'Фанера клееная' },
+ '4418': { d: 5, nds: 22, name: 'Изделия столярные' },
+ '4810': { d: 5, nds: 22, name: 'Бумага с покрытием' },
+ '4819': { d: 5, nds: 22, name: 'Коробки картонные' },
+ '5407': { d: 5, nds: 22, name: 'Ткани синтетические' },
+ '5603': { d: 5, nds: 22, name: 'Нетканые материалы' },
+ '6109': { d: 10, nds: 22, name: 'Футболки' },
+ '6205': { d: 10, nds: 22, name: 'Рубашки' },
+ '6302': { d: 5, nds: 22, name: 'Постельное белье' },
+ '6802': { d: 5, nds: 22, name: 'Камень обр.' },
+ '6907': { d: 5, nds: 22, name: 'Плитка керамическая' },
+ '6911': { d: 5, nds: 22, name: 'Посуда фарфоровая' },
+ '7005': { d: 5, nds: 22, name: 'Стекло флоат' },
+ '7009': { d: 5, nds: 22, name: 'Зеркала' },
+ '7010': { d: 5, nds: 22, name: 'Бутыли' },
+ '7103': { d: 5, nds: 22, name: 'Камни драг.' },
+ '7113': { d: 5, nds: 22, name: 'Ювелирка' },
+ '7208': { d: 3, nds: 22, name: 'Прокат плоский' },
+ '7210': { d: 3, nds: 22, name: 'Прокат с покр.' },
+ '7304': { d: 5, nds: 22, name: 'Трубы бесшовные' },
+ '7307': { d: 5, nds: 22, name: 'Фитинги' },
+ '7308': { d: 5, nds: 22, name: 'Металлоконструкции' },
+ '7312': { d: 5, nds: 22, name: 'Канаты' },
+ '7318': { d: 5, nds: 22, name: 'Болты, гайки' },
+ '7323': { d: 5, nds: 22, name: 'Посуда металл.' },
+ '7403': { d: 3, nds: 22, name: 'Медь' },
+ '7408': { d: 3, nds: 22, name: 'Проволока медная' },
+ '7411': { d: 3, nds: 22, name: 'Трубы медные' },
+ '7601': { d: 3, nds: 22, name: 'Алюминий' },
+ '7604': { d: 3, nds: 22, name: 'Прутки алюм.' },
+ '7610': { d: 3, nds: 22, name: 'Конструкции алюм.' },
+ '7616': { d: 3, nds: 22, name: 'Изделия из алюминия' },
+ '8108': { d: 3, nds: 22, name: 'Титан' },
+ '8301': { d: 5, nds: 22, name: 'Замки' },
+ '8302': { d: 5, nds: 22, name: 'Фурнитура' },
+ '8418': { d: 5, nds: 22, name: 'Холодильники' },
+ '8422': { d: 5, nds: 22, name: 'Посудомойки' },
+ '8425': { d: 5, nds: 22, name: 'Тали, лебедки' },
+ '8428': { d: 5, nds: 22, name: 'Подъемники' },
+ '8443': { d: 5, nds: 22, name: 'Принтеры' },
+ '8450': { d: 5, nds: 22, name: 'Стиральные машины' },
+ '8452': { d: 5, nds: 22, name: 'Швейные машины' },
+ '8467': { d: 5, nds: 22, name: 'Инструменты пневм.' },
+ '8479': { d: 5, nds: 22, name: 'Машины с инд. функ.' },
+ '8507': { d: 5, nds: 22, name: 'Аккумуляторы' },
+ '8516': { d: 5, nds: 22, name: 'Водонагреватели' },
+ '8528': { d: 5, nds: 22, name: 'Мониторы, ТВ' },
+ '8532': { d: 5, nds: 22, name: 'Конденсаторы' },
+ '8534': { d: 5, nds: 22, name: 'Платы печатные' },
+ '8544': { d: 5, nds: 22, name: 'Кабели, провода' },
+ '8703': { d: 5, nds: 22, name: 'Авто легковые' },
+ '8704': { d: 5, nds: 22, name: 'Авто грузовые' },
+ '8711': { d: 5, nds: 22, name: 'Мотоциклы' },
+ '8716': { d: 5, nds: 22, name: 'Прицепы' },
+ '9019': { d: 5, nds: 10, name: 'Оборуд. терапии' },
+ '9021': { d: 5, nds: 10, name: 'Ортопедия' },
+ '9022': { d: 5, nds: 10, name: 'Рентген' },
+ '9404': { d: 8, nds: 22, name: 'Матрасы' },
+ '9405': { d: 8, nds: 22, name: 'Светильники' },
+ '9506': { d: 5, nds: 22, name: 'Спорт. инвентарь' },
+ '9608': { d: 5, nds: 22, name: 'Ручки' },
+};
+const DEFAULT_DUTY = { d: 8, nds: 22, name: 'Прочие товары' };
+
+// ═══════════════════════════════════════════════════
+// CALCULATE
+// ═══════════════════════════════════════════════════
+
+function calculate() {
+ const orig = $('origin-select').value;
+ const dest = $('dest-select').value;
+ const box = currentBox;
+ const weight = parseInt($('weight').value) || 0;
+ const volume = parseFloat($('volume').value) || 0;
+ const haveInsure = insureOpen;
+ const haveCustoms = brokerOpen;
+
+ // Goods value from slider
+ const goodsValue = goodsVisible
+ ? (currentCurrency === 'inr'
+ ? Math.round((parseInt($('goods-value').value) || 0) / USD_RATE)
+ : parseInt($('goods-value').value) || 0)
+ : 0;
+
+ // HS code for customs
+ const hsCode = haveCustoms ? $('hs-code').value.slice(0, 4) : '0000';
+
+ const rates = FCL_RATES[orig];
+ const vesselIdx = currentVessel === 'direct' ? 0 : 1;
+ const freight = rates ? (rates[dest] ? rates[dest][box][vesselIdx] : 0) : 0;
+
+ const insureCost = haveInsure && goodsValue > 0 ? Math.round(goodsValue * 0.00085) : 0;
+ const customsCost = haveCustoms ? 300 : 0;
+
+ // Таможенные платежи (только при таможенном оформлении и стоимости товара)
+ const hs = DUTY[hsCode] || DEFAULT_DUTY;
+ const duty = haveCustoms && goodsValue > 0 ? Math.round(goodsValue * hs.d / 100) : 0;
+ const clearance = haveCustoms && goodsValue > 0 ? Math.min(Math.max(goodsValue * 0.001, 50), 500) : 0;
+ const nds = haveCustoms && goodsValue > 0 ? Math.round((goodsValue + freight + duty + clearance) * hs.nds / 100) : 0;
+
+ const total = freight + deliveryCost + insureCost + customsCost + duty + clearance + nds;
+ const totalRub = total * USD_RATE;
+ const rubPerKg = weight > 0 ? Math.round(totalRub / weight) : 0;
+
+ const origName = ORIG_NAMES[orig] || orig;
+ const destName = PORT_NAMES[dest] || dest;
+ const boxNames = { '20': '20ft', '40': '40ft' };
+
+ let html = '';
+
+ html += `<div class="row"><span> Фрахт ${boxNames[box]} (FOB ${origName})</span><span>${fmt(freight)}</span></div>`;
+
+ if (goodsValue > 0) {
+ html += `<div class="row"><span> Товар (FOB)</span><span>${fmt(goodsValue)}</span></div>`;
+ }
+
+ if (deliveryVisible && deliveryCost > 0) {
+ html += `<div class="row"><span> Доставка по РФ (${$('delivery-city').value})</span><span>${fmt(deliveryCost)}</span></div>`;
+ }
+ if (haveInsure && insureCost > 0) html += `<div class="row"><span>Страхование (0.085%)</span><span>${fmt(insureCost)}</span></div>`;
+ if (haveCustoms) html += `<div class="row"><span>Таможенное оформление</span><span>${fmt(customsCost)}</span></div>`;
+
+ // Таможенные платежи (только при наличии стоимости и ТН ВЭД)
+ if (haveCustoms && goodsValue > 0) {
+ html += `<div class="row"><span> Пошлина (${hs.d}%)</span><span>${fmt(duty)}</span></div>`;
+ html += `<div class="row"><span>Таможенный сбор</span><span>${fmt(clearance)}</span></div>`;
+ html += `<div class="row"><span>НДС (${hs.nds}%)</span><span>${fmt(nds)}</span></div>`;
+ }
+
+ html += `<div id="total-amount">${fmt(total)}<small>≈ ${new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',minimumFractionDigits:0}).format(totalRub)} · ${rubPerKg.toLocaleString('ru-RU')} ₽/кг</small></div>`;
+ html += `<div class="row total"><span>ИТОГО</span><span>${fmt(total)}</span></div>`;
+
+ html += `<div style="font-size:12px;color:#666;padding:8px;background:#f5f7fa;border-radius:4px;margin-top:8px">
+ FOB ${origName} - ${destName} · ${boxNames[box]} · ${weight.toLocaleString('ru-RU')} кг / ${volume} CBM · Прямое судно
+ </div>`;
+
+ $('result-content').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+
+(function() {
+ const sel = $('delivery-city');
+ const cities = $('dest-select').value === 'vlad' ? ASIA_CITIES : EUROPE_CITIES;
+ cities.forEach(c => { const o = document.createElement('option'); o.value = c.n; o.textContent = c.n; sel.appendChild(o); });
+ // Default to Novorossiysk
+ $('dest-select').value = 'novo';
+ $('delivery-from').value = 'novo';
+ $('delivery-from-display').textContent = 'Новороссийск';
+ $('route-display').textContent = 'Нава-Шева - Новороссийск';
+ // Populate HS codes
+ const hsSel = $('hs-code');
+ Object.keys(DUTY).sort().forEach(code => {
+ const o = document.createElement('option');
+ o.value = code;
+ o.textContent = code + ' — ' + DUTY[code].name;
+ if (code === '8471') o.selected = true;
+ hsSel.appendChild(o);
+ });
+ $('vol-max').textContent = '33';
+ $('vol-mid').textContent = '16';
+ calculate();
+})();
+</script>
+</body>
+</html>
