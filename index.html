@@ -565,12 +565,12 @@ function changeHeroWord(idx){
       setTimeout(function(){scrollToCalc()},300);
     }
     if(p<0.5)hdr._scrolled=false;
-    // auto-scroll to top when scrolling back
-    if(p<0.08&&!hdr._topped){
+    // auto-scroll to top when scrolling back — faster trigger
+    if(p<0.30&&!hdr._topped){
       hdr._topped=true;
-      setTimeout(function(){window.scrollTo({top:0,behavior:'smooth'})},200);
+      setTimeout(function(){window.scrollTo({top:0,behavior:'smooth'})},100);
     }
-    if(p>0.15)hdr._topped=false;
+    if(p>0.45)hdr._topped=false;
   }
   window.addEventListener('scroll',tick,{passive:true});
   tick();
