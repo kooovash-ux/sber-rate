@@ -649,7 +649,7 @@ function up(id){var el=document.getElementById(id);if(!el)return;var v=parseFloa
 
 /* ─── SHARE ─── */
 function shareCalc(type){
-  var url=window.location.href.split('#')[0]+'#tab='+type;
+  var url='https://traderate.ru/#tab='+type;
   if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){toast('Ссылка скопирована!')}).catch(function(){prompt('Скопируйте:',url)})}
   else prompt('Скопируйте:',url);
 }
