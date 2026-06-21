@@ -703,7 +703,7 @@ function av(){
   var fr=Math.max(Math.round(ch*5.5),150),th=Math.round(ch*.22),ec=110,df=55,vt=77,am=28;
   var g=parseFloat((document.getElementById('av-g')||{}).value||0)||0;
   var ins=avIns&&g>0?Math.round(g*.00085):0;
-  var hs=document.getElementById('av-hs'),dutyPct=avBrk&&hs?DUTY[hs.value].d:0;
+  var hs=document.getElementById('av-hs'),dutyPct=avBrk&&hs&&DUTY[hs.value]?DUTY[hs.value].d:0;
   var brkFee=avBrk?300:0,duty=avBrk&&g>0?Math.round((g+fr)*dutyPct/100):0;
   var vat=avBrk&&g>0?Math.round((g+fr+duty)*0.22):0;
   var sub=fr+ins+brkFee+duty+vat+(avBrk&&g>0?g:0);
@@ -747,7 +747,7 @@ function lcl(){
   var r=lR(v),fr=Math.round(v*r);
   var g=parseFloat((document.getElementById('l-g')||{}).value||0)||0;
   var ins=lIns&&g>0?Math.round(g*.00085):0,brk=lBrk?300:0;
-  var hs=document.getElementById('l-hs'),dutyPct=lBrk&&hs?DUTY[hs.value].d:0;
+  var hs=document.getElementById('l-hs'),dutyPct=lBrk&&hs&&DUTY[hs.value]?DUTY[hs.value].d:0;
   var duty=lBrk&&g>0?Math.round((g+fr)*dutyPct/100):0;
   var vat=lBrk&&g>0?Math.round((g+fr+duty)*0.22):0;
   var tot=fr+ins+brk+duty+vat;if(lBrk&&g>0)tot+=g;
@@ -785,7 +785,7 @@ function fcl(){
   var w=parseInt(document.getElementById('f-w').value)||0,v=parseFloat(document.getElementById('f-v').value)||0;
   var fr=fB===20?4550:5450,ins=fIns?Math.round(fr*.005):0,brk=fBrk?300:0;
   var g=parseFloat((document.getElementById('f-g')||{}).value||0)||0;
-  var hs=document.getElementById('f-hs'),dutyPct=fBrk&&hs?DUTY[hs.value].d:0;
+  var hs=document.getElementById('f-hs'),dutyPct=fBrk&&hs&&DUTY[hs.value]?DUTY[hs.value].d:0;
   var duty=fBrk&&g>0?Math.round((g+fr)*dutyPct/100):0;
   var vat=fBrk&&g>0?Math.round((g+fr+duty)*0.22):0;
   var tot=fr+ins+brk+duty+vat;if(fBrk&&g>0)tot+=g;
