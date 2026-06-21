@@ -544,7 +544,7 @@ function changeHeroWord(idx){
       title.style.opacity=(p<0.72?1:Math.max(0,1-(p-0.72)/0.28)).toFixed(3);
     }
     // МЕНЯЕМ слово "импорта" при скролле — текст влетает с декорациями
-    var wordIdx=Math.floor((p-0.08)/0.16);if(wordIdx<0)wordIdx=0;if(wordIdx>4)wordIdx=4;
+    var wordIdx=Math.floor((p-0.08)/0.10);if(wordIdx<0)wordIdx=0;if(wordIdx>4)wordIdx=4;
     changeHeroWord(wordIdx);
     // tabs fade in at 72%+ (когда калькулятор появляется)
     var tabsOpacity = Math.max(0, (p - 0.60) / 0.20);
