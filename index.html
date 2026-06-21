@@ -99,11 +99,11 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 .tabs-in{max-width:var(--max);margin:0 auto;padding:0 32px}
 .tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:14px 0}
 .tabs::-webkit-scrollbar{display:none}
-.tabs button{flex-shrink:0;padding:8px 18px;font-size:13px;font-weight:500;border:1.5px solid #F59246;background:transparent;color:#F59246;border-radius:999px;cursor:pointer;transition:all .2s} var(--tr);font-family:inherit;white-space:nowrap}
-.tabs button:hover{background:rgba(245,146,69,.15);color:#F59246}
-.tabs button.active{background:rgba(245,146,69,.5);border-color:#F59246;color:#fff;font-weight:600}
-.tabs button.star{border-color:#F59246;color:#F59246}
-.tabs button.star.active{background:#F59246;border-color:#F59246;color:#f0f2f5}
+.tabs button{flex-shrink:0;padding:8px 18px;font-size:13px;font-weight:500;border:1.5px solid #C2703D;background:transparent;color:#C2703D;border-radius:999px;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.tabs button:hover{background:rgba(194,112,61,.15);color:#C2703D}
+.tabs button.active{background:#C2703D;border-color:#C2703D;color:#fff;font-weight:600}
+.tabs button.star{border-color:#C2703D;color:#C2703D}
+.tabs button.star.active{background:#C2703D;border-color:#C2703D;color:#fff}
 @media(max-width:640px){.tabs-in{padding:0 12px}}
 
 .cnt{max-width:var(--max);margin:0 auto;padding:28px 32px 72px}
@@ -122,7 +122,7 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 /* ─── FORM ─── */
 .tg{display:flex;border:1.5px solid #E0E0E0;border-radius:var(--rsm);overflow:hidden}
 .tg button{flex:1;padding:10px 16px;font-size:13px;font-weight:500;border:none;cursor:pointer;background:#FFFFFF;color:#888888;font-family:inherit;transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:6px}
-.tg button.active{background:#080F0F;color:#f0f2f5}
+.tg button.active{background:#C2703D;color:#fff}
 .tg button:disabled{opacity:.4;cursor:not-allowed}
 .tg button:not(:last-child){border-right:1.5px solid #E0E0E0}
 .mb{margin-bottom:18px}
