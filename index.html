@@ -561,12 +561,6 @@ function changeHeroWord(idx){
       setTimeout(function(){scrollToCalc()},0);
     }
     if(p<0.5)hdr._scrolled=false;
-    // auto-scroll to top when scrolling back — instant
-    if(p<0.45&&!hdr._topped){
-      hdr._topped=true;
-      setTimeout(function(){window.scrollTo({top:0,behavior:'smooth'})},0);
-    }
-    if(p>0.55)hdr._topped=false;
   }
   window.addEventListener('scroll',tick,{passive:true});
   tick();
