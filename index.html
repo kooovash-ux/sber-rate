@@ -820,9 +820,8 @@ function smpHtml(){
 }
 function uSW(){up('s-w');smp();}
 function smp(){
-  var w=parseFloat(document.getElementById('s-w').value)||0,p=sP(w),tot=Math.round(p*1.1);
-  var h='<div class="rrow"><span>Курьерская доставка</span><span>'+rub(p)+'</span></div>';
-  h+='<div class="rrow"><span>Сервисный сбор +10%</span><span>'+rub(tot-p)+'</span></div>';
+  var w=parseFloat(document.getElementById('s-w').value)||0,p=sP(w),tot=p;
+  var h='<div class="rrow"><span>Курьерская доставка</span><span>'+rub(tot)+'</span></div>';
   h+='<div class="big">'+rub(tot)+'<small>≈ $'+num(Math.round(tot/U))+' · '+num(Math.round(tot/(w||1)))+' ₽/кг</small></div>';
   h+='<div class="rtotal"><span>ИТОГО</span><span>'+rub(tot)+'</span></div>';
   h+='<div class="rnote">Мумбаи — Москва · '+w+' кг · ~14 дней</div>';
