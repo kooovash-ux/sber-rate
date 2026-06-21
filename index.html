@@ -89,7 +89,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .zh-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.85);border-bottom:2px solid rgba(255,255,255,.85);transform:rotate(45deg);animation:bounce 1.6s ease-in-out infinite}
 @keyframes bounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
 .zh-fade{position:absolute;inset:0;background:var(--bg);opacity:0;pointer-events:none;z-index:5}
-.zh-chips{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);display:flex;flex-wrap:wrap;gap:12px;justify-content:center;z-index:3}
+.zh-chips{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-wrap:wrap;gap:12px;justify-content:center;z-index:3}
 .zh-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:10px 16px;border-radius:8px;font-size:13px;color:rgba(255,255,255,.9);opacity:0;will-change:opacity,transform}
 .zh-cta{position:absolute;bottom:15%;left:50%;transform:translateX(-50%);opacity:0;pointer-events:none;text-align:center;transition:opacity .4s;z-index:6}
 .zh-cta button{background:var(--dark);color:#fff;border:none;border-radius:999px;padding:15px 34px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
