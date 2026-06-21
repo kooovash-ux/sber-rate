@@ -556,9 +556,9 @@ function changeHeroWord(idx){
     // header transparent over video, solid when zoomed in
     hdr.classList.toggle('solid',p>0.6);
     // auto-scroll to calculator when title is gone - faster
-    if(p>0.70&&!hdr._scrolled){
+    if(p>0.55&&!hdr._scrolled){
       hdr._scrolled=true;
-      setTimeout(function(){scrollToCalc()},150);
+      setTimeout(function(){scrollToCalc()},0);
     }
     if(p<0.5)hdr._scrolled=false;
     // auto-scroll to top when scrolling back — faster trigger
