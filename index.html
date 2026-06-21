@@ -566,6 +566,12 @@ function changeHeroWord(idx){
     hint.style.opacity=Math.max(0,1-p/0.06);
     // header transparent over video, solid when zoomed in
     hdr.classList.toggle('solid',p>0.6);
+    // auto-scroll to calculator when title is gone
+    if(p>0.92&&!hdr._scrolled){
+      hdr._scrolled=true;
+      setTimeout(function(){scrollToCalc()},300);
+    }
+    if(p<0.5)hdr._scrolled=false;
   }
   window.addEventListener('scroll',tick,{passive:true});
   tick();
