@@ -23,7 +23,9 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-family:'Inter',system-ui,sans-serif;background:#FAFAFA;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+body{--glass:rgba(255,255,255,.5);--glass-strong:rgba(255,255,255,.7);--glass-border:rgba(255,255,255,.6);font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden;background:radial-gradient(900px 720px at 8% 4%,rgba(245,146,69,.09),transparent 62%),radial-gradient(820px 820px at 92% 12%,rgba(90,124,153,.09),transparent 62%),linear-gradient(180deg,#F4F5F8,#F6F3EE);background-attachment:fixed}
+@keyframes revealUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.reveal-in{animation:revealUp .6s cubic-bezier(.22,1,.36,1) both}
 
 /* ─── HEADER ─── */
 .hdr{position:fixed;top:0;left:0;right:0;z-index:200;background:transparent;border-bottom:1px solid transparent;transition:background .4s ease,border-color .4s ease,box-shadow .4s ease}
@@ -76,7 +78,7 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 @media(max-width:640px){.hdr-in{padding:0 16px;height:60px}.btn-nav{padding:9px 14px;font-size:12px}}
 
 /* ─── ZOOM HERO ─── */
-.zh-wrap{height:380vh;position:relative}
+.zh-wrap{height:230vh;position:relative}
 .zh-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#2c3e50;display:flex;align-items:center;justify-content:center}
 .zh-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 44%;will-change:transform;z-index:0;opacity:0;transition:opacity 1.2s ease}
 .zh-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,16,30,.5) 0%,rgba(8,16,30,.3) 44%,rgba(8,16,30,.66) 100%)}
@@ -96,25 +98,28 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 .zh-cta button:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(10,30,61,.3)}
 
 /* ─── CALC SECTION ─── */
-.tabs-bar{background: var(--glass); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border);background:rgba(240,242,245,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #E0E0E0;position:sticky;top:72px;z-index:100;display:flex;justify-content:center}
+.tabs-bar{background: var(--glass); backdrop-filter: blur(12px); border-bottom: 1px solid #E5E7EE;background:rgba(240,242,245,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #E0E0E0;position:sticky;top:72px;z-index:100;display:flex;justify-content:center}
 .tabs-in{max-width:var(--max);margin:0 auto;padding:0 32px}
 .tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:14px 0}
 .tabs::-webkit-scrollbar{display:none}
-.tabs button{flex-shrink:0;padding:8px 18px;font-size:13px;font-weight:500;border:1.5px solid #C2703D;background:transparent;color:#C2703D;border-radius:999px;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
-.tabs button:hover{background:rgba(194,112,61,.15);color:#C2703D}
-.tabs button.active{background:#C2703D;border-color:#C2703D;color:#fff;font-weight:600}
-.tabs button.star{border-color:#C2703D;color:#C2703D}
-.tabs button.star.active{background:#C2703D;border-color:#C2703D;color:#fff}
+.tabs button{flex-shrink:0;padding:8px 18px;font-size:13px;font-weight:500;border:1.5px solid #F59246;background:transparent;color:#F59246;border-radius:999px;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.tabs button:hover{background:rgba(245,146,69,.12);color:#F59246}
+.tabs button.active{background:#F59246;border-color:#F59246;color:#fff;font-weight:600}
+.tabs button.star{border-color:#F59246;color:#F59246}
+.tabs button.star.active{background:#F59246;border-color:#F59246;color:#fff}
 @media(max-width:640px){
   .zh-wrap{height:auto}
-  .zh-stage{position:relative;height:60vh;min-height:320px}
-  .zh-video{display:block;object-fit:cover;width:100%;height:100%;transform:none!important;opacity:1!important}
-  .zh-title{transform:none!important;opacity:1!important}
+  .zh-stage{position:relative;height:74vh;min-height:440px}
+  .zh-stage::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:130px;z-index:3;pointer-events:none;background:linear-gradient(180deg,transparent,#EEF1F6)}
+  .zh-title h1{font-size:clamp(28px,8vw,40px)}
+  .zh-hint{bottom:140px}
+  .zh-video{display:block;object-fit:cover;width:100%;height:100%;transform-origin:50% 38%;opacity:1!important;will-change:transform}
+  .zh-title{will-change:transform,opacity}
   .zh-hint,.zh-fade,.zh-cta{display:none!important}
-  #tabsBar{opacity:1!important;position:relative;top:0}
-  #calcSection{margin-top:0}
+  #tabsBar{opacity:1!important;top:60px}
+  #calcSection{margin-top:0;position:relative;z-index:4}
   .zh-stage{background:linear-gradient(135deg,#0c1118 0%,#0d1525 40%,#0f1b2e 70%,#0c1118 100%)}
-  .tabs-in{padding:0 8px}.tabs{flex-wrap:wrap;justify-content:flex-start;overflow-x:hidden;gap:5px;padding:10px 0}.tabs button{flex-shrink:1;white-space:normal;font-size:11px;padding:6px 10px}}
+  .tabs-in{padding:0 12px}.tabs{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;gap:8px;padding:12px 0}.tabs button{flex-shrink:0;white-space:nowrap;font-size:13px;padding:10px 16px}}
 
 .cnt{max-width:var(--max);margin:0 auto;padding:28px 32px 72px}
 .tab-pg{display:none}
@@ -123,7 +128,7 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 @media(max-width:640px){.cnt{padding:16px 14px 56px}}
 
 /* ─── CARD ─── */
-.card{background:#FFFFFF;border-radius:var(--r);box-shadow:var(--sh);border:1px solid #E0E0E0;padding:32px}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--sh),inset 0 1px 0 rgba(255,255,255,.6);border:1px solid #E5E7EE;padding:32px}
 .card-ttl{font-family:var(--serif);font-size:26px;font-weight:600;color:#080F0F;margin-bottom:6px;letter-spacing:-.3px;line-height:1.15}
 .card-sub{font-size:13px;color:#888888;margin-bottom:28px;line-height:1.6}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:36px}
@@ -132,18 +137,18 @@ body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);font-f
 /* ─── FORM ─── */
 .tg{display:flex;border:1.5px solid #E0E0E0;border-radius:var(--rsm);overflow:hidden}
 .tg button{flex:1;padding:10px 16px;font-size:13px;font-weight:500;border:none;cursor:pointer;background:#FFFFFF;color:#888888;font-family:inherit;transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:6px}
-.tg button.active{background:#C2703D;color:#fff}
+.tg button.active{background:#F59246;color:#fff}
 .tg button:disabled{opacity:.4;cursor:not-allowed}
 .tg button:not(:last-child){border-right:1.5px solid #E0E0E0}
 .mb{margin-bottom:18px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 label{display:block;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:#888888;margin-bottom:6px}
-select,input[type=text]{width:100%;padding:11px 14px;font-size:14px;border:1.5px solid #E0E0E0;border-radius:var(--rsm);background:#FFFFFF;color:var(--ink);font-family:inherit;transition:border-color var(--tr);cursor:pointer}
+select,input[type=text]{width:100%;padding:11px 14px;font-size:14px;border:1.5px solid #E5E7EE;border-radius:var(--rsm);background:#fff;color:var(--ink);font-family:inherit;transition:border-color var(--tr);cursor:pointer}
 select:focus,input[type=text]:focus{outline:none;border-color:#F59246;box-shadow:0 0 0 3px rgba(245,146,69,.15)}
 input[type=text]::placeholder{color:#CCCCCC}
 
 /* ─── SLIDERS ─── */
-.slw{background:#FAFAFA;border:1.5px solid #E0E0E0;border-radius:var(--rsm);padding:14px 16px;text-align:center}
+.slw{background:#F6F7FA;border:1.5px solid #E5E7EE;border-radius:var(--rsm);padding:14px 16px;text-align:center}
 .slv{font-size:22px;font-weight:600;color:#080F0F;letter-spacing:-.3px;transition:color .25s}
 .slv.flash{color:#F59246}
 .slv .u{font-size:11px;color:#CCCCCC;font-weight:400;letter-spacing:0}
@@ -154,7 +159,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .sl-lbl{display:flex;justify-content:space-between;font-size:10px;color:#CCCCCC}
 
 /* ─── BUTTONS ─── */
-.dashed-btn{display:flex;align-items:center;gap:8px;width:100%;padding:11px 16px;font-size:13px;font-weight:500;font-family:inherit;background:#FFFFFF;border:1.5px dashed #E0E0E0;border-radius:var(--rsm);color:#888888;cursor:pointer;transition:all var(--tr);margin-bottom:8px}
+.dashed-btn{display:flex;align-items:center;gap:8px;width:100%;padding:11px 16px;font-size:13px;font-weight:500;font-family:inherit;background:#fff;border:1.5px dashed #E5E7EE;border-radius:var(--rsm);color:#888888;cursor:pointer;transition:all var(--tr);margin-bottom:8px}
 .dashed-btn svg{width:15px;height:15px;flex-shrink:0}
 .dashed-btn:hover{border-color:#F59246;color:#F59246;background:rgba(245,146,69,.15)}
 .dashed-btn.on{border-style:solid;border-color:#F59246;color:#F59246;background:rgba(245,146,69,.15)}
@@ -169,22 +174,23 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 /* ─── RESULT ─── */
 .res-head{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#CCCCCC;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .res-head svg{width:14px;height:14px;color:#F59246}
-.result{border-top:2px solid #080F0F;padding-top:4px}
+.result{border-top:1px solid #E5E7EE;padding-top:4px}
 .rrow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #E0E0E0;font-size:14px;color:#888888}
 .rrow span:last-child{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
 .rrow.dim{font-size:12px;color:#CCCCCC}
 .big{font-family:'Inter',sans-serif;font-size:42px;font-weight:700;text-align:center;padding:22px 0 10px;color:#080F0F;font-variant-numeric:tabular-nums}
 .big small{display:block;font-size:12px;color:#CCCCCC;font-weight:400;margin-top:5px;letter-spacing:0;font-family:'Inter',sans-serif}
-.rtotal{display:flex;justify-content:space-between;padding:12px 0 0;font-weight:700;font-size:15px;border-top:2px solid #080F0F;margin-top:4px}
+.rtotal{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.6px;background:#080F0F;color:#fff;border-radius:var(--rsm);margin-top:16px;box-shadow:0 10px 28px rgba(10,30,61,.20)}
+.rtotal span:last-child{font-size:24px;font-weight:700;color:#F59246;letter-spacing:-.4px;text-transform:none;font-variant-numeric:tabular-nums}
 .rnote{font-size:11.5px;color:#CCCCCC;padding:10px 14px;background:#FAFAFA;border-radius:var(--rsm);margin-top:12px;line-height:1.6}
 .share-row{display:flex;gap:10px;margin-top:14px}
-.panel{background:#FAFAFA;border:1.5px solid #E0E0E0;border-radius:var(--rsm);padding:16px;margin:-2px 0 12px}
+.panel{background:#F6F7FA;border:1.5px solid #E5E7EE;border-radius:var(--rsm);padding:16px;margin:-2px 0 12px}
 .dg-panel{background:#f0f2f58f0;border:1px solid #f0d080;border-radius:var(--rsm);padding:16px;margin:-2px 0 12px}
 .info-box{font-size:12px;color:#888888;line-height:1.6;padding:12px 14px;background:#FAFAFA;border-radius:var(--rsm);margin-top:10px}
 
 /* ─── COMPARISON ─── */
 .cmp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.cmp-card{background:#FFFFFF;border:2px solid #E0E0E0;border-radius:var(--r);padding:22px 18px;text-align:center;cursor:pointer;transition:all var(--tr)}
+.cmp-card{background:#fff;border:1.5px solid #E5E7EE;border-radius:var(--r);padding:22px 18px;text-align:center;cursor:pointer;transition:all var(--tr)}
 .cmp-card:hover{border-color:#F59246;transform:translateY(-2px);box-shadow:var(--sh)}
 .cmp-card.best{border-color:#F59246;box-shadow:0 0 0 4px rgba(245,146,69,.15),var(--sh)}
 .cmp-mode{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#CCCCCC;margin-bottom:10px}
@@ -197,7 +203,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 
 /* ─── TRACKING ─── */
 .trk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-.trk-card{background:#FFFFFF;border-radius:var(--r);border:1.5px solid #E0E0E0;padding:24px;box-shadow:var(--sh)}
+.trk-card{background:#fff;border-radius:var(--r);border:1px solid #E5E7EE;padding:24px;box-shadow:var(--sh),inset 0 1px 0 rgba(255,255,255,.6)}
 .trk-card h3{font-size:14px;font-weight:600;color:#080F0F;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid #E0E0E0;display:flex;align-items:center;gap:8px}
 .sdot{display:inline-block;width:7px;height:7px;border-radius:50%}
 .sdot.on{background:#F59246} .sdot.off{background:#CCCCCC}
@@ -219,7 +225,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 
 /* ─── PORTFOLIO ─── */
 .pf{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-.pf-hero{background:#FFFFFF;border-radius:var(--r);box-shadow:var(--sh);border:1px solid #E0E0E0;overflow:hidden;display:grid;grid-template-columns:280px 1fr}
+.pf-hero{background:#fff;border-radius:var(--r);box-shadow:var(--sh),inset 0 1px 0 rgba(255,255,255,.6);border:1px solid #E5E7EE;overflow:hidden;display:grid;grid-template-columns:280px 1fr}
 .pf-photo{background:#080F0F}
 .pf-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .pf-body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);padding:32px 36px;display:flex;flex-direction:column;justify-content:center}
@@ -234,11 +240,11 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 .pf-pill{font-size:12px;font-weight:500;color:#080F0F;background:#FAFAFA;border:1px solid #E0E0E0;border-radius:999px;padding:5px 12px;display:inline-flex;align-items:center;gap:5px}
 .pf-gdot{width:6px;height:6px;border-radius:50%;background:#F59246;flex-shrink:0}
 .pf-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.pf-stat{background:#FFFFFF;border:1px solid #E0E0E0;border-radius:var(--r);padding:22px 18px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.pf-stat{background:#fff;border:1px solid #E5E7EE;border-radius:var(--r);padding:22px 18px;box-shadow:var(--sh),inset 0 1px 0 rgba(255,255,255,.6);position:relative;overflow:hidden}
 .pf-stat::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#F59246}
 .pf-stat .n{font-size:26px;font-weight:800;color:#080F0F;letter-spacing:-.5px;line-height:1}
 .pf-stat .l{font-size:12px;color:#888888;margin-top:7px;line-height:1.4}
-.pf-card{background:#FFFFFF;border-radius:var(--r);box-shadow:var(--sh);border:1px solid #E0E0E0;padding:28px 32px}
+.pf-card{background:#fff;border-radius:var(--r);box-shadow:var(--sh),inset 0 1px 0 rgba(255,255,255,.6);border:1px solid #E5E7EE;padding:28px 32px}
 .pf-h{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#CCCCCC;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .pf-h svg{width:14px;height:14px;color:#F59246}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
@@ -263,13 +269,13 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 .pf-proj{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid #E0E0E0}
 .pf-proj:last-child{border-bottom:none;padding-bottom:0}
 .pf-proj:first-child{padding-top:0}
-.pf-ic{width:38px;height:38px;border-radius:10px;background:#C2703D;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pf-ic{width:38px;height:38px;border-radius:10px;background:#F59246;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .pf-ic svg{width:17px;height:17px}
-.pf-cta{background:#C2703D;border-radius:var(--r);padding:18px 24px;text-align:center;color:#fff;box-shadow:var(--shl)}
+.pf-cta{background:#F59246;border-radius:var(--r);padding:18px 24px;text-align:center;color:#fff;box-shadow:var(--shl)}
 .pf-cta h3{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:-.3px}
 .pf-cta p{font-size:11px;color:rgba(255,255,255,.75);margin-top:4px;margin-bottom:12px}
 .pf-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-lt{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#C2703D;border:none;border-radius:var(--rsm);padding:10px 18px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all var(--tr)}
+.btn-lt{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#F59246;border:none;border-radius:var(--rsm);padding:10px 18px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all var(--tr)}
 .btn-lt:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.22)}
 .btn-ol{display:inline-flex;align-items:center;gap:6px;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5);border-radius:var(--rsm);padding:10px 18px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:border-color var(--tr)}
 .btn-ol:hover{border-color:#fff}
@@ -277,6 +283,14 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 @media(max-width:720px){.pf-hero{grid-template-columns:1fr}.pf-photo{height:250px}.pf-body{--glass: rgba(255,255,255,.85); --glass-border: rgba(255,255,255,.2);padding:24px 20px}.pf-name{font-size:26px}.pf-stats{grid-template-columns:1fr 1fr}.pf-2col{grid-template-columns:1fr}.pf-card{padding:22px 18px}}
 .footer{padding:10px 32px 28px;text-align:center;max-width:var(--max);margin:0 auto}
 .footer p{font-size:11px;color:#CCCCCC;line-height:1.6}
+.hs-box{border:1.5px solid #E5E7EE;border-radius:var(--rsm);background:var(--glass-strong);overflow:hidden;margin-top:2px}
+.hs-search{width:100%;padding:10px 14px;font-size:14px;border:none;border-bottom:1.5px solid #E5E7EE;background:transparent;color:var(--ink);font-family:inherit;outline:none}
+.hs-list{max-height:168px;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff}
+.hs-opt{padding:10px 14px;font-size:13px;color:var(--ink);cursor:pointer;border-bottom:1px solid rgba(0,0,0,.06);line-height:1.45}
+.hs-opt:last-child{border-bottom:none}
+.hs-opt:hover{background:rgba(245,146,69,.12)}
+.hs-opt.sel{background:rgba(245,146,69,.18);color:#F59246;font-weight:600}
+.hs-opt small{color:#888;font-weight:400}
 .hidden{display:none}
 </style>
 
@@ -328,7 +342,8 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 <!-- ═══ ZOOM HERO ═══ -->
 <section class="zh-wrap" id="zhWrap">
   <div class="zh-stage" id="zhStage">
-    <video id="heroBg" class="zh-video" autoplay muted loop playsinline preload="auto" poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'><rect fill='%230c1118' width='1920' height='1080'/></svg>">
+    <video id="heroBg" class="zh-video" autoplay muted loop playsinline preload="metadata" poster="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'><rect fill='%230c1118' width='1920' height='1080'/></svg>">
+      <source src="https://traderate.ru/assets/hero.mp4" type="video/mp4">
       <source src="assets/hero.mp4" type="video/mp4">
     </video>
     <div class="zh-veil"></div>
@@ -386,7 +401,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
             <div class="pf-role">Руководитель проектов по логистике / Product Manager</div>
             <div class="pf-links">
               <a href="tel:+79992059760">+7 999 205 97 60</a>
-              <a href="mailto:89992059760@bk.ru">89992059760@bk.ru</a>
+              <a href="/cdn-cgi/l/email-protection#f6cecfcfcfc4c6c3cfc1c0c6b6949dd88483"><span class="__cf_email__" data-cfemail="1a22232323282a2f232d2c2a5a787134686f">[email&#160;protected]</span></a>
               <a href="https://t.me/ko_vash" target="_blank">@ko_vash</a>
             </div>
             <div class="pf-meta">
@@ -486,7 +501,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
           <p>Открыт к предложениям · готов к переезду в Москву</p>
           <div class="pf-cta-row">
             <a class="btn-lt" href="https://t.me/ko_vash" target="_blank">Написать в Telegram</a>
-            <a class="btn-ol" href="mailto:89992059760@bk.ru">Отправить письмо</a>
+            <a class="btn-ol" href="/cdn-cgi/l/email-protection#68505151515a585d515f5e58280a03461a1d">Отправить письмо</a>
           </div>
         </div>
       </div>
@@ -495,7 +510,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 </section>
 <footer class="footer"></footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ─── GLOBALS ─── */
 var U=85,liveUsd=85,liveInr=0.81;
 function usd(v){return'$'+Math.round(v).toLocaleString('ru-RU')}
@@ -563,7 +578,18 @@ function changeHeroWord(idx){
   var hdr=document.getElementById('hdr');
   var words=['импорта','авиа доставки','морского фрахта','таможенных пошлин','образцов'];
   function tick(){
-    if(window.innerWidth<=640){var tb=document.getElementById("tabsBar");if(tb)tb.style.opacity=1;hdr.classList.add("solid");return;}
+    if(window.innerWidth<=640){
+      var tb=document.getElementById('tabsBar');if(tb)tb.style.opacity=1;
+      var st=document.getElementById('zhStage');
+      if(st){
+        var r=st.getBoundingClientRect();
+        var prog=Math.min(1,Math.max(0,(-r.top)/(r.height*0.82)));
+        if(video)video.style.transform='scale('+(1+prog*0.22).toFixed(3)+')';
+        if(title){title.style.opacity=Math.max(0,1-prog*1.25).toFixed(3);title.style.transform='translateY('+(-prog*38).toFixed(1)+'px) scale('+(1-prog*0.06).toFixed(3)+')';}
+      }
+      hdr.classList.toggle('solid',window.scrollY>24);
+      return;
+    }
     var sy=window.scrollY,sTop=wrap.offsetTop,sH=wrap.offsetHeight-window.innerHeight;
     var p=Math.max(0,Math.min(1,(sy-sTop)/sH));
     var e=p<0.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
@@ -594,7 +620,7 @@ function changeHeroWord(idx){
     // header transparent over video, solid when zoomed in
     hdr.classList.toggle('solid',p>0.6);
     // auto-scroll to calculator when title is gone - faster
-    if(p>0.55&&!hdr._scrolled){
+    if(false&&!hdr._scrolled){
       hdr._scrolled=true;
       setTimeout(function(){scrollToCalc()},0);
     }
@@ -607,7 +633,7 @@ function changeHeroWord(idx){
   var autoZoomed=false;
   var autoTimer=setTimeout(function(){
     if(window.innerWidth<=640)return;
-    if(!autoZoomed&&window.scrollY<80){
+    if(false&&!autoZoomed&&window.scrollY<80){
       autoZoomed=true;
       var total=wrap.offsetHeight-window.innerHeight;
       var stepSize=total/7;
@@ -627,11 +653,23 @@ function changeHeroWord(idx){
   },{passive:true,once:true});
 })();
 
+/* ─── MOBILE: rotate hero word + reveal calc on scroll ─── */
+(function(){
+  if(window.innerWidth<=640){
+    var i=0;
+    setInterval(function(){i=(i+1)%HERO_WORDS.length;changeHeroWord(i);},2300);
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('reveal-in');io.unobserve(e.target);}});},{threshold:.1});
+    document.querySelectorAll('#page-0 .card, .trk-card, .pf-stat, .pf-card, .pf-hero').forEach(function(el){io.observe(el);});
+  }
+})();
+
 /* ─── SCROLL TO CALC ─── */
 function scrollToCalc(e){
   if(e)e.preventDefault();
   var el=document.getElementById('calcSection');
-  window.scrollTo({top:el.offsetTop-72,behavior:'smooth'});
+  window.scrollTo({top:el.offsetTop-((document.querySelector('.hdr')||{}).offsetHeight||72),behavior:'smooth'});
 }
 
 /* ─── TABS ─── */
@@ -656,13 +694,14 @@ function trkShip(){var a=document.getElementById('vessel-input').value.trim();if
     liveUsd=u;liveInr=inr;U=u;
     document.getElementById('rate-usd').textContent=u.toFixed(2);
     document.getElementById('rate-inr').textContent=inr.toFixed(2);
-    document.getElementById('cur-rate').textContent=inr.toFixed(2);
-    document.getElementById('cur-usd').textContent=u.toFixed(2);
+    var _cr=document.getElementById('cur-rate');if(_cr)_cr.textContent=inr.toFixed(2);
+    var _cu=document.getElementById('cur-usd');if(_cu)_cu.textContent=u.toFixed(2);
     curConv();buildAll();
   }).catch(function(){});
 })();
 function curConv(){
-  var inr=parseFloat((document.getElementById('c-inr').value||'').replace(/\s/g,'').replace(',','.'))||0;
+  var _ci=document.getElementById('c-inr');if(!_ci)return;
+  var inr=parseFloat((_ci.value||'').replace(/\s/g,'').replace(',','.'))||0;
   var r=inr*liveInr;
   document.getElementById('c-rub').value=num(Math.round(r));
   document.getElementById('c-usd').value=num(Math.round(r/liveUsd));
@@ -705,11 +744,11 @@ function avHtml(){
   h+='<button class="dashed-btn" id="av-ins-b" onclick="avInsTg()">Страхование груза</button>';
   h+='<button class="dashed-btn" id="av-brk-b" onclick="avBrkTg()">Таможенное оформление</button>';
   h+='<div id="av-goods-p" class="hidden panel">'+slider('av-g','Стоимость товара (FOB)',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uAVG')+'</div>';
-  h+='<div id="av-brk-p" class="hidden panel"><label>Код ТН ВЭД</label><input type="text" placeholder="Поиск по коду или названию..." oninput="searchHS(this,\'av-hs\')" style="margin-bottom:6px"><select id="av-hs" onchange="av()" style="height:100px" size="5"></select></div>';
+  h+='<div id="av-brk-p" class="hidden panel"><label>Код ТН ВЭД</label>'+hsPicker('av-hs')+'</div>';
   h+='<button class="dashed-btn" id="av-dg-b" onclick="avDgTg()">Опасный груз (ADR)</button>';
   h+='<div id="av-dg-p" class="hidden dg-panel"><div style="font-size:13px;color:#c00;font-weight:500;margin-bottom:10px">⚠ Требуется паспорт безопасности MSDS</div><input type="file"><button class="btn-a" style="width:100%" onclick="alert(\'Свяжитесь: @ko_vash\')">Связаться с менеджером</button></div>';
   h+='</div>';
-  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="av-res"></div><div class="share-row"><button class="share-btn">Поделиться расчётом</button><button class="share-btn">Прикрепите реквизиты для договора</button><button class="share-btn">Связь с менеджером</button></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Бронирование зависит от наличия места на рейсе.<br>Паллетирование груза выполняется при необходимости.<br>Если размеры груза изменятся хотя бы на 1 см, тариф будет пересчитан.<br>Рейсы сильно перегружены. Перед отправкой груза в аэропорт просьба уточнять у нас план отгрузки.<br>Приём груза осуществляется строго при наличии места. Сроки доставки до пункта назначения не гарантируются из-за ограничений по доступной загрузке воздушных судов в высокий сезон.<br>Все бронирования и приём груза зависят от наличия мест, подтверждения бронирования и текущего спроса.<br><br>Мумбаи - Баку - Москва (AZAL) - 3-4 рейса в неделю, транзит 3-6 дней.<br>Дели - Ташкент - Москва (Uzbekistan Airways) - 3-4 рейса в неделю, транзит 3-6 дней.</div></div>';
+  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="av-res"></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Бронирование зависит от наличия места на рейсе.<br>Паллетирование груза выполняется при необходимости.<br>Если размеры груза изменятся хотя бы на 1 см, тариф будет пересчитан.<br>Рейсы сильно перегружены. Перед отправкой груза в аэропорт просьба уточнять у нас план отгрузки.<br>Приём груза осуществляется строго при наличии места. Сроки доставки до пункта назначения не гарантируются из-за ограничений по доступной загрузке воздушных судов в высокий сезон.<br>Все бронирования и приём груза зависят от наличия мест, подтверждения бронирования и текущего спроса.<br><br>Мумбаи - Баку - Москва (AZAL) - 3-4 рейса в неделю, транзит 3-6 дней.<br>Дели - Ташкент - Москва (Uzbekistan Airways) - 3-4 рейса в неделю, транзит 3-6 дней.</div></div>';
   document.getElementById('avia-root').innerHTML=h;
   avFill();avHs();
 }
@@ -759,13 +798,13 @@ function lclHtml(){
   h+='<button class="dashed-btn" id="l-ins-b" onclick="lInsTg()">Страхование груза</button>';
   h+='<button class="dashed-btn" id="l-brk-b" onclick="lBrkTg()">Таможенное оформление</button>';
   h+='<div id="l-ins-p" class="hidden panel">'+slider('l-g','Стоимость товара (FOB)',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uLG')+'</div>';
-  h+='<div id="l-brk-p" class="hidden panel"><label>Код ТН ВЭД</label><input type="text" placeholder="Поиск по коду или названию..." oninput="searchHS(this,\'l-hs\')" style="margin-bottom:6px"><select id="l-hs" onchange="lcl()" style="height:100px" size="5"></select></div>';
+  h+='<div id="l-brk-p" class="hidden panel"><label>Код ТН ВЭД</label>'+hsPicker('l-hs')+'</div>';
   h+='</div>';
-  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="l-res"></div><div class="share-row"><button class="share-btn">Поделиться расчётом</button><button class="share-btn">Прикрепите реквизиты для договора</button><button class="share-btn">Связь с менеджером</button></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Груз принимается как неопасный, штабелируемый, в упаковке, пригодной для морской перевозки и размещения в 20-футовом контейнере. Деревянная упаковка и палеты должны соответствовать стандарту ISPM 15.<br><br>В ставку включено:<br>- морской фрахт<br>- обработка груза в порту Санкт-Петербурга<br>- документационный сбор<br>- фотоотчёт при растарке<br>- 6 дней бесплатного хранения после растарки<br><br>В ставку не включено:<br>- досмотры и дополнительные проверки<br>- дегазация контейнера (при необходимости)<br>- услуги терминала по требованию таможенных органов<br><br>Транзитный срок: около 30 дней порт-порт. Перевозка осуществляется без перетарки.</div></div>';
+  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="l-res"></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Груз принимается как неопасный, штабелируемый, в упаковке, пригодной для морской перевозки и размещения в 20-футовом контейнере. Деревянная упаковка и палеты должны соответствовать стандарту ISPM 15.<br><br>В ставку включено:<br>- морской фрахт<br>- обработка груза в порту Санкт-Петербурга<br>- документационный сбор<br>- фотоотчёт при растарке<br>- 6 дней бесплатного хранения после растарки<br><br>В ставку не включено:<br>- досмотры и дополнительные проверки<br>- дегазация контейнера (при необходимости)<br>- услуги терминала по требованию таможенных органов<br><br>Транзитный срок: около 30 дней порт-порт. Перевозка осуществляется без перетарки.</div></div>';
   document.getElementById('lcl-root').innerHTML=h;
 }
 function lInsTg(){lIns=!lIns;document.getElementById('l-ins-p').classList.toggle('hidden',!lIns&&!lBrk);document.getElementById('l-ins-b').classList.toggle('on',lIns);lcl();}
-function lBrkTg(){lBrk=!lBrk;document.getElementById('l-brk-p').classList.toggle('hidden',!lBrk);document.getElementById('l-ins-p').classList.toggle('hidden',!lBrk&&!lIns);document.getElementById('l-brk-b').classList.toggle('on',lBrk);if(lBrk){var hs=document.getElementById('l-hs');if(hs&&!hs.options.length)Object.keys(DUTY).sort().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k+' - '+DUTY[k].t+' · '+DUTY[k].d+'%';hs.appendChild(o)});}lcl();}
+function lBrkTg(){lBrk=!lBrk;document.getElementById('l-brk-p').classList.toggle('hidden',!lBrk);document.getElementById('l-ins-p').classList.toggle('hidden',!lBrk&&!lIns);document.getElementById('l-brk-b').classList.toggle('on',lBrk);if(lBrk)hsFill('l-hs','lcl');lcl();}
 function uLW(){up('l-w');lcl();} function uLV(){up('l-v');lcl();} function uLP(){up('l-p');lcl();} function uLG(){up('l-g');lcl();}
 function lcl(){
   var w=parseFloat(document.getElementById('l-w').value)||0,v=parseFloat(document.getElementById('l-v').value)||0,p=parseInt(document.getElementById('l-p').value)||1;
@@ -797,14 +836,14 @@ function fclHtml(){
   h+='<div class="mb"><label>Объём загрузки</label><div class="slw"><div class="slv" id="f-v-W"><span id="f-v-v">33</span><span class="u"> CBM</span></div><input type="range" id="f-v" min="1" max="33" step="0.5" value="33" oninput="uFV()"><div class="sl-lbl"><span>1</span><span id="f-max">33</span></div></div></div>';
   h+='<button class="dashed-btn" id="f-ins-b" onclick="fInsTg()">Страхование груза</button>';
   h+='<button class="dashed-btn" id="f-brk-b" onclick="fBrkTg()">Таможенное оформление</button>';
-  h+='<div id="f-brk-p" class="hidden panel"><label>Код ТН ВЭД</label><input type="text" placeholder="Поиск по коду или названию..." oninput="searchHS(this,\'f-hs\')" style="margin-bottom:6px"><select id="f-hs" onchange="fcl()" style="height:100px" size="5"></select>'+slider('f-g','Стоимость товара (FOB)',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uFG')+'</div>';
+  h+='<div id="f-brk-p" class="hidden panel"><label>Код ТН ВЭД</label>'+hsPicker('f-hs')+slider('f-g','Стоимость товара (FOB)',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uFG')+'</div>';
   h+='</div>';
-  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="f-res"></div><div class="share-row"><button class="share-btn">Поделиться расчётом</button><button class="share-btn">Прикрепите реквизиты для договора</button><button class="share-btn">Связь с менеджером</button></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Стоимость действительна при наличии контейнерного оборудования в месте отправления. Ставка применяется только для генеральных грузов и не распространяется на опасные, скоропортящиеся и специализированные грузы.<br>Стоимость услуг, выраженная в иностранной валюте, пересчитывается в рубли по курсу ЦБ РФ на дату отправления контейнера из порта погрузки.<br>В случае отмены бронирования за 7 календарных дней или менее до даты выхода судна взимается штраф в размере USD 500 за TEU.<br>Ставка применяется по дате отправления контейнера из порта погрузки.<br>Условия не распространяются на перевозки в рамках государственных оборонных заказов и государственных контрактов.</div></div>';
+  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="f-res"></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Стоимость действительна при наличии контейнерного оборудования в месте отправления. Ставка применяется только для генеральных грузов и не распространяется на опасные, скоропортящиеся и специализированные грузы.<br>Стоимость услуг, выраженная в иностранной валюте, пересчитывается в рубли по курсу ЦБ РФ на дату отправления контейнера из порта погрузки.<br>В случае отмены бронирования за 7 календарных дней или менее до даты выхода судна взимается штраф в размере USD 500 за TEU.<br>Ставка применяется по дате отправления контейнера из порта погрузки.<br>Условия не распространяются на перевозки в рамках государственных оборонных заказов и государственных контрактов.</div></div>';
   document.getElementById('fcl-root').innerHTML=h;
 }
 function fSet(b){fB=b;document.getElementById('f20').classList.toggle('active',b===20);document.getElementById('f40').classList.toggle('active',b===40);var s=document.getElementById('f-v'),m=b===20?33:76;s.max=m;if(parseFloat(s.value)>m)s.value=m;document.getElementById('f-max').textContent=m;up('f-v');fcl();}
 function fInsTg(){fIns=!fIns;document.getElementById('f-ins-b').classList.toggle('on',fIns);fcl();}
-function fBrkTg(){fBrk=!fBrk;document.getElementById('f-brk-p').classList.toggle('hidden',!fBrk);document.getElementById('f-brk-b').classList.toggle('on',fBrk);if(fBrk){var hs=document.getElementById('f-hs');if(hs&&!hs.options.length)Object.keys(DUTY).sort().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k+' - '+DUTY[k].t+' · '+DUTY[k].d+'%';hs.appendChild(o)});}fcl();}
+function fBrkTg(){fBrk=!fBrk;document.getElementById('f-brk-p').classList.toggle('hidden',!fBrk);document.getElementById('f-brk-b').classList.toggle('on',fBrk);if(fBrk)hsFill('f-hs','fcl');fcl();}
 function uFG(){up('f-g');fcl();}function uFW(){up('f-w');fcl();} function uFV(){var el=document.getElementById('f-v');var v=parseFloat(el.value)||0;document.getElementById('f-v-v').textContent=v.toFixed(1);fillSl(el);var wEl=document.getElementById('f-v-W');if(wEl){wEl.classList.add('flash');setTimeout(function(){wEl.classList.remove('flash')},300);}fcl();}
 function fcl(){
   var w=parseInt(document.getElementById('f-w').value)||0,v=parseFloat(document.getElementById('f-v').value)||0;
@@ -887,6 +926,11 @@ function cmpCalc(){
 }
 
 /* ─── INIT ─── */
+function hsPicker(id){return '<input type="hidden" id="'+id+'"><div class="hs-box"><input type="text" class="hs-search" placeholder="Поиск по коду или названию..." oninput="hsFilter(this,\''+id+'\')"><div class="hs-list" id="'+id+'-list"></div></div>';}
+function hsFill(id,onpick){var list=document.getElementById(id+'-list');if(!list||list.children.length)return;var html='';Object.keys(DUTY).sort().forEach(function(k){html+='<div class="hs-opt" data-k="'+k+'" onclick="hsPick(\''+id+'\',\''+k+'\',\''+onpick+'\')">'+k+' — '+DUTY[k].t+' <small>· '+DUTY[k].d+'%</small></div>';});list.innerHTML=html;}
+function hsFilter(inp,id){var q=(inp.value||'').toLowerCase();var list=document.getElementById(id+'-list');if(!list)return;[].forEach.call(list.children,function(o){o.style.display=o.textContent.toLowerCase().indexOf(q)>=0?'':'none';});}
+function hsPick(id,k,onpick){var inp=document.getElementById(id);if(inp)inp.value=k;var list=document.getElementById(id+'-list');if(list)[].forEach.call(list.children,function(o){o.classList.toggle('sel',o.getAttribute('data-k')===k);});if(onpick&&window[onpick])window[onpick]();}
+function avHs(){hsFill('av-hs','av');}
 function buildAll(){av();lcl();fcl();smp();}
 avHtml();lclHtml();fclHtml();smpHtml();
 buildAll();curConv();
