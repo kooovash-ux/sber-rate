@@ -23,12 +23,12 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{--glass:rgba(255,255,255,.5);--glass-strong:rgba(255,255,255,.7);--glass-border:rgba(255,255,255,.6);font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden;background:radial-gradient(900px 720px at 8% 4%,rgba(245,146,69,.09),transparent 62%),radial-gradient(820px 820px at 92% 12%,rgba(90,124,153,.09),transparent 62%),linear-gradient(180deg,#F4F5F8,#F6F3EE);background-attachment:fixed}
+body{--glass:rgba(255,255,255,.5);--glass-strong:rgba(255,255,255,.7);--glass-border:rgba(255,255,255,.6);font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden;background:radial-gradient(680px 540px at 6% 0%,rgba(245,146,69,.05),transparent 58%),linear-gradient(180deg,#F7F8FA,#F6F3EE)}
 @keyframes revealUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 .reveal-in{animation:revealUp .6s cubic-bezier(.22,1,.36,1) both}
 
 /* ─── HEADER ─── */
-.hdr{position:fixed;top:0;left:0;right:0;z-index:200;background:transparent;border-bottom:1px solid transparent;transition:background .4s ease,border-color .4s ease,box-shadow .4s ease}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:200;background:transparent;border-bottom:1px solid transparent;transition:background .4s ease,border-color .4s ease,box-shadow .4s ease,transform .3s ease}
 .hdr.solid{background:rgba(251,248,244,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom-color:#E0E0E0;box-shadow:0 2px 16px rgba(10,30,61,.07)}
 .hdr .ln{color:#fff}
 .hdr .ln span{color:#EBA57C}
@@ -78,11 +78,13 @@ body{--glass:rgba(255,255,255,.5);--glass-strong:rgba(255,255,255,.7);--glass-bo
 @media(max-width:640px){.hdr-in{padding:0 16px;height:60px}.btn-nav{padding:9px 14px;font-size:12px}}
 
 /* ─── ZOOM HERO ─── */
-.zh-wrap{height:230vh;position:relative}
-.zh-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#2c3e50;display:flex;align-items:center;justify-content:center}
-.zh-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 44%;will-change:transform;z-index:0;opacity:0;transition:opacity 1.2s ease}
+.zh-wrap{height:calc(100vh + 600px);position:relative}
+.zh-cta{display:none}
+.zh-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:linear-gradient(135deg,#0c1118 0%,#0d1525 40%,#0f1b2e 70%,#0c1118 100%);display:flex;align-items:center;justify-content:center}
+.zh-stage::after{content:'';position:absolute;left:0;right:0;bottom:0;height:12px;z-index:4;pointer-events:none;background:linear-gradient(180deg,transparent,#F7F8FA)}
+.zh-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 44%;will-change:transform;z-index:0;opacity:0;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity 1.2s ease}
 .zh-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,16,30,.5) 0%,rgba(8,16,30,.3) 44%,rgba(8,16,30,.66) 100%)}
-.zh-title{position:relative;z-index:2;text-align:center;color:#f0f2f5;padding:0 24px;max-width:1040px;will-change:transform,opacity}
+.zh-title{position:relative;z-index:2;text-align:center;color:#f0f2f5;padding:0 24px;max-width:1040px;will-change:transform,opacity;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s ease}
 .zh-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#f0f2f5;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);padding:8px 18px;border-radius:999px;margin-bottom:26px}
 .zh-eyebrow b{color:#5a7c99;font-weight:700;font-size:14px}
 .zh-title h1{font-family:var(--serif);font-size:clamp(30px,5vw,60px);font-weight:600;line-height:1.08;letter-spacing:-1px;text-shadow:0 4px 40px rgba(0,0,0,.4)}
@@ -111,15 +113,17 @@ body{--glass:rgba(255,255,255,.5);--glass-strong:rgba(255,255,255,.7);--glass-bo
   .zh-wrap{height:auto}
   .zh-stage{position:relative;height:74vh;min-height:440px}
   .zh-stage::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:130px;z-index:3;pointer-events:none;background:linear-gradient(180deg,transparent,#EEF1F6)}
-  .zh-title h1{font-size:clamp(28px,8vw,40px)}
+  .zh-title h1{font-size:clamp(26px,7vw,38px)}
+  .zh-eyebrow{font-size:9.5px;letter-spacing:1px;padding:7px 13px;margin-bottom:18px;white-space:nowrap;max-width:none}
+  .zh-line2{white-space:normal}
   .zh-hint{bottom:140px}
   .zh-video{display:block;object-fit:cover;width:100%;height:100%;transform-origin:50% 38%;opacity:1!important;will-change:transform}
   .zh-title{will-change:transform,opacity}
-  .zh-hint,.zh-fade,.zh-cta{display:none!important}
+  .zh-fade,.zh-cta{display:none!important}
   #tabsBar{opacity:1!important;top:60px}
   #calcSection{margin-top:0;position:relative;z-index:4}
   .zh-stage{background:linear-gradient(135deg,#0c1118 0%,#0d1525 40%,#0f1b2e 70%,#0c1118 100%)}
-  .tabs-in{padding:0 12px}.tabs{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;gap:8px;padding:12px 0}.tabs button{flex-shrink:0;white-space:nowrap;font-size:13px;padding:10px 16px}}
+  .tabs-in{padding:0 12px;width:100%}.tabs{flex-wrap:wrap;justify-content:center;overflow-x:visible;gap:8px;padding:12px 0}.tabs button{flex-shrink:0;white-space:nowrap;font-size:12px;padding:9px 13px}}
 
 .cnt{max-width:var(--max);margin:0 auto;padding:28px 32px 72px}
 .tab-pg{display:none}
@@ -291,6 +295,26 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 .hs-opt:hover{background:rgba(245,146,69,.12)}
 .hs-opt.sel{background:rgba(245,146,69,.18);color:#F59246;font-weight:600}
 .hs-opt small{color:#888;font-weight:400}
+
+/* Условия — аккордеон */
+.terms{margin-top:12px;border-top:1px dashed var(--border);padding-top:4px}
+.terms summary{font-size:11px;font-weight:600;color:#888;cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;padding:8px 0}
+.terms summary::-webkit-details-marker{display:none}
+.terms summary::after{content:'\25BE';margin-left:auto;transition:transform .25s;color:#F59246}
+.terms[open] summary::after{transform:rotate(180deg)}
+.terms-body{font-size:10px;color:var(--ghost);line-height:1.7;padding-top:6px}
+/* Шапка — прячется при скролле вниз на телефоне */
+.hdr.hide{transform:translateY(-100%)}
+@media(max-width:640px){
+  select,input[type=text]{font-size:16px;padding:13px 14px}
+  .tg button{padding:13px 14px}
+  .ln{font-size:19px}
+  .ticker{display:flex;gap:10px}
+  .tick{font-size:10px}.tick strong{font-size:11px}
+  .hdr-in{gap:10px}
+}
+.zh-lottie{width:40px;height:66px;pointer-events:none}
+.zh-lottie svg{display:block}
 .hidden{display:none}
 </style>
 
@@ -354,7 +378,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
     </div>
     <div class="zh-hint" id="zhHint">
       <span>Листайте вниз</span>
-      <div class="zh-arrow"></div>
+      <div id="zhArrow" class="zh-lottie"></div>
     </div>
     <div class="zh-fade" id="zhFade"></div>
     <div class="zh-cta" id="zhCta"></div>
@@ -363,7 +387,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
 
 <!-- ═══ CALCULATOR ═══ -->
 <section id="calcSection">
-  <div class="tabs-bar" id="tabsBar" style="opacity:0;transition:opacity .4s">
+  <div class="tabs-bar" id="tabsBar" style="opacity:1">
     <div class="tabs-in">
       <nav class="tabs" id="tabs">
         <button class="active" data-tab="0">Авиа</button>
@@ -401,7 +425,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
             <div class="pf-role">Руководитель проектов по логистике / Product Manager</div>
             <div class="pf-links">
               <a href="tel:+79992059760">+7 999 205 97 60</a>
-              <a href="/cdn-cgi/l/email-protection#f6cecfcfcfc4c6c3cfc1c0c6b6949dd88483"><span class="__cf_email__" data-cfemail="1a22232323282a2f232d2c2a5a787134686f">[email&#160;protected]</span></a>
+              <a href="/cdn-cgi/l/email-protection#7b43424242494b4e424c4d4b3b191055090e"><span class="__cf_email__" data-cfemail="142c2d2d2d2624212d23222454767f3a6661">[email&#160;protected]</span></a>
               <a href="https://t.me/ko_vash" target="_blank">@ko_vash</a>
             </div>
             <div class="pf-meta">
@@ -501,7 +525,7 @@ input[type=file]{width:100%;padding:9px;font-size:12px;border:1.5px solid #E0E0E
           <p>Открыт к предложениям · готов к переезду в Москву</p>
           <div class="pf-cta-row">
             <a class="btn-lt" href="https://t.me/ko_vash" target="_blank">Написать в Telegram</a>
-            <a class="btn-ol" href="/cdn-cgi/l/email-protection#68505151515a585d515f5e58280a03461a1d">Отправить письмо</a>
+            <a class="btn-ol" href="/cdn-cgi/l/email-protection#556d6c6c6c6765606c62636515373e7b2720">Отправить письмо</a>
           </div>
         </div>
       </div>
@@ -518,7 +542,7 @@ function rub(v){return Math.round(v).toLocaleString('ru-RU')+' ₽'}
 function num(v){return Number(v).toLocaleString('ru-RU')}
 
 /* ─── HERO WORD: слово ВНУТРИ иконки-транспорта ─── */
-var HERO_WORDS=['импорта','авиа доставки','морского фрахта','таможенных пошлин','образцов'];
+var HERO_WORDS=['импорта','авиа доставки','морского фрахта','таможни','образцов'];
 function P(cls,vb,inner,ar){return '<span class="zh-p '+cls+'"></span>';}
 var DECO={
   1:{cls:'anim-fly',pieces:[
@@ -602,23 +626,23 @@ function changeHeroWord(idx){
       title.style.opacity=(p<0.72?1:Math.max(0,1-(p-0.72)/0.28)).toFixed(3);
     }
     // МЕНЯЕМ слово "импорта" при скролле — текст влетает с декорациями
-    var wordIdx=Math.floor((p-0.08)/0.07);if(wordIdx<0)wordIdx=0;if(wordIdx>4)wordIdx=4;
-    changeHeroWord(wordIdx);
+    var wordIdx=Math.floor(p*6);if(wordIdx<0)wordIdx=0;if(wordIdx>4)wordIdx=4;
+    changeHeroWord(wordIdx); ///* слово ротируется по таймеру */
     // tabs fade in at 72%+ (когда калькулятор появляется)
     var tabsOpacity = Math.max(0, (p - 0.60) / 0.20);
     var tabsBar = document.getElementById('tabsBar');
-    if(tabsBar) tabsBar.style.opacity = tabsOpacity.toFixed(3);
+    if(tabsBar) tabsBar.style.opacity = 1;
         // fade to calculator bg at 72%+
-    var fp=Math.max(0,(p-0.60)/0.20);
+    var fp=0;
     fade.style.opacity=fp;
     // CTA at 82%+
     var cp=Math.max(0,(p-0.82)/0.18);
     cta.style.opacity=cp;
     cta.style.pointerEvents=cp>0.1?'auto':'none';
     // hint fades early
-    hint.style.opacity=Math.max(0,1-p/0.06);
+    hint.style.opacity=(p<0.85?1:Math.max(0,1-(p-0.85)/0.15)).toFixed(3);
     // header transparent over video, solid when zoomed in
-    hdr.classList.toggle('solid',p>0.6);
+    hdr.classList.toggle('solid',p>0.97);
     // auto-scroll to calculator when title is gone - faster
     if(false&&!hdr._scrolled){
       hdr._scrolled=true;
@@ -655,10 +679,7 @@ function changeHeroWord(idx){
 
 /* ─── MOBILE: rotate hero word + reveal calc on scroll ─── */
 (function(){
-  if(window.innerWidth<=640){
-    var i=0;
-    setInterval(function(){i=(i+1)%HERO_WORDS.length;changeHeroWord(i);},2300);
-  }
+  if(window.innerWidth<=640){var i=0;setInterval(function(){i=(i+1)%HERO_WORDS.length;changeHeroWord(i);},2300);}
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('reveal-in');io.unobserve(e.target);}});},{threshold:.1});
     document.querySelectorAll('#page-0 .card, .trk-card, .pf-stat, .pf-card, .pf-hero').forEach(function(el){io.observe(el);});
@@ -748,7 +769,7 @@ function avHtml(){
   h+='<button class="dashed-btn" id="av-dg-b" onclick="avDgTg()">Опасный груз (ADR)</button>';
   h+='<div id="av-dg-p" class="hidden dg-panel"><div style="font-size:13px;color:#c00;font-weight:500;margin-bottom:10px">⚠ Требуется паспорт безопасности MSDS</div><input type="file"><button class="btn-a" style="width:100%" onclick="alert(\'Свяжитесь: @ko_vash\')">Связаться с менеджером</button></div>';
   h+='</div>';
-  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="av-res"></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Бронирование зависит от наличия места на рейсе.<br>Паллетирование груза выполняется при необходимости.<br>Если размеры груза изменятся хотя бы на 1 см, тариф будет пересчитан.<br>Рейсы сильно перегружены. Перед отправкой груза в аэропорт просьба уточнять у нас план отгрузки.<br>Приём груза осуществляется строго при наличии места. Сроки доставки до пункта назначения не гарантируются из-за ограничений по доступной загрузке воздушных судов в высокий сезон.<br>Все бронирования и приём груза зависят от наличия мест, подтверждения бронирования и текущего спроса.<br><br>Мумбаи - Баку - Москва (AZAL) - 3-4 рейса в неделю, транзит 3-6 дней.<br>Дели - Ташкент - Москва (Uzbekistan Airways) - 3-4 рейса в неделю, транзит 3-6 дней.</div></div>';
+  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="av-res"></div><details class="terms"><summary>Условия и примечания</summary><div class="terms-body">Бронирование зависит от наличия места на рейсе.<br>Паллетирование груза выполняется при необходимости.<br>Если размеры груза изменятся хотя бы на 1 см, тариф будет пересчитан.<br>Рейсы сильно перегружены. Перед отправкой груза в аэропорт просьба уточнять у нас план отгрузки.<br>Приём груза осуществляется строго при наличии места. Сроки доставки до пункта назначения не гарантируются из-за ограничений по доступной загрузке воздушных судов в высокий сезон.<br>Все бронирования и приём груза зависят от наличия мест, подтверждения бронирования и текущего спроса.<br><br>Мумбаи - Баку - Москва (AZAL) - 3-4 рейса в неделю, транзит 3-6 дней.<br>Дели - Ташкент - Москва (Uzbekistan Airways) - 3-4 рейса в неделю, транзит 3-6 дней.</div></details></div>';
   document.getElementById('avia-root').innerHTML=h;
   avFill();avHs();
 }
@@ -800,7 +821,7 @@ function lclHtml(){
   h+='<div id="l-ins-p" class="hidden panel">'+slider('l-g','Стоимость товара (FOB)',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uLG')+'</div>';
   h+='<div id="l-brk-p" class="hidden panel"><label>Код ТН ВЭД</label>'+hsPicker('l-hs')+'</div>';
   h+='</div>';
-  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="l-res"></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Груз принимается как неопасный, штабелируемый, в упаковке, пригодной для морской перевозки и размещения в 20-футовом контейнере. Деревянная упаковка и палеты должны соответствовать стандарту ISPM 15.<br><br>В ставку включено:<br>- морской фрахт<br>- обработка груза в порту Санкт-Петербурга<br>- документационный сбор<br>- фотоотчёт при растарке<br>- 6 дней бесплатного хранения после растарки<br><br>В ставку не включено:<br>- досмотры и дополнительные проверки<br>- дегазация контейнера (при необходимости)<br>- услуги терминала по требованию таможенных органов<br><br>Транзитный срок: около 30 дней порт-порт. Перевозка осуществляется без перетарки.</div></div>';
+  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="l-res"></div><details class="terms"><summary>Условия и примечания</summary><div class="terms-body">Груз принимается как неопасный, штабелируемый, в упаковке, пригодной для морской перевозки и размещения в 20-футовом контейнере. Деревянная упаковка и палеты должны соответствовать стандарту ISPM 15.<br><br>В ставку включено:<br>- морской фрахт<br>- обработка груза в порту Санкт-Петербурга<br>- документационный сбор<br>- фотоотчёт при растарке<br>- 6 дней бесплатного хранения после растарки<br><br>В ставку не включено:<br>- досмотры и дополнительные проверки<br>- дегазация контейнера (при необходимости)<br>- услуги терминала по требованию таможенных органов<br><br>Транзитный срок: около 30 дней порт-порт. Перевозка осуществляется без перетарки.</div></details></div>';
   document.getElementById('lcl-root').innerHTML=h;
 }
 function lInsTg(){lIns=!lIns;document.getElementById('l-ins-p').classList.toggle('hidden',!lIns&&!lBrk);document.getElementById('l-ins-b').classList.toggle('on',lIns);lcl();}
@@ -838,7 +859,7 @@ function fclHtml(){
   h+='<button class="dashed-btn" id="f-brk-b" onclick="fBrkTg()">Таможенное оформление</button>';
   h+='<div id="f-brk-p" class="hidden panel"><label>Код ТН ВЭД</label>'+hsPicker('f-hs')+slider('f-g','Стоимость товара (FOB)',100,200000,25000,500,'$',['$100','$50k','$100k','$200k'],'uFG')+'</div>';
   h+='</div>';
-  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="f-res"></div><div style="font-size:10px;color:var(--ghost);margin-top:12px;line-height:1.7;padding-top:10px;border-top:1px dashed var(--border)">Стоимость действительна при наличии контейнерного оборудования в месте отправления. Ставка применяется только для генеральных грузов и не распространяется на опасные, скоропортящиеся и специализированные грузы.<br>Стоимость услуг, выраженная в иностранной валюте, пересчитывается в рубли по курсу ЦБ РФ на дату отправления контейнера из порта погрузки.<br>В случае отмены бронирования за 7 календарных дней или менее до даты выхода судна взимается штраф в размере USD 500 за TEU.<br>Ставка применяется по дате отправления контейнера из порта погрузки.<br>Условия не распространяются на перевозки в рамках государственных оборонных заказов и государственных контрактов.</div></div>';
+  h+='<div><div class="res-head">Стоимость поставки</div><div class="result" id="f-res"></div><details class="terms"><summary>Условия и примечания</summary><div class="terms-body">Стоимость действительна при наличии контейнерного оборудования в месте отправления. Ставка применяется только для генеральных грузов и не распространяется на опасные, скоропортящиеся и специализированные грузы.<br>Стоимость услуг, выраженная в иностранной валюте, пересчитывается в рубли по курсу ЦБ РФ на дату отправления контейнера из порта погрузки.<br>В случае отмены бронирования за 7 календарных дней или менее до даты выхода судна взимается штраф в размере USD 500 за TEU.<br>Ставка применяется по дате отправления контейнера из порта погрузки.<br>Условия не распространяются на перевозки в рамках государственных оборонных заказов и государственных контрактов.</div></details></div>';
   document.getElementById('fcl-root').innerHTML=h;
 }
 function fSet(b){fB=b;document.getElementById('f20').classList.toggle('active',b===20);document.getElementById('f40').classList.toggle('active',b===40);var s=document.getElementById('f-v'),m=b===20?33:76;s.max=m;if(parseFloat(s.value)>m)s.value=m;document.getElementById('f-max').textContent=m;up('f-v');fcl();}
@@ -939,5 +960,19 @@ document.querySelectorAll('input[type=range]').forEach(fillSl);
 // Restore tab from URL hash
 (function(){var h=location.hash;if(h&&h.indexOf('tab=')>=0){var t=h.split('tab=')[1];switchTab(t);}})();
 </script>
+<script>
+(function(){
+  var hdr=document.getElementById('hdr'),tb=document.getElementById('tabsBar'),last=0;
+  window.addEventListener('scroll',function(){
+    if(window.innerWidth>640){hdr.classList.remove('hide');return;}
+    var y=window.scrollY;
+    if(y>240&&y>last+4){hdr.classList.add('hide');if(tb)tb.style.top='0px';}
+    else if(y<last-4){hdr.classList.remove('hide');if(tb)tb.style.top='60px';}
+    last=y;
+  },{passive:true});
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script>(function(){function init(){if(!window.lottie){return setTimeout(init,100);}var c=document.getElementById("zhArrow");if(!c||c._done)return;c._done=true;lottie.loadAnimation({container:c,renderer:"svg",loop:true,autoplay:true,path:"Down%20Arrow.json"});}init();})();</script>
 </body>
 </html>
