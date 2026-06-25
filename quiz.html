@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IT & English — разбор тем</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F7F9; --card:#FFFFFF; --navy:#0A1E3D; --ink:#1F2937;
+    --muted:#6B7280; --line:#E7E9ED; --green:#21A038;
+    --green-soft:rgba(33,160,56,.10); --red:#DC2626; --red-soft:rgba(220,38,38,.08);
+    --shadow:0 1px 2px rgba(10,30,61,.04),0 8px 24px rgba(10,30,61,.06); --radius:14px;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 16px 64px}
+  .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .brand{font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+  .brand b{color:var(--green)}
+  .count{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);white-space:nowrap}
+  .bar{height:6px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:20px}
+  .bar span{display:block;height:100%;width:0;background:var(--green);border-radius:999px;transition:width .35s ease}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+  @media(min-width:520px){.card{padding:28px}}
+  .lvl{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--navy);background:var(--green-soft);border:1px solid rgba(33,160,56,.22);padding:5px 11px;border-radius:999px;margin-bottom:16px}
+  .lvl .dot{width:6px;height:6px;border-radius:999px;background:var(--green)}
+
+  /* разбор темы — учебный блок (тёмный акцент) */
+  .desc{background:#F4F6F8;border:1px solid var(--line);border-left:3px solid var(--navy);border-radius:0 10px 10px 0;padding:13px 15px;margin-bottom:18px;font-size:14.5px;color:var(--ink)}
+  .desc .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);display:block;margin-bottom:5px}
+
+  .q{font-size:18.5px;font-weight:600;color:var(--navy);margin:0;letter-spacing:-.01em}
+  @media(min-width:520px){.q{font-size:20px}}
+  .term{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--green);background:var(--green-soft);padding:1px 6px;border-radius:6px;white-space:nowrap}
+  .tr{display:inline-block;font-size:12px;font-weight:500;color:var(--muted);background:#F1F3F5;border:1px solid var(--line);padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+
+  .opts{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+  .opt{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px 15px;font:inherit;font-size:15.5px;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s,transform .05s}
+  .opt:hover:not(:disabled){border-color:#C9CDD4}
+  .opt:active:not(:disabled){transform:scale(.995)}
+  .opt:disabled{cursor:default}
+  .opt .key{flex:0 0 auto;width:22px;height:22px;border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--muted);font-family:"JetBrains Mono",monospace;margin-top:1px}
+  .opt.correct{border-color:var(--green);background:var(--green-soft)}
+  .opt.correct .key{background:var(--green);border-color:var(--green);color:#fff}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft)}
+  .opt.wrong .key{background:var(--red);border-color:var(--red);color:#fff}
+
+  .exp{margin-top:16px;border-left:3px solid var(--green);background:#FAFBFC;border-radius:0 10px 10px 0;padding:13px 15px;font-size:14.5px;color:var(--ink);display:none}
+  .exp.show{display:block;animation:fade .25s ease}
+  .exp .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:4px}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .next{margin-top:18px;display:none;width:100%;justify-content:center;align-items:center;gap:8px;background:var(--navy);color:#fff;border:none;border-radius:11px;padding:14px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .15s}
+  .next.show{display:flex}
+  .next:hover{opacity:.92}
+  .intro h2{font-size:22px;color:var(--navy);margin:6px 0 8px;letter-spacing:-.01em}
+  .intro p{color:var(--muted);margin:0 0 4px;font-size:15px}
+  .intro .start{margin-top:22px}
+  .res{text-align:center}
+  .res .score{font-family:"JetBrains Mono",monospace;font-size:54px;font-weight:600;color:var(--green);line-height:1;margin:6px 0 4px}
+  .res .frac{color:var(--muted);font-size:14px;font-family:"JetBrains Mono",monospace}
+  .res .verdict{font-size:17px;font-weight:600;color:var(--navy);margin:18px 0 6px}
+  .res .sub{color:var(--muted);font-size:14.5px;margin:0 auto;max-width:460px}
+  .breakdown{margin:22px 0 4px;text-align:left;display:flex;flex-direction:column;gap:8px}
+  .br-row{display:flex;align-items:center;gap:10px;font-size:13.5px}
+  .br-row .name{flex:1;color:var(--ink)}
+  .br-row .mini{flex:0 0 110px;height:6px;background:var(--line);border-radius:999px;overflow:hidden}
+  .br-row .mini span{display:block;height:100%;background:var(--green);border-radius:999px}
+  .br-row .pct{flex:0 0 44px;text-align:right;font-family:"JetBrains Mono",monospace;color:var(--muted);font-size:12px}
+  .again{margin-top:24px}
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+  .kbd{font-family:"JetBrains Mono",monospace;background:#F1F3F5;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:11px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">разбор тем · <b>IT &amp; English</b></div>
+    <div class="count" id="count"></div>
+  </div>
+  <div class="bar"><span id="prog"></span></div>
+  <div id="app"></div>
+  <div class="foot">Клавиши <span class="kbd">1</span>–<span class="kbd">3</span> — ответ, <span class="kbd">Enter</span> — дальше</div>
+</div>
+
+<script>
+const LEVELS = {
+  1:{name:"Основы: из чего состоит сайт",  intro:"Фундамент на русском. Читаешь короткий разбор темы, потом выбираешь из трёх реальных терминов. Цель — понять, а не угадать."},
+  2:{name:"Вёрстка и интерфейс",           intro:"Из чего собирается страница и интерфейс: HTML, CSS, JS, блоки. Варианты — близкие по смыслу, придётся думать."},
+  3:{name:"Git и процесс разработки",      intro:"Как команда пишет код и выкатывает его. Эти слова ты услышишь на каждом созвоне с разработчиками."},
+  4:{name:"API, данные и личный кабинет",  intro:"Сердце твоей задачи. ЛК = данные + API. Здесь термины похожи и легко путаются — разбирайся внимательно."},
+  5:{name:"Управление проектом",           intro:"Твоя зона. Слова, которыми ставят задачи, держат сроки и границы."},
+  6:{name:"English · понимание терминов",  intro:"База закрыта — переходим на английский. Читаешь определение на английском, выбираешь верный термин. Перевод подсвечен."},
+  7:{name:"English · фразы для команды",    intro:"Финал. Готовые фразы для команды в Бангалоре и собеседования. Из трёх вариантов выбираешь тот, что звучит по-настоящему естественно."}
+};
+
+function term(en,ru){return `<span class="term">${en}</span><span class="tr">${ru}</span>`;}
+
+const Q = [
+/* ===== Уровень 1 — основы ===== */
+{lvl:1, desc:"Любой сайт состоит из двух половин. Видимая открывается в браузере: кнопки, текст, картинки. Невидимая работает на сервере: хранит данные и выполняет логику.",
+ q:"Как называется ВИДИМАЯ часть, с которой работает пользователь?", opts:["Frontend","Backend","Hosting"], correct:0,
+ exp:"Frontend — видимая часть в браузере. Backend — серверная логика. Hosting — место, где сайт лежит. Видимое — это frontend."},
+{lvl:1, desc:"Когда ты вводишь логин и пароль, кто-то должен их проверить, найти твои данные и решить, пускать ли тебя. Это происходит не в браузере, а на сервере.",
+ q:"Как называется серверная часть, где живут логика и данные?", opts:["Backend","Frontend","Browser"], correct:0,
+ exp:"Backend — серверная часть: проверка, логика, база. Frontend — то, что на экране. Browser — программа, в которой открыт сайт."},
+{lvl:1, desc:"В вебе всегда есть двое: одна сторона просит данные, другая выдаёт. Просит — твой браузер или телефон. Отвечает — мощный компьютер в дата-центре.",
+ q:"Как называется сторона, которая принимает запросы и отдаёт данные?", opts:["Server","Client","Domain"], correct:0,
+ exp:"Server отдаёт данные, client (браузер) их запрашивает. Domain — просто адрес сайта, в обмене не участвует."},
+{lvl:1, desc:"Слово «клиент» в IT значит не заказчика. Это устройство пользователя — браузер или приложение, которое шлёт запросы серверу. Частая путаница из-за обычного значения слова.",
+ q:"Что в вебе называют client?", opts:["Браузер или устройство пользователя","Сервер с базой данных","Заказчик проекта"], correct:0,
+ exp:"Client — устройство пользователя, которое шлёт запросы. Server — отвечает. «Заказчик» — обычное значение слова, но в коде так не зовут."},
+{lvl:1, desc:"Чтобы попасть на сайт, ты вводишь его адрес — например traderate.ru. Это человекочитаемое имя, за которым прячется реальный сервер с цифровым адресом.",
+ q:"Как называется адрес сайта вроде traderate.ru?", opts:["Domain","Hosting","Server"], correct:0,
+ exp:"Domain — адрес сайта. Hosting — место, где лежат файлы. Server — компьютер, который их отдаёт. Три разных уровня."},
+{lvl:1, desc:"Файлы сайта должны где-то физически лежать и быть доступны круглосуточно. Для этого арендуют место на чужом сервере — или берут бесплатное, как GitHub Pages.",
+ q:"Как называется услуга «место, где живёт сайт»?", opts:["Hosting","Domain","Deploy"], correct:0,
+ exp:"Hosting — где лежит сайт. Domain — его адрес. Deploy — процесс выкладки сайта на этот хостинг."},
+{lvl:1, desc:"Ты написал код у себя на компьютере. Чтобы его увидели люди, его нужно опубликовать на сервер. Этот процесс выкладки и называется так.",
+ q:"Как называется публикация готового кода на сервер?", opts:["Deploy","Commit","Merge"], correct:0,
+ exp:"Deploy — выложить в интернет. Commit — сохранить правку у себя. Merge — слить ветки кода. Ты деплоил traderate через GitHub Pages."},
+{lvl:1, desc:"Пользователи, заказы, ставки фрахта — всё это нужно структурированно хранить, чтобы быстро искать и обновлять. Не в Excel, а в специальном хранилище.",
+ q:"Как называется структурированное хранилище данных?", opts:["Database","Server","Backend"], correct:0,
+ exp:"Database — само хранилище. Server — компьютер, на котором оно крутится. Backend — логика, которая к нему обращается."},
+{lvl:1, desc:"У продукта обычно две версии: одна для экспериментов, где можно ломать, и одна боевая — ею пользуются реальные люди, и ошибаться там нельзя.",
+ q:"Как называют живую версию для реальных пользователей?", opts:["Production","Test","Backlog"], correct:0,
+ exp:"Production («прод») — боевая версия. Test (staging) — для проверок. Backlog — это список задач, а не версия."},
+{lvl:1, desc:"Программа, через которую ты открываешь любой сайт. Она получает код страницы и превращает его в то, что ты видишь на экране.",
+ q:"Chrome, Safari, Firefox — это примеры чего?", opts:["Browser","Server","Frontend"], correct:0,
+ exp:"Browser — программа для просмотра сайтов. Server — отдаёт страницы. Frontend — сам код видимой части, который браузер показывает."},
+
+/* ===== Уровень 2 — вёрстка ===== */
+{lvl:2, desc:"Страница собирается из трёх слоёв: один задаёт структуру (где заголовок, где текст), второй — внешний вид (цвета, шрифты), третий — поведение (реакцию на клики).",
+ q:"Какой язык отвечает за СТРУКТУРУ страницы — заголовки, блоки, текст?", opts:["HTML","CSS","JavaScript"], correct:0,
+ exp:"HTML — структура (скелет). CSS — внешний вид. JavaScript — поведение. Три слоя одной страницы."},
+{lvl:2, desc:"Голый HTML выглядит как чёрный текст на белом фоне. Чтобы появились цвета, отступы, красивые шрифты и расположение блоков — нужен отдельный язык стилей.",
+ q:"Что отвечает за цвета, шрифты и отступы?", opts:["CSS","HTML","JSON"], correct:0,
+ exp:"CSS — оформление. HTML — структура. JSON — про передачу данных между системами, к внешнему виду отношения не имеет."},
+{lvl:2, desc:"Чтобы кнопка реагировала на нажатие, калькулятор считал, а форма проверяла ввод — странице нужно поведение. Статичные HTML и CSS этого не умеют.",
+ q:"Что добавляет странице интерактивность и расчёты?", opts:["JavaScript","CSS","HTML"], correct:0,
+ exp:"JavaScript — поведение и логика на странице. CSS — только внешний вид. HTML — только структура. Твой калькулятор считает на JS."},
+{lvl:2, desc:"У большинства сайтов вверху есть постоянная полоса с логотипом и меню навигации — она держится на всех страницах одинаково.",
+ q:"Как называется верхняя часть страницы с логотипом и меню?", opts:["Header","Footer","Sidebar"], correct:0,
+ exp:"Header — шапка сверху. Footer — подвал снизу. Sidebar — боковая панель. Все реальны, но «шапка» — это header."},
+{lvl:2, desc:"Внизу страницы обычно размещают контакты, копирайт и второстепенные ссылки — то, что не нужно сразу, но должно где-то быть.",
+ q:"Как называется нижняя часть страницы с контактами и копирайтом?", opts:["Footer","Header","Navbar"], correct:0,
+ exp:"Footer — подвал внизу. Header — шапка сверху. Navbar — панель навигации (часто живёт внутри header)."},
+{lvl:2, desc:"Когда нужно разложить карточки или таблицу ровными строками И колонками, в CSS есть инструмент именно для двумерной сетки.",
+ q:"Какой инструмент CSS раскладывает элементы по сетке (строки и колонки)?", opts:["Grid","Flexbox","Header"], correct:0,
+ exp:"Grid — двумерная сетка (строки и колонки). Flexbox — выравнивание в одну линию. Header — часть страницы, не инструмент раскладки."},
+{lvl:2, desc:"Часто нужно просто выстроить несколько элементов в один ряд и равномерно распределить пространство между ними — например, кнопки в шапке.",
+ q:"Какой инструмент CSS выравнивает элементы в один ряд или столбец?", opts:["Flexbox","Grid","Form"], correct:0,
+ exp:"Flexbox — одна линия (ряд или столбец). Grid — полноценная сетка из строк и колонок. Form — это блок ввода, не раскладка."},
+{lvl:2, desc:"Один и тот же сайт открывают и с узкого телефона, и с широкого монитора. Хороший сайт сам подстраивает раскладку под размер экрана.",
+ q:"Как называется свойство сайта подстраиваться под размер экрана?", opts:["Responsive","Deploy","Frontend"], correct:0,
+ exp:"Responsive — адаптивность под экран. Deploy — выкладка сайта. Frontend — вся видимая часть в целом. Путать легко, но это разное."},
+{lvl:2, desc:"В дизайне различают две вещи: как продукт выглядит (экраны, кнопки, цвета) и насколько им удобно пользоваться (логика, путь пользователя).",
+ q:"Чем обозначают именно ВНЕШНИЙ ВИД интерфейса — экраны, кнопки, цвета?", opts:["UI","UX","API"], correct:0,
+ exp:"UI (user interface) — внешний вид. UX (user experience) — удобство и логика. API — про обмен данными, другая тема."},
+{lvl:2, desc:"Чтобы пользователь вошёл в кабинет или оставил заявку, ему дают поля для ввода и кнопку отправки. Этот блок собирает и отправляет данные.",
+ q:"Как называется блок полей ввода для отправки данных?", opts:["Form","Grid","Header"], correct:0,
+ exp:"Form — форма с полями (логин, заявка). Grid — способ раскладки. Header — шапка сайта."},
+
+/* ===== Уровень 3 — Git ===== */
+{lvl:3, desc:"Когда над кодом работают несколько человек и каждый день что-то меняется, нужна система, которая хранит всю историю правок и позволяет откатиться назад.",
+ q:"Как называется система контроля версий кода?", opts:["Git","GitHub","Deploy"], correct:0,
+ exp:"Git — сама система контроля версий. GitHub — сайт, где хранят Git-проекты. Deploy — выкладка кода, отдельный процесс."},
+{lvl:3, desc:"Есть инструмент, который ведёт историю кода у тебя на компьютере. И есть сайт в интернете, куда эти проекты выкладывают, чтобы команда работала вместе.",
+ q:"Как называется сайт, где хранят и публикуют Git-проекты?", opts:["GitHub","Git","Hosting"], correct:0,
+ exp:"GitHub — онлайн-площадка для Git-проектов (там же живёт твой traderate). Git — сам инструмент истории. Hosting — общее слово про размещение."},
+{lvl:3, desc:"Каждый проект в Git — это отдельная папка со всем кодом и полной историей его изменений. У неё есть своё название.",
+ q:"Как называется проект целиком в Git со всей историей?", opts:["Repository","Commit","Branch"], correct:0,
+ exp:"Repository («репо») — проект целиком. Commit — одна сохранённая правка внутри него. Branch — отдельная ветка разработки."},
+{lvl:3, desc:"Поработал над кодом — сохраняешь изменения отдельной точкой с подписью, что именно поменял. Потом по этим точкам видна вся история проекта.",
+ q:"Как называется сохранённая точка изменений с описанием?", opts:["Commit","Push","Merge"], correct:0,
+ exp:"Commit — сохранёнка с подписью. Push — отправка коммитов на сервер. Merge — слияние веток. Порядок: сначала commit, потом push."},
+{lvl:3, desc:"Свои сохранённые правки ты сначала держишь у себя. Чтобы их увидели коллеги, нужно отправить их в общий репозиторий на сервере.",
+ q:"Как называется отправка своих коммитов в общий репозиторий?", opts:["Push","Commit","Pull request"], correct:0,
+ exp:"Push — отправить наверх. Commit — сохранить у себя (делается до push). Pull request — попросить принять твои изменения уже после push."},
+{lvl:3, desc:"Чтобы пробовать новую функцию и не сломать работающий сайт, разработчик делает отдельную копию-линию кода и спокойно работает в ней.",
+ q:"Как называется отдельная линия разработки в Git?", opts:["Branch","Merge","Commit"], correct:0,
+ exp:"Branch — ветка, отдельная линия. Merge — её обратное слияние с основной. Commit — сохранёнка внутри ветки."},
+{lvl:3, desc:"Новая функция готова и проверена в своей ветке. Теперь её нужно объединить с основной рабочей версией сайта.",
+ q:"Как называется объединение веток в Git?", opts:["Merge","Branch","Push"], correct:0,
+ exp:"Merge — слияние веток. Branch — создание ветки (обратное действие). Push — отправка коммитов на сервер."},
+{lvl:3, desc:"Прежде чем влить твою ветку в основную, команда хочет проверить код. Для этого ты создаёшь специальный запрос: «посмотрите и примите мои правки».",
+ q:"Как называется запрос на проверку и принятие изменений?", opts:["Pull request","Code review","Commit"], correct:0,
+ exp:"Pull request (PR) — сам запрос с изменениями. Code review — проверка кода внутри этого PR. Commit — отдельная правка; PR обычно содержит несколько коммитов."},
+{lvl:3, desc:"Когда ты прислал PR, другой разработчик читает твой код, ищет ошибки и оставляет замечания, прежде чем изменения примут.",
+ q:"Как называется проверка чужого кода человеком перед добавлением?", opts:["Code review","Pull request","Deploy"], correct:0,
+ exp:"Code review — проверка кода человеком. Pull request — запрос, в рамках которого её делают. Deploy — выкладка уже принятого кода."},
+{lvl:3, desc:"Программы ломаются: кнопка не нажимается, расчёт неверный. Сначала находят такую поломку, потом её устраняют. У обоих есть короткие названия.",
+ q:"Как на сленге называют ОШИБКУ в работе программы?", opts:["Bug","Fix","Merge"], correct:0,
+ exp:"Bug — ошибка. Fix — её исправление. Merge — слияние веток, к ошибкам не относится. Связка: «found a bug → need a fix»."},
+
+/* ===== Уровень 4 — API / данные / ЛК ===== */
+{lvl:4, desc:"Чтобы твой калькулятор узнал курс валюты или ставку фрахта из чужого сервиса, две программы должны «договориться» и обменяться данными. Для этого есть специальный интерфейс.",
+ q:"Как называется интерфейс, через который программы обмениваются данными?", opts:["API","JSON","Endpoint"], correct:0,
+ exp:"API — сам интерфейс обмена. JSON — формат, в котором приходят данные. Endpoint — конкретный адрес внутри API. Главное слово твоей вакансии."},
+{lvl:4, desc:"У одного API обычно много функций: получить пользователя, рассчитать стоимость, создать заказ. Каждая доступна по своему отдельному адресу.",
+ q:"Как называется конкретный адрес внутри API для одной операции?", opts:["Endpoint","API","Domain"], correct:0,
+ exp:"Endpoint — адрес конкретной операции (например /calculate). API — весь интерфейс целиком. Domain — адрес всего сайта, более общий уровень."},
+{lvl:4, desc:"Обмен данными всегда парный: одна сторона отправляет вопрос, другая возвращает ответ. У этих двух шагов есть отдельные названия.",
+ q:"Как называется ОТВЕТ сервера на обращение клиента?", opts:["Response","Request","Token"], correct:0,
+ exp:"Request — запрос (от клиента), response — ответ (от сервера). Token — это «пропуск» пользователя, к паре запрос-ответ не относится."},
+{lvl:4, desc:"Запросы к серверу бывают разными по смыслу: один просто забирает данные для показа, другой отправляет новые данные, чтобы их сохранили.",
+ q:"Какой тип запроса используют, чтобы ЗАБРАТЬ данные с сервера?", opts:["GET","POST","JSON"], correct:0,
+ exp:"GET — забрать данные. POST — отправить данные на сервер. JSON — формат, в котором эти данные упакованы, а не тип запроса."},
+{lvl:4, desc:"Когда API отдаёт данные, они приходят в виде структурированного текста — пары «название: значение», понятные и человеку, и программе.",
+ q:"Как называется текстовый формат обмена данными вида «ключ: значение»?", opts:["JSON","API","SQL"], correct:0,
+ exp:"JSON — формат данных. API — канал, по которому они идут. SQL — язык запросов к базе данных, другая задача."},
+{lvl:4, desc:"Существует общепринятый стиль построения API на основе обычных веб-запросов. Если разработчик упоминает этот стиль — речь о стандартном обмене данными по HTTP.",
+ q:"Как называют самый распространённый стиль API на базе HTTP?", opts:["REST API","JSON","Endpoint"], correct:0,
+ exp:"REST — стиль построения API. JSON — формат данных, которые он обычно отдаёт. Endpoint — отдельный адрес внутри такого API."},
+{lvl:4, desc:"С любыми данными в кабинете делают по сути четыре вещи: создают, читают, обновляют и удаляют. Эти четыре действия объединили в одну аббревиатуру.",
+ q:"Как одним словом называют набор «создать, прочитать, обновить, удалить»?", opts:["CRUD","REST","SQL"], correct:0,
+ exp:"CRUD = Create, Read, Update, Delete. REST — стиль API, через который это делают. SQL — язык запросов к базе. Любой ЛК — это по сути CRUD."},
+{lvl:4, desc:"Данные лежат в базе, но чтобы достать их по условию («все заказы за май»), нужен специальный язык запросов именно к этой базе.",
+ q:"Как называется язык запросов к базе данных?", opts:["SQL","JSON","API"], correct:0,
+ exp:"SQL — язык запросов к базе. JSON — формат передачи данных. API — интерфейс между программами. Разные роли, часто путают."},
+{lvl:4, desc:"Когда ты заходишь в личный кабинет, система сначала должна убедиться, что ты — это ты. Обычно проверяет по логину и паролю.",
+ q:"Как называется проверка «КТО ты» при входе?", opts:["Authentication","Authorization","Token"], correct:0,
+ exp:"Authentication — проверка личности (кто ты). Authorization — проверка прав (что тебе можно). Token — пропуск, который выдают после успешного входа."},
+{lvl:4, desc:"Система уже знает, кто ты. Теперь она решает, что именно тебе разрешено: обычный пользователь видит свой кабинет, админ — настройки всех.",
+ q:"Как называется проверка «ЧТО тебе разрешено делать»?", opts:["Authorization","Authentication","API"], correct:0,
+ exp:"Authorization — права доступа (что можно). Authentication — личность (кто ты). Их постоянно путают — знание разницы тебя выделит."},
+{lvl:4, desc:"После входа неудобно вводить пароль на каждое действие. Система выдаёт временный «пропуск», и пока он у тебя — она понимает, что запросы идут от вошедшего пользователя.",
+ q:"Как называется временный пропуск пользователя после входа?", opts:["Token","Endpoint","Commit"], correct:0,
+ exp:"Token — пропуск после входа. Endpoint — адрес операции в API. Commit — сохранёнка кода в Git, совсем из другой области."},
+{lvl:4, desc:"Личный кабинет сам по себе мало что умеет. Его подключают к другим сервисам — расчёту ставок, оплате, CRM — чтобы они обменивались данными. Это и есть суть твоей задачи.",
+ q:"Как называется соединение двух систем для обмена данными?", opts:["Integration","Deploy","Frontend"], correct:0,
+ exp:"Integration — связать системы (суть твоей роли). Deploy — выложить код в интернет. Frontend — видимая часть. Интеграция чаще всего идёт через API."},
+{lvl:4, desc:"Закрытый раздел сайта, куда пользователь входит под своим логином и видит только свои данные: заказы, статусы, документы.",
+ q:"Как по-английски называют личный кабинет / панель пользователя?", opts:["Dashboard","Homepage","Footer"], correct:0,
+ exp:"Dashboard (или account) — личный кабинет. Homepage — публичная главная страница для всех. Footer — просто подвал сайта."},
+{lvl:4, desc:"На каждый запрос сервер отвечает не только данными, но и числовым кодом: успех, не найдено, нет доступа или поломка. По коду понятно, что пошло не так.",
+ q:"Какой код означает «страница не найдена»?", opts:["404","200","500"], correct:0,
+ exp:"404 — не найдено. 200 — успех (всё ок). 500 — сервер упал. Эти три кода полезно узнавать на лету."},
+
+/* ===== Уровень 5 — управление проектом ===== */
+{lvl:5, desc:"Прежде чем команда начнёт писать код, кто-то должен чётко описать, что продукт должен уметь. Иначе сделают не то. Это твоя зона как менеджера.",
+ q:"Как называется описание того, что должен делать продукт?", opts:["Requirements","Backlog","Scope"], correct:0,
+ exp:"Requirements — требования (ТЗ): что делать. Scope — границы: что входит, а что нет. Backlog — очередь задач. Связаны, но это разные вещи."},
+{lvl:5, desc:"У любой задачи есть границы: одни вещи входят в неё, другие нет. Когда незаметно добавляют «ещё чуть-чуть», задача разрастается и срывает срок.",
+ q:"Как называется объём работ — что входит в задачу, а что нет?", opts:["Scope","Deadline","Sprint"], correct:0,
+ exp:"Scope — границы задачи. Deadline — срок сдачи. Sprint — рабочий отрезок времени. Контролировать scope — прямая работа менеджера."},
+{lvl:5, desc:"Вместо того чтобы год делать идеальный продукт, выпускают простую первую версию с самым нужным — чтобы быстро проверить, нужно ли это людям вообще.",
+ q:"Как называют минимальную первую версию для проверки идеи?", opts:["MVP","Backlog","Milestone"], correct:0,
+ exp:"MVP — minimum viable product, простая рабочая версия. Backlog — список задач. Milestone — контрольная точка. Ты сам делал MVP калькулятора."},
+{lvl:5, desc:"Прежде чем верстать экран, дизайнер рисует, как он будет выглядеть. Это согласуют с заказчиком — чтобы не переделывать уже готовый код.",
+ q:"Как называется нарисованный прототип будущего экрана?", opts:["Mockup","Backlog","Deploy"], correct:0,
+ exp:"Mockup — макет, картинка экрана до разработки. Backlog — список задач. Deploy — выкладка готового кода. Макет всегда идёт до кода."},
+{lvl:5, desc:"В гибкой разработке работу делят на короткие отрезки по 1–2 недели. В конце каждого должна получиться готовая часть продукта.",
+ q:"Как называется рабочий отрезок в 1–2 недели?", opts:["Sprint","Deadline","Scope"], correct:0,
+ exp:"Sprint — короткий рабочий цикл. Deadline — финальный срок. Scope — объём работ. Спринты — основа подхода Agile/Scrum."},
+{lvl:5, desc:"Все идеи и задачи, которые ещё предстоит сделать, складывают в один общий список. Из него берут работу по приоритету.",
+ q:"Как называется общий список задач «на потом»?", opts:["Backlog","Sprint","Milestone"], correct:0,
+ exp:"Backlog — очередь всех задач. Sprint — отрезок, в который часть из них берут в работу. Milestone — крупная контрольная точка проекта."},
+{lvl:5, desc:"У проекта есть финальный срок сдачи и есть промежуточные важные точки, к которым должна быть готова определённая часть работы.",
+ q:"Как называется КРАЙНИЙ срок сдачи работы?", opts:["Deadline","Milestone","Sprint"], correct:0,
+ exp:"Deadline — крайний срок. Milestone — важная промежуточная веха. Sprint — рабочий отрезок. Все про время, но это разные вещи."},
+{lvl:5, desc:"Вокруг проекта есть люди, которым важен его результат: заказчик, руководитель, ключевой клиент. С их ожиданиями менеджер обязан считаться.",
+ q:"Как называют заинтересованную в проекте сторону?", opts:["Stakeholder","Backlog","Endpoint"], correct:0,
+ exp:"Stakeholder — заинтересованная сторона (заказчик, начальник). Backlog — список задач. Endpoint — адрес в API, из другой области."},
+
+/* ===== Уровень 6 — English: понимание ===== */
+{lvl:6, desc:"Переходим на английский. Читаешь определение и выбираешь термин. Подсвечен перевод ключевого слова.",
+ q:`Which part of an app do ${term("users see","видит юзер")} and click in the browser?`, opts:["Frontend","Backend","Database"], correct:0,
+ exp:"Frontend — видимое в браузере. Backend — сервер и логика. Database — хранилище данных."},
+{lvl:6, desc:"Читай на английском, выбирай верное.",
+ q:`Which part runs the ${term("logic","логика")} and the database on the server?`, opts:["Backend","Frontend","Browser"], correct:0,
+ exp:"Backend — серверная логика и база. Frontend — видимая часть. Browser — программа для просмотра сайтов."},
+{lvl:6, desc:"Читай на английском, выбирай верное.",
+ q:`What do you call ${term("publishing","публикация")} the code so users can access it?`, opts:["Deploy","Commit","Merge"], correct:0,
+ exp:"Deploy — выложить код в интернет. Commit — сохранить правку у себя. Merge — слить ветки."},
+{lvl:6, desc:"Читай на английском, выбирай верное.",
+ q:`What lets two systems ${term("exchange data","обмениваться данными")} with each other?`, opts:["API","JSON","SQL"], correct:0,
+ exp:"API — канал обмена. JSON — формат данных. SQL — язык запросов к базе."},
+{lvl:6, desc:"Читай на английском, выбирай верное.",
+ q:`What is an ${term("error","ошибка")} in how the software works called?`, opts:["Bug","Fix","Feature"], correct:0,
+ exp:"Bug — ошибка. Fix — её починка. Feature — функция/возможность. Все три реальны."},
+{lvl:6, desc:"Читай на английском, выбирай верное.",
+ q:`What do you open to ${term("propose changes","предложить правки")} for review before merging?`, opts:["Pull request","Commit","Deploy"], correct:0,
+ exp:"Pull request — запрос с правками на проверку. Commit — отдельная сохранёнка. Deploy — выкладка уже принятого кода."},
+{lvl:6, desc:"Читай на английском, выбирай верное.",
+ q:`What defines what is ${term("included","входит")} in a project and what is not?`, opts:["Scope","Deadline","Backlog"], correct:0,
+ exp:"Scope — границы проекта. Deadline — срок сдачи. Backlog — список задач."},
+{lvl:6, desc:"Читай на английском, выбирай верное.",
+ q:`What is the ${term("date","дата")} by which the work must be finished?`, opts:["Deadline","Scope","Sprint"], correct:0,
+ exp:"Deadline — крайний срок. Scope — объём работ. Sprint — рабочий отрезок."},
+{lvl:6, desc:"Читай на английском, выбирай верное.",
+ q:`What is a ${term("visual prototype","визуальный прототип")} of a screen made before development?`, opts:["Mockup","Backlog","Token"], correct:0,
+ exp:"Mockup — макет экрана до разработки. Backlog — список задач. Token — пропуск пользователя, не относится."},
+{lvl:6, desc:"Проверка аббревиатуры. Выбери верную расшифровку.",
+ q:`What does ${term("CRUD","КРУД")} stand for?`, opts:["Create, Read, Update, Delete","Code, Run, Update, Deploy","Check, Read, Use, Delete"], correct:0,
+ exp:"CRUD = Create, Read, Update, Delete — четыре операции с данными. Остальные похожи, но неверны."},
+
+/* ===== Уровень 7 — English: фразы ===== */
+{lvl:7, desc:"Нужно вежливо попросить макет до начала разработки. Выбери вариант, который звучит естественно для рабочего созвона.",
+ q:`Попросить ${term("mockup","макет")} до разработки:`, opts:["Could you show me the mockup before development starts?","Send the mockup now before make development.","I need mockup first, after you do development."], correct:0,
+ exp:"Первый — вежливо и естественно («Could you…?»). Остальные понятны, но звучат как ломаный английский."},
+{lvl:7, desc:"Нужно спросить про срок задачи.",
+ q:`Спросить про ${term("deadline","срок")}:`, opts:["What's the deadline for this task?","When this task is deadline?","How much time deadline this task?"], correct:0,
+ exp:"«What's the deadline for this task?» — стандартный вопрос. В остальных нарушен порядок слов."},
+{lvl:7, desc:"Предложить созвон, чтобы обсудить требования. Обрати внимание: discuss идёт БЕЗ предлога.",
+ q:`Предложить созвон по ${term("requirements","требованиям")}:`, opts:["Let's have a call to discuss the requirements.","Let's call for discuss about the requirements.","We make a call to talk the requirements about."], correct:0,
+ exp:"«…discuss the requirements» — без «about». «discuss about» — типичная ошибка. Первый вариант верный."},
+{lvl:7, desc:"Нужно обозначить, что функция важнее остальных. feature = функция, фича.",
+ q:`Сказать, что ${term("feature","функция")} в приоритете:`, opts:["This feature is a priority.","This feature is very priority.","This is more important feature than other."], correct:0,
+ exp:"«This feature is a priority.» — коротко и верно. «very priority» и кривое сравнение — ошибки."},
+{lvl:7, desc:"Попросить выложить изменения на тестовый сервер. deploy — это глагол сам по себе.",
+ q:`Попросить ${term("deploy","выкатить")} на тест:`, opts:["Please deploy the changes to the test server.","Please make deploy the changes on test server.","Please do the deploy changes in testing."], correct:0,
+ exp:"«Please deploy the changes to the test server.» — естественно. «make deploy» лишнее: deploy уже глагол."},
+{lvl:7, desc:"Сказать, что проверишь и дашь обратную связь. review = проверить, feedback = отзыв.",
+ q:`Дать ${term("feedback","обратную связь")}:`, opts:["I'll review it and give you feedback.","I will check and give the feedback back to you.","I review and after I tell you the feedback."], correct:0,
+ exp:"«I'll review it and give you feedback.» — чисто и по делу. Остальные перегружены и звучат неестественно."},
+{lvl:7, desc:"Blocker — то, что мешает двигаться по задаче. Это классический вопрос на ежедневной летучке (standup).",
+ q:`Спросить про ${term("blockers","препятствия")} по задаче:`, opts:["Are there any blockers on this task?","Is there some block for this task?","What is blocking you for the task?"], correct:0,
+ exp:"«Are there any blockers on this task?» — стандартная фраза стендапа. blocker — то, что мешает продолжать."},
+{lvl:7, desc:"Попросить перенести дедлайн на пятницу. Конструкция: move … to Friday.",
+ q:`Попросить ${term("move the deadline","перенести срок")} на пятницу:`, opts:["Can we move the deadline to Friday?","Can we make the deadline more to Friday?","Is it possible move deadline until Friday?"], correct:0,
+ exp:"«Can we move the deadline to Friday?» — естественная просьба сдвинуть срок. move … to Friday."},
+{lvl:7, desc:"Standup — короткая ежедневная летучка: что делал вчера, что сегодня, что мешает. Тебя спросили: «What did you work on yesterday?»",
+ q:`Как правильно НАЧАТЬ ответ про вчерашний день? ${term("yesterday","вчера")}`, opts:["Yesterday I worked on the login page.","Yesterday I am working on the login page.","Yesterday I work on the login page."], correct:0,
+ exp:"«Yesterday I worked on…» — нужно прошедшее время (worked). «am working» — настоящее, «work» — без окончания. Мелочь, но слышна сразу."},
+{lvl:7, desc:"Частая фраза на созвонах: «Can you walk me through the flow?» Слово walk сбивает с толку, но речь не про ходьбу.",
+ q:`Что значит ${term("walk me through","проведи по шагам")} the flow?`, opts:["Объясни мне процесс по шагам","Пройди со мной до переговорки","Покажи дорогу к серверу"], correct:0,
+ exp:"«Walk me through…» — «проведи меня по шагам, объясни логику». Очень ходовая фраза на рабочих созвонах."}
+];
+
+let i=0, correctCount=0, answered=false, order=[];
+const perLevel={}, shownIntros={};
+function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]];}return a;}
+const app=document.getElementById("app"), prog=document.getElementById("prog"), count=document.getElementById("count");
+
+function setProgress(){prog.style.width=(i/Q.length*100)+"%";count.textContent=`${Math.min(i+1,Q.length)} / ${Q.length}`;}
+
+function renderIntro(lvl){
+  count.textContent=""; prog.style.width=(i/Q.length*100)+"%";
+  const L=LEVELS[lvl], n=Object.keys(LEVELS).length;
+  app.innerHTML=`<div class="card intro">
+    <div class="lvl"><span class="dot"></span>Уровень ${lvl} из ${n}</div>
+    <h2>${L.name}</h2><p>${L.intro}</p>
+    <button class="next show start" id="go">Начать уровень →</button></div>`;
+  document.getElementById("go").onclick=()=>{shownIntros[lvl]=true;render();};
+}
+
+function render(){
+  if(i>=Q.length) return renderResult();
+  const item=Q[i];
+  if(!shownIntros[item.lvl]) return renderIntro(item.lvl);
+  answered=false; setProgress();
+  const letters=["1","2","3"];
+  order=shuffle([...item.opts.keys()]);
+  app.innerHTML=`<div class="card">
+    <div class="lvl"><span class="dot"></span>${LEVELS[item.lvl].name}</div>
+    <div class="desc"><span class="lbl">Разбор темы</span>${item.desc}</div>
+    <p class="q">${item.q}</p>
+    <div class="opts">
+      ${order.map((origIdx,pos)=>`<button class="opt" data-pos="${pos}"><span class="key">${letters[pos]}</span><span>${item.opts[origIdx]}</span></button>`).join("")}
+    </div>
+    <div class="exp" id="exp"><span class="lbl">Почему так</span>${item.exp}</div>
+    <button class="next" id="next">Дальше →</button></div>`;
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>choose(parseInt(b.dataset.pos)));
+}
+
+function choose(pos){
+  if(answered) return; answered=true;
+  const item=Q[i], btns=app.querySelectorAll(".opt");
+  perLevel[item.lvl]=perLevel[item.lvl]||{ok:0,total:0}; perLevel[item.lvl].total++;
+  const chosenOrig=order[pos];
+  btns.forEach(b=>{
+    b.disabled=true;
+    const orig=order[parseInt(b.dataset.pos)];
+    if(orig===item.correct) b.classList.add("correct");
+    if(orig===chosenOrig && chosenOrig!==item.correct) b.classList.add("wrong");
+  });
+  if(chosenOrig===item.correct){correctCount++; perLevel[item.lvl].ok++;}
+  document.getElementById("exp").classList.add("show");
+  const next=document.getElementById("next"); next.classList.add("show");
+  next.textContent=(i+1>=Q.length)?"Показать результат →":"Дальше →";
+  next.onclick=()=>{i++; render();};
+}
+
+function renderResult(){
+  prog.style.width="100%"; count.textContent="Готово";
+  const pct=Math.round(correctCount/Q.length*100);
+  let verdict,sub;
+  if(pct>=90){verdict="Готов к созвону.";sub="Ты уверенно владеешь базой и фразами. На Zoom держись спокойно: понимаешь термины — значит, понимаешь задачу. Не бойся переспросить «Could you clarify that?» — это нормально и звучит профессионально.";}
+  else if(pct>=75){verdict="Сильная база.";sub="Костяк есть. Пройди ещё раз уровни, где ошибался, и проговори вслух английские фразы из уровня 7.";}
+  else if(pct>=50){verdict="Фундамент заложен.";sub="Понимание есть, но термины пока плавают. Прогони квиз ещё раз, особенно уровень 4 (API/ЛК) — это сердце твоей роли.";}
+  else{verdict="Нужен ещё проход.";sub="Это нормально для старта. Читай разборы тем перед ответом — со второго раза термины закрепятся. До вторника время есть.";}
+  const rows=Object.keys(LEVELS).map(l=>{
+    const d=perLevel[l]; if(!d) return "";
+    const p=Math.round(d.ok/d.total*100);
+    return `<div class="br-row"><span class="name">${LEVELS[l].name}</span><span class="mini"><span style="width:${p}%"></span></span><span class="pct">${p}%</span></div>`;
+  }).join("");
+  app.innerHTML=`<div class="card res">
+    <div class="lvl" style="margin:0 auto 14px"><span class="dot"></span>Результат</div>
+    <div class="score">${pct}%</div><div class="frac">${correctCount} из ${Q.length} верно</div>
+    <div class="verdict">${verdict}</div><p class="sub">${sub}</p>
+    <div class="breakdown">${rows}</div>
+    <button class="next show again" id="restart">Пройти заново →</button></div>`;
+  document.getElementById("restart").onclick=()=>{
+    i=0; correctCount=0;
+    for(const k in perLevel) delete perLevel[k];
+    for(const k in shownIntros) delete shownIntros[k];
+    render();
+  };
+}
+
+document.addEventListener("keydown",e=>{
+  if(["1","2","3"].includes(e.key)){const b=app.querySelector(`.opt[data-pos="${+e.key-1}"]`); if(b&&!answered)choose(+e.key-1);}
+  if(e.key==="Enter"){const n=document.getElementById("next"),g=document.getElementById("go"),r=document.getElementById("restart"); if(g)g.click(); else if(r)r.click(); else if(n&&n.classList.contains("show"))n.click();}
+});
+
+render();
+</script>
+</body>
+</html>
