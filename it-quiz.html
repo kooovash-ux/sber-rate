@@ -1,205 +1,499 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>IT English Quiz — TradeRate</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IT & English — подготовка к собеседованию</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
-:root{--a:#C2703D;--ok:#2e7d32;--err:#c62828;--bg:#1a1a2e;--card:#252540;--ink:#e0e0e0;--muted:#888}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-.qz{max-width:560px;width:100%;display:flex;flex-direction:column;gap:16px}
-.hd{text-align:center}
-.hd h1{font-size:22px;font-weight:700;color:#fff}
-.hd p{font-size:12px;color:var(--muted);margin-top:4px}
-.card{background:var(--card);border-radius:12px;padding:24px}
-.stats{display:flex;gap:12px;justify-content:center;margin-bottom:20px}
-.stat{text-align:center}
-.stat .n{font-size:28px;font-weight:700}
-.stat .l{font-size:10px;color:var(--muted);margin-top:2px}
-.stat.ok .n{color:var(--ok)}
-.stat.err .n{color:var(--err)}
-.q-text{font-size:15px;font-weight:500;margin-bottom:18px;line-height:1.5}
-.q-text .en{color:#e0b070}
-.opts{display:flex;flex-direction:column;gap:8px}
-.opt{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);padding:14px;border-radius:8px;cursor:pointer;font-size:14px;transition:all .15s;text-align:left;color:var(--ink)}
-.opt:hover{border-color:var(--a);background:rgba(194,112,61,.1)}
-.opt.chosen{border-color:var(--a);background:rgba(194,112,61,.2)}
-.opt.right{border-color:var(--ok);background:rgba(46,125,50,.15)}
-.opt.wrong{border-color:var(--err);background:rgba(198,40,40,.1)}
-.opt:disabled{cursor:not-allowed}
-.exp{font-size:12px;color:var(--muted);margin-top:12px;padding:12px;background:rgba(255,255,255,.03);border-radius:8px;line-height:1.5}
-.btn{display:block;width:100%;padding:14px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:16px}
-.btn-next{background:var(--a);color:#fff}
-.btn-next:hover{opacity:.9}
-.end{text-align:center;padding:20px}
-.end h2{font-size:20px;margin-bottom:8px}
-.end h2.ok{color:var(--ok)}.end h2.ok2{color:var(--a)}.end h2.bad{color:var(--err)}
-.end p{color:var(--muted);font-size:13px;margin-bottom:16px}
-.progress{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-bottom:16px}
-.progress-bar{height:100%;background:var(--a);transition:width .3s}
-.counter{font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px}
+  :root{
+    --bg:#F6F7F9;
+    --card:#FFFFFF;
+    --navy:#0A1E3D;
+    --ink:#1F2937;
+    --muted:#6B7280;
+    --line:#E7E9ED;
+    --green:#21A038;
+    --green-soft:rgba(33,160,56,.10);
+    --red:#DC2626;
+    --red-soft:rgba(220,38,38,.08);
+    --shadow:0 1px 2px rgba(10,30,61,.04),0 8px 24px rgba(10,30,61,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:20px 16px 64px}
+  .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .brand{font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+  .brand b{color:var(--green)}
+  .count{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);white-space:nowrap}
+
+  .bar{height:6px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:20px}
+  .bar span{display:block;height:100%;width:0;background:var(--green);border-radius:999px;transition:width .35s ease}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+  @media(min-width:520px){.card{padding:28px}}
+
+  .lvl{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--navy);background:var(--green-soft);border:1px solid rgba(33,160,56,.22);padding:5px 11px;border-radius:999px;margin-bottom:16px}
+  .lvl .dot{width:6px;height:6px;border-radius:999px;background:var(--green)}
+
+  .q{font-size:19px;font-weight:600;color:var(--navy);margin:0 0 6px;letter-spacing:-.01em}
+  @media(min-width:520px){.q{font-size:21px}}
+
+  /* выделенный термин + перевод */
+  .term{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--green);background:var(--green-soft);padding:1px 6px;border-radius:6px;white-space:nowrap}
+  .tr{display:inline-block;font-size:12px;font-weight:500;color:var(--muted);background:#F1F3F5;border:1px solid var(--line);padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+
+  .opts{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+  .opt{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px 15px;font:inherit;font-size:15.5px;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s,transform .05s}
+  .opt:hover:not(:disabled){border-color:#C9CDD4}
+  .opt:active:not(:disabled){transform:scale(.995)}
+  .opt:disabled{cursor:default}
+  .opt .key{flex:0 0 auto;width:22px;height:22px;border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--muted);font-family:"JetBrains Mono",monospace;margin-top:1px}
+  .opt.correct{border-color:var(--green);background:var(--green-soft)}
+  .opt.correct .key{background:var(--green);border-color:var(--green);color:#fff}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft)}
+  .opt.wrong .key{background:var(--red);border-color:var(--red);color:#fff}
+
+  .exp{margin-top:16px;border-left:3px solid var(--green);background:#FAFBFC;border-radius:0 10px 10px 0;padding:13px 15px;font-size:14.5px;color:var(--ink);display:none}
+  .exp.show{display:block;animation:fade .25s ease}
+  .exp .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:4px}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  .next{margin-top:18px;display:none;width:100%;justify-content:center;align-items:center;gap:8px;background:var(--navy);color:#fff;border:none;border-radius:11px;padding:14px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .15s}
+  .next.show{display:flex}
+  .next:hover{opacity:.92}
+
+  /* интро уровня */
+  .intro h2{font-size:22px;color:var(--navy);margin:6px 0 8px;letter-spacing:-.01em}
+  .intro p{color:var(--muted);margin:0 0 4px;font-size:15px}
+  .intro .start{margin-top:22px}
+
+  /* результат */
+  .res{text-align:center}
+  .res .score{font-family:"JetBrains Mono",monospace;font-size:54px;font-weight:600;color:var(--green);line-height:1;margin:6px 0 4px}
+  .res .frac{color:var(--muted);font-size:14px;font-family:"JetBrains Mono",monospace}
+  .res .verdict{font-size:17px;font-weight:600;color:var(--navy);margin:18px 0 6px}
+  .res .sub{color:var(--muted);font-size:14.5px;margin:0 auto;max-width:440px}
+  .breakdown{margin:22px 0 4px;text-align:left;display:flex;flex-direction:column;gap:8px}
+  .br-row{display:flex;align-items:center;gap:10px;font-size:13.5px}
+  .br-row .name{flex:1;color:var(--ink)}
+  .br-row .mini{flex:0 0 110px;height:6px;background:var(--line);border-radius:999px;overflow:hidden}
+  .br-row .mini span{display:block;height:100%;background:var(--green);border-radius:999px}
+  .br-row .pct{flex:0 0 44px;text-align:right;font-family:"JetBrains Mono",monospace;color:var(--muted);font-size:12px}
+  .again{margin-top:24px}
+
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+  .kbd{font-family:"JetBrains Mono",monospace;background:#F1F3F5;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:11px}
 </style>
 </head>
 <body>
-
-<div class="qz" id="app"></div>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">подготовка · <b>IT &amp; English</b></div>
+    <div class="count" id="count"></div>
+  </div>
+  <div class="bar"><span id="prog"></span></div>
+  <div id="app"></div>
+  <div class="foot">На компьютере можно отвечать клавишами <span class="kbd">1</span>–<span class="kbd">4</span>, дальше — <span class="kbd">Enter</span></div>
+</div>
 
 <script>
-// ─── Question Bank ───
-var Q = [
-  // HTML / Layout
-  {q:"What does <span class='en'>HTML</span> stand for?",o:["Hyper Text Markup Language","High Tech Modern Layout","Home Tool Markup Language","Hyper Transfer Markup Language"],a:0},
-  {q:"What is a <span class='en'>div</span> in HTML?",o:["A JavaScript function","A container / block element","A styling rule","A server response"],a:1},
-  {q:"What does <span class='en'>CSS</span> stand for?",o:["Computer Style System","Cascading Style Sheets","Creative Sheet Syntax","Client Side Styling"],a:1},
-  {q:"What is <span class='en'>responsive design</span>?",o:["Fast loading design","Layout that adapts to screen size","Dark mode only","Static desktop layout"],a:1},
-  {q:"What is a <span class='en'>media query</span> in CSS?",o:["A JavaScript event","A condition that applies styles based on screen width","A server request","An HTML attribute"],a:1},
-  {q:"What is the <span class='en'>viewport</span> meta tag for?",o:["Server configuration","Controls layout on mobile browsers","Database queries","Image compression"],a:1},
-  {q:"What is <span class='en'>Flexbox</span>?",o:["A JavaScript library","A CSS layout mode for distributing space","An HTML element","A backend framework"],a:1},
-  {q:"What is <span class='en'>CSS Grid</span>?",o:["A table tag","A 2D layout system for rows and columns","A JavaScript grid","A server grid"],a:1},
-  {q:"What is <span class='en'>padding</span> in CSS?",o:["Space between elements","Space inside an element, between content and border","Space outside an element","Font size"],a:1},
-  {q:"What is <span class='en'>margin</span> in CSS?",o:["Space inside an element","Space outside an element's border","Text indentation","Line height"],a:1},
+/* ===== Уровни ===== */
+const LEVELS = {
+  1:{name:"Основы: из чего состоит сайт",   intro:"Начнём с фундамента на русском. Это то, что должно отскакивать от зубов: фронт, бэк, сервер, деплой."},
+  2:{name:"Вёрстка и веб",                  intro:"Из чего собирается страница: HTML, CSS, JS и базовые блоки интерфейса."},
+  3:{name:"Git и процесс разработки",       intro:"Как команда пишет код и выкатывает его. Эти слова ты будешь слышать на каждом созвоне."},
+  4:{name:"API, данные и интеграция в ЛК",  intro:"Сердце твоей будущей задачи. Личный кабинет = данные + API. Здесь — внимательнее всего."},
+  5:{name:"Управление проектом",            intro:"Твоя зона. Термины, на которых ты ставишь задачи и держишь сроки."},
+  6:{name:"English · понимание терминов",   intro:"База закрыта — переключаемся на английский. Читаешь определение на английском, выбираешь верное. Перевод термина подсвечен."},
+  7:{name:"English · фразы для команды",     intro:"Финал. Готовые фразы, которыми ты ставишь задачи команде в Бангалоре и отвечаешь на собеседовании. Выучи их — и созвон пройдёшь."}
+};
 
-  // JavaScript
-  {q:"What is <span class='en'>JavaScript</span> used for?",o:["Only styling","Adding interactivity to web pages","Only backend servers","Database management"],a:1},
-  {q:"What is a <span class='en'>function</span> in JavaScript?",o:["A CSS rule","A reusable block of code","An HTML tag","A server request"],a:1},
-  {q:"What is an <span class='en'>event listener</span>?",o:["A CSS selector","Code that waits for user action (click, scroll)","A server log","A database trigger"],a:1},
-  {q:"What is <span class='en'>DOM</span>?",o:["Database Object Model","Document Object Model — tree of HTML elements","Domain Object Manager","Document Override Method"],a:1},
-  {q:"What is <span class='en'>API</span>?",o:["Applied Programming Instruction","Application Programming Interface","Advanced Protocol Integration","Automatic Page Indexer"],a:1},
-  {q:"What is a <span class='en'>fetch request</span>?",o:["A CSS import","An HTTP request to get data from a server","A file download only","A styling command"],a:1},
-  {q:"What is <span class='en'>JSON</span>?",o:["Java Server Object Notation","JavaScript Object Notation — data format","Just Simple Object Name","Java System Online Network"],a:1},
-  {q:"What is <span class='en'>callback</span> in JS?",o:["A CSS class","A function passed to another function to run later","An HTML attribute","A server response"],a:1},
-  {q:"What is <span class='en'>async/await</span>?",o:["CSS animations","Syntax for handling asynchronous code","HTML semantics","Database queries"],a:1},
-  {q:"What is <span class='en'>localStorage</span>?",o:["Server storage","Browser storage that persists after page close","Database storage","Cloud storage"],a:1},
+/* ===== Вопросы ===== */
+/* term() — англ. термин с подсвеченным переводом */
+function term(en, ru){ return `<span class="term">${en}</span><span class="tr">${ru}</span>`; }
 
-  // Frontend / React
-  {q:"What is a <span class='en'>component</span> in React?",o:["A CSS file","A reusable, self-contained piece of UI","An HTML tag only","A server module"],a:1},
-  {q:"What are <span class='en'>props</span> in React?",o:["CSS properties","Data passed into a component","Server settings","HTML attributes"],a:1},
-  {q:"What is <span class='en'>state</span> in React?",o:["A country","Data that changes over time within a component","A CSS rule","A fixed value"],a:1},
-  {q:"What is <span class='en'>JSX</span>?",o:["JavaScript XML","JavaScript Extension — HTML-like syntax in JS","Java Syntax Extension","JSON XML"],a:1},
-  {q:"What is <span class='en'>SPA</span>?",o:["Server Page Application","Single Page Application — all content on one page","Simple Protocol Access","Static Page Architecture"],a:1},
-  {q:"What is <span class='en'>MPA</span>?",o:["Multi Page Application — each page loads separately","Modern Protocol Access","Mobile Page App","Multi Protocol Application"],a:0},
-  {q:"What is <span class='en'>routing</span> in frontend?",o:["CSS path styling","Navigating between views/pages without full reload","Server configuration","Database routing"],a:1},
-  {q:"What is a <span class='en'>framework</span>?",o:["A single CSS file","A structured platform for building apps (React, Vue)","An HTML template","A database"],a:1},
-  {q:"What is <span class='en'>npm</span>?",o:["Network Protocol Manager","Node Package Manager — JavaScript package manager","New Project Maker","Native Page Module"],a:1},
-  {q:"What is <span class='en'>bundler</span> (Webpack, Vite)?",o:["A server tool","Tool that combines JS/CSS files for production","A CSS framework","A database"],a:1},
+const Q = [
+/* ---------- Уровень 1: основы ---------- */
+{lvl:1, q:`Что такое ${term("frontend","фронтенд")}?`,
+ opts:["Всё, что пользователь видит и трогает в браузере: кнопки, формы, дизайн","Сервер, где лежат данные","Программа для бухгалтерии","Язык переговоров с поставщиками"],
+ correct:0, exp:"Это то, что видишь на экране: кнопки, текст, картинки."},
+{lvl:1, q:`Что такое ${term("backend","бэкенд")}?`,
+ opts:["Серверная часть: логика, база данных, обработка запросов","Цвет кнопок на сайте","Папка с фотографиями","Договор с подрядчиком"],
+ correct:0, exp:"То, что спрятано на сервере: данные и логика. Глазами не видно."},
+{lvl:1, q:`Кто такой ${term("client","клиент")} в вебе?`,
+ opts:["Устройство/браузер пользователя, который шлёт запросы","Заказчик, который платит","Менеджер по продажам","Таможенный брокер"],
+ correct:0, exp:"Это твой браузер или телефон — он шлёт запросы. Не путать с заказчиком."},
+{lvl:1, q:`Что делает ${term("server","сервер")}?`,
+ opts:["Принимает запросы и отдаёт данные/страницы","Рисует логотип","Подписывает контракты","Считает зарплату"],
+ correct:0, exp:"Компьютер, который отвечает на запросы и отдаёт страницы."},
+{lvl:1, q:`Что такое ${term("browser","браузер")}?`,
+ opts:["Программа для открытия сайтов: Chrome, Safari","База данных","Язык программирования","Тип сервера"],
+ correct:0, exp:"Программа, где открываешь сайты. Chrome, Safari."},
+{lvl:1, q:`Что такое ${term("domain","домен")}?`,
+ opts:["Адрес сайта, например traderate.ru","Папка на компьютере","Имя разработчика","Тип базы данных"],
+ correct:0, exp:"Адрес сайта. У тебя — traderate.ru."},
+{lvl:1, q:`Что такое ${term("hosting","хостинг")}?`,
+ opts:["Место, где лежат файлы сайта и откуда он доступен в интернете","Дизайн главной страницы","Список задач","Команда разработки"],
+ correct:0, exp:"Место, где лежит сайт. GitHub Pages — это хостинг."},
+{lvl:1, q:`Что значит ${term("deploy","деплой")}?`,
+ opts:["Выложить готовый код на сервер, чтобы он стал доступен людям","Удалить проект","Нарисовать макет","Провести собеседование"],
+ correct:0, exp:"Выложить сайт в интернет. Ты это делал через GitHub Pages."},
+{lvl:1, q:`Что такое ${term("database","база данных")}?`,
+ opts:["Хранилище структурированной информации: пользователи, заказы, ставки","Папка со скриншотами","Чат с командой","Файл Excel на рабочем столе"],
+ correct:0, exp:"Где хранятся данные: пользователи, заказы, ставки."},
+{lvl:1, q:`Что означает ${term("production","прод")} (часто «прод»)?`,
+ opts:["Рабочая, «боевая» версия продукта, которой пользуются реальные люди","Черновик дизайна","Тестовый компьютер разработчика","Совещание по проекту"],
+ correct:0, exp:"«Боевая» версия, которой пользуются живые люди."},
 
-  // Backend / Server
-  {q:"What is a <span class='en'>server</span>?",o:["A browser","A machine/program that serves data to clients","A CSS file","A JavaScript function"],a:1},
-  {q:"What is an <span class='en'>HTTP request</span>?",o:["A CSS rule","A message from client to server asking for data/action","An HTML element","A JavaScript loop"],a:1},
-  {q:"What does <span class='en'>REST API</span> mean?",o:["Restricted Access Protocol","Representational State Transfer — API design style","Reset Application Interface","Remote Execution Standard"],a:1},
-  {q:"What is a <span class='en'>database</span>?",o:["A CSS file","Organized collection of data","A JavaScript variable","An HTML table"],a:1},
-  {q:"What is <span class='en'>SQL</span>?",o:["Simple Query Language","Structured Query Language — for databases","Server Quality Logic","Style Query Language"],a:1},
-  {q:"What is <span class='en'>Node.js</span>?",o:["A frontend library","JavaScript runtime for backend/server-side","A CSS framework","An HTML preprocessor"],a:1},
-  {q:"What is an <span class='en'>endpoint</span>?",o:["A CSS selector","A URL path where API responds (e.g. /api/users)","A JavaScript event","An HTML attribute"],a:1},
-  {q:"What does <span class='en'>CRUD</span> stand for?",o:["Create, Read, Update, Delete","Compile, Run, Upload, Deploy","Code, Render, Update, Display","Cache, Read, Unlink, Drop"],a:0},
-  {q:"What is <span class='en'>authentication</span>?",o:["CSS styling","Verifying user identity (login/password)","HTML layout","File uploading"],a:1},
-  {q:"What is a <span class='en'>cookie</span> in web?",o:["An HTML tag","Small data stored by browser (sessions, preferences)","A JavaScript function","A CSS trick"],a:1},
+/* ---------- Уровень 2: вёрстка ---------- */
+{lvl:2, q:`Что такое ${term("HTML","разметка")}?`,
+ opts:["Язык разметки: задаёт структуру страницы — заголовки, блоки, текст","Язык для цвета и шрифтов","База данных","Система контроля версий"],
+ correct:0, exp:"Скелет страницы: где заголовок, где текст, где блок."},
+{lvl:2, q:`За что отвечает ${term("CSS","стили")}?`,
+ opts:["Внешний вид: цвета, шрифты, отступы, расположение элементов","Логику расчётов","Хранение данных","Отправку писем"],
+ correct:0, exp:"Красота: цвета, шрифты, отступы."},
+{lvl:2, q:`Что добавляет ${term("JavaScript","скрипты")}?`,
+ opts:["Интерактивность: реакции на клики, расчёты, динамику","Цвет фона","Адрес сайта","Серверное железо"],
+ correct:0, exp:"Оживляет страницу. Твой калькулятор считает на нём."},
+{lvl:2, q:`Что такое ${term("layout","вёрстка")}?`,
+ opts:["Превращение макета дизайнера в работающую веб-страницу","Список задач","Переговоры с клиентом","Резервная копия"],
+ correct:0, exp:"Собрать страницу из макета. Это и есть вёрстка."},
+{lvl:2, q:`Что такое ${term("header","шапка")}?`,
+ opts:["Верхняя часть страницы: логотип, меню навигации","Подвал с контактами","Кнопка отправки","Всплывающее окно"],
+ correct:0, exp:"Шапка сверху: логотип и меню."},
+{lvl:2, q:`Что такое ${term("footer","подвал")}?`,
+ opts:["Нижняя часть страницы: контакты, ссылки, копирайт","Меню сверху","Поле поиска","Картинка на фоне"],
+ correct:0, exp:"Подвал внизу: контакты и ссылки."},
+{lvl:2, q:`Для чего нужен ${term("grid","сетка")}?`,
+ opts:["Раскладывать элементы по сетке — строки и колонки","Хранить пароли","Отправлять запросы на сервер","Рисовать иконки"],
+ correct:0, exp:"Раскладка по сетке: строки и колонки."},
+{lvl:2, q:`Что делает ${term("flexbox","флексы")}?`,
+ opts:["Гибко выравнивает элементы в ряд или столбец","Шифрует данные","Создаёт базу данных","Проверяет английский"],
+ correct:0, exp:"Выстраивает элементы в ряд и ровняет их."},
+{lvl:2, q:`Что значит ${term("responsive","адаптивный")}?`,
+ opts:["Сайт подстраивается под экран телефона и компьютера","Сайт быстро грузится","У сайта красивый логотип","Сайт переведён на английский"],
+ correct:0, exp:"Сайт удобен и на телефоне, и на компьютере."},
+{lvl:2, q:`Что такое ${term("form","форма")} на сайте?`,
+ opts:["Блок с полями ввода для отправки данных: логин, заявка","Анимация загрузки","Цветовая палитра","Тип сервера"],
+ correct:0, exp:"Поля для ввода. Через неё логинятся и шлют заявки."},
 
-  // Git / Deploy
-  {q:"What is <span class='en'>Git</span>?",o:["A programming language","A version control system for tracking code changes","A CSS library","A server"],a:1},
-  {q:"What is a <span class='en'>commit</span> in Git?",o:["A CSS rule","A saved snapshot of code changes","A server request","A JavaScript promise"],a:1},
-  {q:"What is <span class='en'>push</span> in Git?",o:["A CSS animation","Uploading local commits to remote repository","A JavaScript method","Deleting files"],a:1},
-  {q:"What is a <span class='en'>pull request (PR)</span>?",o:["A server log","A request to merge code changes into a branch","A CSS import","An HTML form"],a:1},
-  {q:"What is <span class='en'>GitHub</span>?",o:["A CSS framework","A platform for hosting Git repositories","A JavaScript library","A backend language"],a:1},
-  {q:"What does <span class='en'>deploy</span> mean?",o:["Writing CSS","Publishing code to a live server/environment","Creating HTML","Database backup"],a:1},
-  {q:"What is <span class='en'>GitHub Pages</span>?",o:["A database service","Free static site hosting from GitHub repos","A JavaScript framework","A CSS library"],a:1},
-  {q:"What is a <span class='en'>branch</span> in Git?",o:["A CSS class","A parallel version of the code","A server endpoint","An HTML section"],a:1},
-  {q:"What is <span class='en'>merge conflict</span>?",o:["A CSS issue","When two branches have incompatible changes","A server error","A JavaScript bug"],a:1},
-  {q:"What is <span class='en'>clone</span> in Git?",o:["A CSS trick","Copying a repository to your local machine","A JavaScript method","Database duplication"],a:1},
+/* ---------- Уровень 3: Git ---------- */
+{lvl:3, q:`Что такое ${term("Git","контроль версий")}?`,
+ opts:["Система контроля версий: хранит всю историю изменений кода","Язык программирования","Облачное хранилище фото","Программа для звонков"],
+ correct:0, exp:"Хранит историю кода. Можно откатиться назад."},
+{lvl:3, q:`Что такое ${term("repository","репозиторий")}?`,
+ opts:["Хранилище проекта со всей историей кода","Один файл с паролями","Папка с фотографиями","Список сотрудников"],
+ correct:0, exp:"Проект целиком на GitHub. Коротко — «репо»."},
+{lvl:3, q:`Что такое ${term("commit","коммит")}?`,
+ opts:["Сохранённая точка изменений с описанием, что поменяли","Удаление проекта","Запуск сервера","Звонок с командой"],
+ correct:0, exp:"Сохранёнка с подписью, что поменял."},
+{lvl:3, q:`Что значит ${term("push","запушить")}?`,
+ opts:["Отправить свои коммиты в общий репозиторий","Удалить ветку","Перезагрузить компьютер","Закрыть задачу"],
+ correct:0, exp:"Отправить свои правки на GitHub, чтобы видели другие."},
+{lvl:3, q:`Что такое ${term("branch","ветка")}?`,
+ opts:["Отдельная линия разработки, чтобы не ломать основную версию","Резервная копия базы","Имя сервера","Тип ошибки"],
+ correct:0, exp:"Своя ветка, чтобы не сломать рабочую версию."},
+{lvl:3, q:`Что такое ${term("merge","слияние")}?`,
+ opts:["Объединение веток — например, готовой фичи с основной","Удаление кода","Запуск тестов","Отправка письма"],
+ correct:0, exp:"Слить готовую ветку с основной."},
+{lvl:3, q:`Что такое ${term("pull request","запрос на слияние")} (PR)?`,
+ opts:["Запрос на проверку и принятие изменений перед слиянием","Просьба поднять зарплату","Запрос данных у клиента","Откат к старой версии"],
+ correct:0, exp:"«Вот мои правки, гляньте и примите»."},
+{lvl:3, q:`Что такое ${term("code review","ревью кода")}?`,
+ opts:["Проверка кода другим разработчиком перед добавлением","Тест английского","Расчёт стоимости проекта","Встреча с заказчиком"],
+ correct:0, exp:"Коллега смотрит твой код перед добавлением."},
+{lvl:3, q:`Что такое ${term("bug","баг")} и ${term("fix","фикс")}?`,
+ opts:["Ошибка в работе программы и её исправление","Новая фича и её дизайн","Сервер и база данных","Логин и пароль"],
+ correct:0, exp:"Bug — поломка, fix — починка."},
+{lvl:3, q:`Что такое ${term("CI/CD","автосборка и выкатка")}?`,
+ opts:["Автоматическая сборка и выкладка кода при изменениях","Тип базы данных","Язык разметки","Метод оплаты"],
+ correct:0, exp:"Код сам собирается и выкатывается, без ручной работы."},
 
-  // General dev terms
-  {q:"What does <span class='en'>UI</span> stand for?",o:["Universal Interface","User Interface","Unified Integration","Underlying Index"],a:1},
-  {q:"What does <span class='en'>UX</span> stand for?",o:["User Extension","User Experience","Universal XML","Unified Export"],a:1},
-  {q:"What is a <span class='en'>wireframe</span>?",o:["A server diagram","A simple layout sketch of a page","A JavaScript wire","A CSS grid"],a:1},
-  {q:"What is <span class='en'>mockup</span>?",o:["A code snippet","A static visual design of a page","A fake API","A test function"],a:1},
-  {q:"What is <span class='en'>prototype</span>?",o:["A final product","An interactive early version for testing","A CSS file","A database schema"],a:1},
-  {q:"What is a <span class='en'>bug</span>?",o:["A feature","An error or flaw in code","A CSS rule","A server request"],a:1},
-  {q:"What is <span class='en'>debugging</span>?",o:["Writing CSS","Finding and fixing errors in code","Deploying to server","Creating HTML"],a:1},
-  {q:"What is <span class='en'>refactoring</span>?",o:["Rewriting from scratch","Improving code structure without changing behavior","Adding features","Deleting files"],a:1},
-  {q:"What is a <span class='en'>sprint</span> in Agile?",o:["A CSS animation","A short, time-boxed work period (1-2 weeks)","A JavaScript loop","A server restart"],a:1},
-  {q:"What does <span class='en'>MVP</span> stand for (in product)?",o:["Most Valuable Player","Minimum Viable Product","Model View Presenter","Multi Version Protocol"],a:1},
-  {q:"What is <span class='en'>AGILE</span>?",o:["A programming language","An iterative development methodology","A CSS framework","A database type"],a:1},
-  {q:"What is a <span class='en'>standup</span>?",o:["A CSS property","A short daily team meeting (scrum)","A JavaScript event","A server command"],a:1},
-  {q:"What is <span class='en'>scalability</span>?",o:["CSS scaling","System's ability to handle growth","Font sizing","Image resizing"],a:1},
-  {q:"What is <span class='en'>DNS</span>?",o:["Domain Name System — translates names to IPs","Dynamic Node Server","Data Network Service","Digital Name Storage"],a:0},
-  {q:"What is <span class='en'>SSL</span> / HTTPS?",o:["A CSS protocol","Secure encryption for web traffic","A JavaScript library","An HTML tag"],a:1},
+/* ---------- Уровень 4: API / данные / ЛК ---------- */
+{lvl:4, q:`Что такое ${term("API","интерфейс")}?`,
+ opts:["Способ, которым две программы обмениваются данными","Дизайн кнопки","Имя сервера","Язык программирования"],
+ correct:0, exp:"Через него программы обмениваются данными. Главное слово твоей роли."},
+{lvl:4, q:`Что такое ${term("endpoint","эндпоинт")}?`,
+ opts:["Конкретный адрес API, куда отправляется запрос","Кнопка выхода","Последняя страница сайта","Конец рабочего дня"],
+ correct:0, exp:"Конкретный адрес внутри API, куда шлёшь запрос."},
+{lvl:4, q:`Что такое ${term("request","запрос")} и ${term("response","ответ")}?`,
+ opts:["Запрос от клиента и ответ от сервера","Логин и пароль","Ветка и коммит","Дизайн и вёрстка"],
+ correct:0, exp:"Спросил сервер (request) — получил ответ (response)."},
+{lvl:4, q:`Что такое ${term("JSON","формат данных")}?`,
+ opts:["Текстовый формат для обмена данными между системами","Язык для дизайна","Тип сервера","Программа для звонков"],
+ correct:0, exp:"Формат, в котором передают данные: ключ — значение."},
+{lvl:4, q:`Что такое ${term("REST API","стиль API")}?`,
+ opts:["Распространённый стиль API на основе обычных HTTP-запросов","Язык вёрстки","Резервная копия","Метод тестирования"],
+ correct:0, exp:"Самый ходовой тип API. Услышал «REST» — это про обмен данными."},
+{lvl:4, q:`Что означает ${term("CRUD","4 операции с данными")}?`,
+ opts:["Create, Read, Update, Delete — создать, прочитать, обновить, удалить","Тип сервера","Имя фреймворка","Способ оплаты"],
+ correct:0, exp:"Создать, прочитать, обновить, удалить. Весь ЛК — это CRUD."},
+{lvl:4, q:`Что такое ${term("dashboard","личный кабинет")} / ЛК?`,
+ opts:["Раздел, где пользователь видит свои данные и операции","Главная рекламная страница","Список багов","Папка с кодом"],
+ correct:0, exp:"Личный кабинет: где юзер видит свои данные. Твоя задача."},
+{lvl:4, q:`Что такое ${term("authentication","аутентификация")}?`,
+ opts:["Проверка, КТО ты: логин и пароль","Проверка скорости сайта","Резервное копирование","Расчёт стоимости"],
+ correct:0, exp:"«Кто ты». Логин и пароль."},
+{lvl:4, q:`Чем отличается ${term("authorization","авторизация")}?`,
+ opts:["Проверкой, ЧТО тебе разрешено делать","Это то же самое, что аутентификация","Это про дизайн","Это про скорость"],
+ correct:0, exp:"«Что тебе можно». Не путай с предыдущим — этим и выделишься."},
+{lvl:4, q:`Что такое ${term("token","токен")}?`,
+ opts:["«Пропуск», подтверждающий, что пользователь вошёл в систему","Денежная единица","Имя сервера","Тип ошибки"],
+ correct:0, exp:"Пропуск после входа. С ним сервер тебя узнаёт."},
+{lvl:4, q:`Что такое ${term("integration","интеграция")}?`,
+ opts:["Соединение двух систем, чтобы они обменивались данными","Удаление старого кода","Дизайн логотипа","Перевод сайта"],
+ correct:0, exp:"Связать две системы. Это суть твоей задачи."},
+{lvl:4, q:`Что показывает HTTP-код ${term("404","не найдено")}?`,
+ opts:["Страница или ресурс не найдены","Всё прошло успешно","Нет доступа","Сервер упал"],
+ correct:0, exp:"404 — не найдено. 200 — ок, 500 — сервер упал."},
+{lvl:4, q:`В чём разница ${term("GET","получить")} и ${term("POST","отправить")}?`,
+ opts:["GET запрашивает данные, POST отправляет данные на сервер","GET удаляет, POST создаёт базу","Это языки программирования","Это типы дизайна"],
+ correct:0, exp:"GET — забрать данные, POST — отправить."},
+
+/* ---------- Уровень 5: управление проектом ---------- */
+{lvl:5, q:`Что такое ${term("requirements","требования")} / ТЗ?`,
+ opts:["Описание того, что должен делать продукт","Список разработчиков","Цвет интерфейса","Дата релиза"],
+ correct:0, exp:"Что должен уметь продукт. Твоё ТЗ."},
+{lvl:5, q:`Что такое ${term("scope","объём работ")}?`,
+ opts:["Объём работ: что входит в задачу, а что НЕ входит","Бюджет проекта","Имя заказчика","Скорость сайта"],
+ correct:0, exp:"Что входит в задачу, а что нет."},
+{lvl:5, q:`Что такое ${term("mockup","макет")}?`,
+ opts:["Визуальный прототип будущего интерфейса","Рабочая версия сайта","Отчёт о багах","База данных"],
+ correct:0, exp:"Картинка будущего экрана. Согласуют до работы."},
+{lvl:5, q:`Что такое ${term("MVP","минимальная версия")}?`,
+ opts:["Минимальная рабочая версия продукта для проверки идеи","Самый дорогой тариф","Главный разработчик","Тип сервера"],
+ correct:0, exp:"Простая первая версия для проверки идеи. Ты так делал traderate."},
+{lvl:5, q:`Что такое ${term("sprint","спринт")}?`,
+ opts:["Короткий период (1–2 недели), за который делают часть задач","Срочное совещание","Финальный релиз","Ошибка в коде"],
+ correct:0, exp:"Рабочий отрезок в 1–2 недели."},
+{lvl:5, q:`Что такое ${term("backlog","бэклог")}?`,
+ opts:["Список всех задач, которые предстоит сделать","Архив старых писем","Команда тестировщиков","Сумма затрат"],
+ correct:0, exp:"Очередь задач на потом."},
+{lvl:5, q:`Что такое ${term("deadline","дедлайн")} и ${term("milestone","веха")}?`,
+ opts:["Срок сдачи и ключевая контрольная точка проекта","Имя клиента и сервер","Баг и его фикс","Логин и пароль"],
+ correct:0, exp:"Срок сдачи и важная контрольная точка."},
+{lvl:5, q:`Кто такой ${term("stakeholder","заинтересованная сторона")}?`,
+ opts:["Заинтересованная сторона: заказчик, руководитель, клиент","Разработчик-стажёр","Поставщик из Индии","Тип базы данных"],
+ correct:0, exp:"Все, кому важен результат: заказчик, начальник, клиент."},
+
+/* ---------- Уровень 6: English — понимание ---------- */
+{lvl:6, q:`The ${term("frontend","фронтенд")} is the part of an app that…`,
+ opts:["users see and interact with in the browser","stores all the data on the server","manages company payroll","translates supplier contracts"],
+ correct:0, exp:"Фронт — что видит юзер. Бэк — сервер."},
+{lvl:6, q:`The ${term("backend","бэкенд")} is responsible for…`,
+ opts:["server logic, databases and processing requests","the colours and fonts of the page","negotiating with suppliers","drawing the logo"],
+ correct:0, exp:"Бэк — логика, база и обработка на сервере."},
+{lvl:6, q:`To ${term("deploy","задеплоить")} the app means to…`,
+ opts:["publish the code so users can access it","delete the whole project","draw a new mockup","hold a team meeting"],
+ correct:0, exp:"Выложить код, чтобы им пользовались."},
+{lvl:6, q:`An ${term("API","API")} lets two systems…`,
+ opts:["exchange data with each other","share the same office","use one password","speak the same language"],
+ correct:0, exp:"Две системы обмениваются данными."},
+{lvl:6, q:`A ${term("bug","баг")} is…`,
+ opts:["an error in how the software works","a new feature request","a type of server","a project deadline"],
+ correct:0, exp:"Ошибка в работе. Fix — починить."},
+{lvl:6, q:`A ${term("pull request","пул-реквест")} is used to…`,
+ opts:["propose changes for review before merging","pay the development team","request data from a client","restart the server"],
+ correct:0, exp:"Предложить правки на проверку."},
+{lvl:6, q:`${term("CRUD","CRUD")} stands for…`,
+ opts:["Create, Read, Update, Delete","Copy, Run, Upload, Deploy","Click, React, Use, Done","Code, Review, Update, Deliver"],
+ correct:0, exp:"Create, Read, Update, Delete."},
+{lvl:6, q:`The ${term("scope","скоуп")} of a project defines…`,
+ opts:["what is included and what is not","who pays for it","the colour palette","the server location"],
+ correct:0, exp:"Что входит в проект, а что нет."},
+{lvl:6, q:`A ${term("deadline","дедлайн")} is…`,
+ opts:["the date by which the work must be finished","the start of a project","a type of meeting","an error report"],
+ correct:0, exp:"Дата, к которой надо сдать."},
+{lvl:6, q:`A ${term("mockup","макет")} is…`,
+ opts:["a visual prototype of the future interface","the final working website","a list of bugs","a database backup"],
+ correct:0, exp:"Прототип экрана до разработки."},
+
+/* ---------- Уровень 7: English — фразы ---------- */
+{lvl:7, q:`«Покажите макет до начала разработки» — как лучше сказать? ${term("mockup","макет")}`,
+ opts:["Could you show me the mockup before development starts?","You show picture before make?","Show design now fast please","Where is the design money?"],
+ correct:0, exp:"«Could you…?» — мягкая вежливая просьба."},
+{lvl:7, q:`«Какой срок по этой задаче?» ${term("deadline","срок")}`,
+ opts:["What's the deadline for this task?","When task finish you?","How many day this work?","Task time when is?"],
+ correct:0, exp:"Простой вопрос про срок."},
+{lvl:7, q:`«Давайте созвонимся, чтобы обсудить требования» ${term("requirements","требования")}`,
+ opts:["Let's have a call to discuss the requirements.","We call talking about what to do.","Call me and we talk job thing.","Meeting now about the work yes?"],
+ correct:0, exp:"Стандартная фраза: созвон по требованиям."},
+{lvl:7, q:`«Эта функция в приоритете» ${term("priority","приоритет")}`,
+ opts:["This feature is a priority.","This button very important much.","Make this first one okay?","The function is number one job."],
+ correct:0, exp:"feature — функция, фича."},
+{lvl:7, q:`«Выложите изменения на тестовый сервер» ${term("deploy","выкатить")}`,
+ opts:["Please deploy the changes to the test server.","Put the new thing on test computer.","Send code to testing place now.","Make changes go to server test."],
+ correct:0, exp:"Точная просьба: выкатить на тест."},
+{lvl:7, q:`«Я проверю и дам обратную связь» ${term("feedback","обратная связь")}`,
+ opts:["I'll review it and give you feedback.","I look and tell you opinion later.","I check and say good or bad.","I will see and answer to you."],
+ correct:0, exp:"review — проверить, feedback — отзыв."},
+{lvl:7, q:`«Есть ли что-то, что мешает двигаться по задаче?» ${term("blocker","блокер")}`,
+ opts:["Are there any blockers on this task?","Something stops you to work?","Is problem for doing this?","What makes you cannot do?"],
+ correct:0, exp:"blocker — что мешает. Частый вопрос на летучке."},
+{lvl:7, q:`«Можем перенести дедлайн на пятницу?» ${term("move the deadline","перенести срок")}`,
+ opts:["Can we move the deadline to Friday?","Friday is okay for finish?","We do more time until Friday?","Deadline change Friday possible?"],
+ correct:0, exp:"Просьба сдвинуть срок."},
+{lvl:7, q:`«Давайте уточним объём работ» ${term("scope","объём")}`,
+ opts:["Let's clarify the scope.","We talk how much work yes.","Make clear what to do please.","Explain the job size to me."],
+ correct:0, exp:"clarify — уточнить."},
+{lvl:7, q:`На стендапе спросили «What did you work on yesterday?». Начинаешь ответ с: ${term("standup","летучка")}`,
+ opts:["Yesterday I worked on the login page.","Tomorrow I am working yesterday.","I am work on the yesterday page.","Working yesterday tomorrow login."],
+ correct:0, exp:"worked — прошедшее время. Standup — летучка: что вчера, сегодня, что мешает."},
+{lvl:7, q:`«Проведи меня по логике процесса» — что значит «walk me through»? ${term("walk me through","проведи по шагам")}`,
+ opts:["Объясни мне шаг за шагом, как это работает","Пройдись со мной пешком","Покажи дорогу до офиса","Перешли мне файл"],
+ correct:0, exp:"«Объясни по шагам». Частая фраза на созвонах."}
 ];
 
-// ─── App ───
-var TOTAL=Q.length, correct=0, tried=0;
-var pool=[];
+/* ===== Состояние ===== */
+let i = 0;            // индекс вопроса
+let correctCount = 0;
+let answered = false;
+let lastWasCorrect = false;
+const perLevel = {};  // {lvl:{ok,total}}
+const shownIntros = {};
+const app = document.getElementById("app");
+const prog = document.getElementById("prog");
+const count = document.getElementById("count");
 
-function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function setProgress(){
+  prog.style.width = (i/Q.length*100) + "%";
+  count.textContent = `${Math.min(i+1,Q.length)} / ${Q.length}`;
+}
 
-function start(){
-  pool=shuffle(Q.slice());
-  correct=0;tried=0;
-  render();
+function renderIntro(lvl){
+  count.textContent = "";
+  prog.style.width = (i/Q.length*100) + "%";
+  const L = LEVELS[lvl];
+  const nums = Object.keys(LEVELS).map(Number);
+  app.innerHTML = `
+    <div class="card intro">
+      <div class="lvl"><span class="dot"></span>Уровень ${lvl} из ${nums.length}</div>
+      <h2>${L.name}</h2>
+      <p>${L.intro}</p>
+      <button class="next show start" id="go">Начать уровень →</button>
+    </div>`;
+  document.getElementById("go").onclick = ()=>{ shownIntros[lvl]=true; render(); };
 }
 
 function render(){
-  if(tried>=pool.length){
-    endScreen();return;
+  if(i >= Q.length){ return renderResult(); }
+  const item = Q[i];
+  if(!shownIntros[item.lvl]){ return renderIntro(item.lvl); }
+
+  answered = false;
+  setProgress();
+  const nums = Object.keys(LEVELS).length;
+  const letters = ["1","2","3","4"];
+  app.innerHTML = `
+    <div class="card">
+      <div class="lvl"><span class="dot"></span>${LEVELS[item.lvl].name}</div>
+      <p class="q">${item.q}</p>
+      <div class="opts">
+        ${item.opts.map((o,idx)=>`
+          <button class="opt" data-idx="${idx}">
+            <span class="key">${letters[idx]}</span>
+            <span>${o}</span>
+          </button>`).join("")}
+      </div>
+      <div class="exp" id="exp"><span class="lbl">Пояснение</span>${item.exp}</div>
+      <button class="next" id="next">Дальше →</button>
+    </div>`;
+
+  app.querySelectorAll(".opt").forEach(btn=>{
+    btn.onclick = ()=> choose(parseInt(btn.dataset.idx));
+  });
+}
+
+function choose(idx){
+  if(answered) return;
+  answered = true;
+  const item = Q[i];
+  const btns = app.querySelectorAll(".opt");
+  perLevel[item.lvl] = perLevel[item.lvl] || {ok:0,total:0};
+  perLevel[item.lvl].total++;
+
+  btns.forEach((b,bi)=>{
+    b.disabled = true;
+    if(bi === item.correct) b.classList.add("correct");
+    if(bi === idx && idx !== item.correct) b.classList.add("wrong");
+  });
+
+  lastWasCorrect = (idx === item.correct);
+  if(lastWasCorrect){ correctCount++; perLevel[item.lvl].ok++; }
+
+  document.getElementById("exp").classList.add("show");
+  const next = document.getElementById("next");
+  next.classList.add("show");
+  next.textContent = (i+1 >= Q.length) ? "Показать результат →" : "Дальше →";
+  next.onclick = ()=>{ i++; render(); };
+}
+
+function renderResult(){
+  prog.style.width = "100%";
+  count.textContent = "Готово";
+  const pct = Math.round(correctCount/Q.length*100);
+  let verdict, sub;
+  if(pct>=90){ verdict="Готов к созвону."; sub="Ты уверенно владеешь базой и фразами. На Zoom держись спокойно: понимаешь термины — значит, понимаешь задачу. Не бойся переспросить «Could you clarify that?» — это нормально и звучит профессионально."; }
+  else if(pct>=75){ verdict="Сильная база."; sub="Костяк есть. Пройди ещё раз уровни, где ошибался, и подтяни английские фразы из уровня 7 — их стоит проговорить вслух."; }
+  else if(pct>=50){ verdict="Фундамент заложен."; sub="Понимание есть, но термины пока плавают. Прогони квиз ещё 1–2 раза, особенно уровень 4 (API/ЛК) — это сердце твоей роли."; }
+  else{ verdict="Нужен ещё проход."; sub="Это нормально для старта. Пройди заново, читай пояснения — со второго раза термины закрепятся. У тебя есть время до вторника."; }
+
+  const rows = Object.keys(LEVELS).map(l=>{
+    const d = perLevel[l];
+    if(!d) return "";
+    const p = Math.round(d.ok/d.total*100);
+    return `<div class="br-row">
+      <span class="name">${LEVELS[l].name}</span>
+      <span class="mini"><span style="width:${p}%"></span></span>
+      <span class="pct">${p}%</span>
+    </div>`;
+  }).join("");
+
+  app.innerHTML = `
+    <div class="card res">
+      <div class="lvl" style="margin:0 auto 14px"><span class="dot"></span>Результат</div>
+      <div class="score">${pct}%</div>
+      <div class="frac">${correctCount} из ${Q.length} верно</div>
+      <div class="verdict">${verdict}</div>
+      <p class="sub">${sub}</p>
+      <div class="breakdown">${rows}</div>
+      <button class="next show again" id="restart">Пройти заново →</button>
+    </div>`;
+  document.getElementById("restart").onclick = ()=>{
+    i=0; correctCount=0;
+    for(const k in perLevel) delete perLevel[k];
+    for(const k in shownIntros) delete shownIntros[k];
+    render();
+  };
+}
+
+/* клавиатура: 1-4 ответ, Enter — дальше */
+document.addEventListener("keydown", e=>{
+  if(["1","2","3","4"].includes(e.key)){
+    const btn = app.querySelector(`.opt[data-idx="${+e.key-1}"]`);
+    if(btn && !answered) choose(+e.key-1);
   }
-  var q=pool[tried];
-  var h='<div class="hz">';
-  h+='<div class="hd"><h1>IT English Quiz</h1><p>'+TOTAL+' questions · Frontend & Dev slang</p></div>';
-  h+='<div class="card">';
-  h+='<div class="progress"><div class="progress-bar" style="width:'+(tried/TOTAL*100)+'%"></div></div>';
-  h+='<div class="counter">'+(tried+1)+' / '+TOTAL+'</div>';
-  h+='<div class="q-text">'+q.q+'</div>';
-  h+='<div class="opts" id="opts">';
-  for(var i=0;i<q.o.length;i++){
-    h+='<button class="opt" onclick="answer('+i+',this)">'+q.o[i]+'</button>';
+  if(e.key === "Enter"){
+    const n = document.getElementById("next");
+    const g = document.getElementById("go");
+    const r = document.getElementById("restart");
+    if(g) g.click(); else if(r) r.click(); else if(n && n.classList.contains("show")) n.click();
   }
-  h+='</div>';
-  h+='<div id="exp" class="exp" style="display:none"></div>';
-  h+='<button class="btn btn-next" id="nextBtn" style="display:none" onclick="next()">Next →</button>';
-  h+='</div>';
-  h+='</div>';
-  document.getElementById('app').innerHTML=h;
-}
+});
 
-function answer(idx,btn){
-  var q=pool[tried];
-  var right=idx===q.a;
-  if(right)correct++;
-  // highlight
-  var opts=document.getElementById('opts').children;
-  for(var i=0;i<opts.length;i++){
-    opts[i].disabled=true;
-    if(i===q.a)opts[i].classList.add('right');
-    else if(i===idx&&!right)opts[i].classList.add('wrong');
-  }
-  btn.classList.add('chosen');
-  // explanation
-  var exp=document.getElementById('exp');
-  exp.style.display='block';
-  exp.innerHTML=right
-    ? '<span style="color:#4caf50">✓ Correct!</span> '+(q.exp||'')
-    : '<span style="color:#ef5350">✗ Wrong.</span> Correct: <b>'+q.o[q.a]+'</b> '+(q.exp||'');
-  document.getElementById('nextBtn').style.display='block';
-}
-
-function next(){
-  tried++;
-  render();
-}
-
-function endScreen(){
-  var pct=Math.round(correct/TOTAL*100);
-  var cls=pct>=80?'ok':(pct>=50?'ok2':'bad');
-  var h='<div class="hz"><div class="hd"><h1>IT English Quiz</h1></div>';
-  h+='<div class="card"><div class="end">';
-  h+='<h2 class="'+cls+'">'+correct+' / '+TOTAL+' ('+pct+'%)</h2>';
-  h+='<p>'+(pct>=80?'Excellent! You\'re ready for the interview!':(pct>=50?'Good! Keep practicing.':'More practice needed.'))+'</p>';
-  h+='<button class="btn btn-next" onclick="start()">Retry All</button>';
-  h+='</div></div></div>';
-  document.getElementById('app').innerHTML=h;
-}
-
-start();
+render();
 </script>
 </body>
 </html>
