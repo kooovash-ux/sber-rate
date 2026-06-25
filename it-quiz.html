@@ -450,6 +450,45 @@ function renderResult(){
   else if(pct>=50){ verdict="Фундамент заложен."; sub="Понимание есть, но термины пока плавают. Прогони квиз ещё 1–2 раза, особенно уровень 4 (API/ЛК) — это сердце твоей роли."; }
   else{ verdict="Нужен ещё проход."; sub="Это нормально для старта. Пройди заново, читай пояснения — со второго раза термины закрепятся. У тебя есть время до вторника."; }
 
+  // Save attempt to localStorage
+  var stats = JSON.parse(localStorage.getItem('itquiz_stats')||'[]');
+  stats.push({
+    date: new Date().toISOString().slice(0,16),
+    pct: pct,
+    correct: correctCount,
+    total: Q.length
+  });
+  if(stats.length>50) stats=stats.slice(-50); // max 50 entries
+  localStorage.setItem('itquiz_stats', JSON.stringify(stats));
+
+  // Stats summary
+  var best = stats.reduce(function(b,s){return s.pct>b.pct?s:b;},stats[0]);
+  var avg = Math.round(stats.reduce(function(s,x){return s+x.pct;},0)/stats.length);
+  var last10 = stats.slice(-10);
+  var trend = last10.length>=2 && last10[last10.length-1].pct>last10[0].pct
+    ? '<span style="color:var(--green)">↑ Растёшь!</span>'
+    : (last10.length>=2?'<span style="color:var(--muted)">Стабильно</span>':'');
+
+  var statsHtml = `<div style="margin-top:18px;border-top:1px solid var(--line);padding-top:16px">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">История попыток</div>
+    <div style="display:flex;gap:20px;margin-bottom:12px;font-size:12px">
+      <div><b style="color:var(--navy)">Лучший:</b> ${best.pct}%</div>
+      <div><b style="color:var(--navy)">Средний:</b> ${avg}%</div>
+      <div><b style="color:var(--navy)">Попыток:</b> ${stats.length}</div>
+      <div>${trend}</div>
+    </div>
+    <div style="display:flex;gap:4px;align-items:flex-end;height:40px">
+      ${stats.slice(-15).map(function(s){
+        var h = Math.max(4,s.pct);
+        var c = s.pct>=80?'var(--green)':s.pct>=50?'#f59e0b':'var(--red)';
+        return '<div title="'+s.date+': '+s.pct+'%" style="flex:1;background:'+c+';height:'+h+'%;border-radius:3px 3px 0 0;min-width:6px;opacity:.7"></div>';
+      }).join('')}
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:4px">
+      <span>${(stats[0]||{}).date||''}</span><span>${(stats[stats.length-1]||{}).date||''}</span>
+    </div>
+  </div>`;
+
   const rows = Object.keys(LEVELS).map(l=>{
     const d = perLevel[l];
     if(!d) return "";
@@ -469,6 +508,7 @@ function renderResult(){
       <div class="verdict">${verdict}</div>
       <p class="sub">${sub}</p>
       <div class="breakdown">${rows}</div>
+      ${stats.length>1?statsHtml:''}
       <button class="next show again" id="restart">Пройти заново →</button>
     </div>`;
   document.getElementById("restart").onclick = ()=>{
