@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>IT English Quiz — TradeRate</title>
+<style>
+:root{--a:#C2703D;--ok:#2e7d32;--err:#c62828;--bg:#1a1a2e;--card:#252540;--ink:#e0e0e0;--muted:#888}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.qz{max-width:560px;width:100%;display:flex;flex-direction:column;gap:16px}
+.hd{text-align:center}
+.hd h1{font-size:22px;font-weight:700;color:#fff}
+.hd p{font-size:12px;color:var(--muted);margin-top:4px}
+.card{background:var(--card);border-radius:12px;padding:24px}
+.stats{display:flex;gap:12px;justify-content:center;margin-bottom:20px}
+.stat{text-align:center}
+.stat .n{font-size:28px;font-weight:700}
+.stat .l{font-size:10px;color:var(--muted);margin-top:2px}
+.stat.ok .n{color:var(--ok)}
+.stat.err .n{color:var(--err)}
+.q-text{font-size:15px;font-weight:500;margin-bottom:18px;line-height:1.5}
+.q-text .en{color:#e0b070}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);padding:14px;border-radius:8px;cursor:pointer;font-size:14px;transition:all .15s;text-align:left;color:var(--ink)}
+.opt:hover{border-color:var(--a);background:rgba(194,112,61,.1)}
+.opt.chosen{border-color:var(--a);background:rgba(194,112,61,.2)}
+.opt.right{border-color:var(--ok);background:rgba(46,125,50,.15)}
+.opt.wrong{border-color:var(--err);background:rgba(198,40,40,.1)}
+.opt:disabled{cursor:not-allowed}
+.exp{font-size:12px;color:var(--muted);margin-top:12px;padding:12px;background:rgba(255,255,255,.03);border-radius:8px;line-height:1.5}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:16px}
+.btn-next{background:var(--a);color:#fff}
+.btn-next:hover{opacity:.9}
+.end{text-align:center;padding:20px}
+.end h2{font-size:20px;margin-bottom:8px}
+.end h2.ok{color:var(--ok)}.end h2.ok2{color:var(--a)}.end h2.bad{color:var(--err)}
+.end p{color:var(--muted);font-size:13px;margin-bottom:16px}
+.progress{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-bottom:16px}
+.progress-bar{height:100%;background:var(--a);transition:width .3s}
+.counter{font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="qz" id="app"></div>
+
+<script>
+// ─── Question Bank ───
+var Q = [
+  // HTML / Layout
+  {q:"What does <span class='en'>HTML</span> stand for?",o:["Hyper Text Markup Language","High Tech Modern Layout","Home Tool Markup Language","Hyper Transfer Markup Language"],a:0},
+  {q:"What is a <span class='en'>div</span> in HTML?",o:["A JavaScript function","A container / block element","A styling rule","A server response"],a:1},
+  {q:"What does <span class='en'>CSS</span> stand for?",o:["Computer Style System","Cascading Style Sheets","Creative Sheet Syntax","Client Side Styling"],a:1},
+  {q:"What is <span class='en'>responsive design</span>?",o:["Fast loading design","Layout that adapts to screen size","Dark mode only","Static desktop layout"],a:1},
+  {q:"What is a <span class='en'>media query</span> in CSS?",o:["A JavaScript event","A condition that applies styles based on screen width","A server request","An HTML attribute"],a:1},
+  {q:"What is the <span class='en'>viewport</span> meta tag for?",o:["Server configuration","Controls layout on mobile browsers","Database queries","Image compression"],a:1},
+  {q:"What is <span class='en'>Flexbox</span>?",o:["A JavaScript library","A CSS layout mode for distributing space","An HTML element","A backend framework"],a:1},
+  {q:"What is <span class='en'>CSS Grid</span>?",o:["A table tag","A 2D layout system for rows and columns","A JavaScript grid","A server grid"],a:1},
+  {q:"What is <span class='en'>padding</span> in CSS?",o:["Space between elements","Space inside an element, between content and border","Space outside an element","Font size"],a:1},
+  {q:"What is <span class='en'>margin</span> in CSS?",o:["Space inside an element","Space outside an element's border","Text indentation","Line height"],a:1},
+
+  // JavaScript
+  {q:"What is <span class='en'>JavaScript</span> used for?",o:["Only styling","Adding interactivity to web pages","Only backend servers","Database management"],a:1},
+  {q:"What is a <span class='en'>function</span> in JavaScript?",o:["A CSS rule","A reusable block of code","An HTML tag","A server request"],a:1},
+  {q:"What is an <span class='en'>event listener</span>?",o:["A CSS selector","Code that waits for user action (click, scroll)","A server log","A database trigger"],a:1},
+  {q:"What is <span class='en'>DOM</span>?",o:["Database Object Model","Document Object Model — tree of HTML elements","Domain Object Manager","Document Override Method"],a:1},
+  {q:"What is <span class='en'>API</span>?",o:["Applied Programming Instruction","Application Programming Interface","Advanced Protocol Integration","Automatic Page Indexer"],a:1},
+  {q:"What is a <span class='en'>fetch request</span>?",o:["A CSS import","An HTTP request to get data from a server","A file download only","A styling command"],a:1},
+  {q:"What is <span class='en'>JSON</span>?",o:["Java Server Object Notation","JavaScript Object Notation — data format","Just Simple Object Name","Java System Online Network"],a:1},
+  {q:"What is <span class='en'>callback</span> in JS?",o:["A CSS class","A function passed to another function to run later","An HTML attribute","A server response"],a:1},
+  {q:"What is <span class='en'>async/await</span>?",o:["CSS animations","Syntax for handling asynchronous code","HTML semantics","Database queries"],a:1},
+  {q:"What is <span class='en'>localStorage</span>?",o:["Server storage","Browser storage that persists after page close","Database storage","Cloud storage"],a:1},
+
+  // Frontend / React
+  {q:"What is a <span class='en'>component</span> in React?",o:["A CSS file","A reusable, self-contained piece of UI","An HTML tag only","A server module"],a:1},
+  {q:"What are <span class='en'>props</span> in React?",o:["CSS properties","Data passed into a component","Server settings","HTML attributes"],a:1},
+  {q:"What is <span class='en'>state</span> in React?",o:["A country","Data that changes over time within a component","A CSS rule","A fixed value"],a:1},
+  {q:"What is <span class='en'>JSX</span>?",o:["JavaScript XML","JavaScript Extension — HTML-like syntax in JS","Java Syntax Extension","JSON XML"],a:1},
+  {q:"What is <span class='en'>SPA</span>?",o:["Server Page Application","Single Page Application — all content on one page","Simple Protocol Access","Static Page Architecture"],a:1},
+  {q:"What is <span class='en'>MPA</span>?",o:["Multi Page Application — each page loads separately","Modern Protocol Access","Mobile Page App","Multi Protocol Application"],a:0},
+  {q:"What is <span class='en'>routing</span> in frontend?",o:["CSS path styling","Navigating between views/pages without full reload","Server configuration","Database routing"],a:1},
+  {q:"What is a <span class='en'>framework</span>?",o:["A single CSS file","A structured platform for building apps (React, Vue)","An HTML template","A database"],a:1},
+  {q:"What is <span class='en'>npm</span>?",o:["Network Protocol Manager","Node Package Manager — JavaScript package manager","New Project Maker","Native Page Module"],a:1},
+  {q:"What is <span class='en'>bundler</span> (Webpack, Vite)?",o:["A server tool","Tool that combines JS/CSS files for production","A CSS framework","A database"],a:1},
+
+  // Backend / Server
+  {q:"What is a <span class='en'>server</span>?",o:["A browser","A machine/program that serves data to clients","A CSS file","A JavaScript function"],a:1},
+  {q:"What is an <span class='en'>HTTP request</span>?",o:["A CSS rule","A message from client to server asking for data/action","An HTML element","A JavaScript loop"],a:1},
+  {q:"What does <span class='en'>REST API</span> mean?",o:["Restricted Access Protocol","Representational State Transfer — API design style","Reset Application Interface","Remote Execution Standard"],a:1},
+  {q:"What is a <span class='en'>database</span>?",o:["A CSS file","Organized collection of data","A JavaScript variable","An HTML table"],a:1},
+  {q:"What is <span class='en'>SQL</span>?",o:["Simple Query Language","Structured Query Language — for databases","Server Quality Logic","Style Query Language"],a:1},
+  {q:"What is <span class='en'>Node.js</span>?",o:["A frontend library","JavaScript runtime for backend/server-side","A CSS framework","An HTML preprocessor"],a:1},
+  {q:"What is an <span class='en'>endpoint</span>?",o:["A CSS selector","A URL path where API responds (e.g. /api/users)","A JavaScript event","An HTML attribute"],a:1},
+  {q:"What does <span class='en'>CRUD</span> stand for?",o:["Create, Read, Update, Delete","Compile, Run, Upload, Deploy","Code, Render, Update, Display","Cache, Read, Unlink, Drop"],a:0},
+  {q:"What is <span class='en'>authentication</span>?",o:["CSS styling","Verifying user identity (login/password)","HTML layout","File uploading"],a:1},
+  {q:"What is a <span class='en'>cookie</span> in web?",o:["An HTML tag","Small data stored by browser (sessions, preferences)","A JavaScript function","A CSS trick"],a:1},
+
+  // Git / Deploy
+  {q:"What is <span class='en'>Git</span>?",o:["A programming language","A version control system for tracking code changes","A CSS library","A server"],a:1},
+  {q:"What is a <span class='en'>commit</span> in Git?",o:["A CSS rule","A saved snapshot of code changes","A server request","A JavaScript promise"],a:1},
+  {q:"What is <span class='en'>push</span> in Git?",o:["A CSS animation","Uploading local commits to remote repository","A JavaScript method","Deleting files"],a:1},
+  {q:"What is a <span class='en'>pull request (PR)</span>?",o:["A server log","A request to merge code changes into a branch","A CSS import","An HTML form"],a:1},
+  {q:"What is <span class='en'>GitHub</span>?",o:["A CSS framework","A platform for hosting Git repositories","A JavaScript library","A backend language"],a:1},
+  {q:"What does <span class='en'>deploy</span> mean?",o:["Writing CSS","Publishing code to a live server/environment","Creating HTML","Database backup"],a:1},
+  {q:"What is <span class='en'>GitHub Pages</span>?",o:["A database service","Free static site hosting from GitHub repos","A JavaScript framework","A CSS library"],a:1},
+  {q:"What is a <span class='en'>branch</span> in Git?",o:["A CSS class","A parallel version of the code","A server endpoint","An HTML section"],a:1},
+  {q:"What is <span class='en'>merge conflict</span>?",o:["A CSS issue","When two branches have incompatible changes","A server error","A JavaScript bug"],a:1},
+  {q:"What is <span class='en'>clone</span> in Git?",o:["A CSS trick","Copying a repository to your local machine","A JavaScript method","Database duplication"],a:1},
+
+  // General dev terms
+  {q:"What does <span class='en'>UI</span> stand for?",o:["Universal Interface","User Interface","Unified Integration","Underlying Index"],a:1},
+  {q:"What does <span class='en'>UX</span> stand for?",o:["User Extension","User Experience","Universal XML","Unified Export"],a:1},
+  {q:"What is a <span class='en'>wireframe</span>?",o:["A server diagram","A simple layout sketch of a page","A JavaScript wire","A CSS grid"],a:1},
+  {q:"What is <span class='en'>mockup</span>?",o:["A code snippet","A static visual design of a page","A fake API","A test function"],a:1},
+  {q:"What is <span class='en'>prototype</span>?",o:["A final product","An interactive early version for testing","A CSS file","A database schema"],a:1},
+  {q:"What is a <span class='en'>bug</span>?",o:["A feature","An error or flaw in code","A CSS rule","A server request"],a:1},
+  {q:"What is <span class='en'>debugging</span>?",o:["Writing CSS","Finding and fixing errors in code","Deploying to server","Creating HTML"],a:1},
+  {q:"What is <span class='en'>refactoring</span>?",o:["Rewriting from scratch","Improving code structure without changing behavior","Adding features","Deleting files"],a:1},
+  {q:"What is a <span class='en'>sprint</span> in Agile?",o:["A CSS animation","A short, time-boxed work period (1-2 weeks)","A JavaScript loop","A server restart"],a:1},
+  {q:"What does <span class='en'>MVP</span> stand for (in product)?",o:["Most Valuable Player","Minimum Viable Product","Model View Presenter","Multi Version Protocol"],a:1},
+  {q:"What is <span class='en'>AGILE</span>?",o:["A programming language","An iterative development methodology","A CSS framework","A database type"],a:1},
+  {q:"What is a <span class='en'>standup</span>?",o:["A CSS property","A short daily team meeting (scrum)","A JavaScript event","A server command"],a:1},
+  {q:"What is <span class='en'>scalability</span>?",o:["CSS scaling","System's ability to handle growth","Font sizing","Image resizing"],a:1},
+  {q:"What is <span class='en'>DNS</span>?",o:["Domain Name System — translates names to IPs","Dynamic Node Server","Data Network Service","Digital Name Storage"],a:0},
+  {q:"What is <span class='en'>SSL</span> / HTTPS?",o:["A CSS protocol","Secure encryption for web traffic","A JavaScript library","An HTML tag"],a:1},
+];
+
+// ─── App ───
+var TOTAL=Q.length, correct=0, tried=0;
+var pool=[];
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function start(){
+  pool=shuffle(Q.slice());
+  correct=0;tried=0;
+  render();
+}
+
+function render(){
+  if(tried>=pool.length){
+    endScreen();return;
+  }
+  var q=pool[tried];
+  var h='<div class="hz">';
+  h+='<div class="hd"><h1>IT English Quiz</h1><p>'+TOTAL+' questions · Frontend & Dev slang</p></div>';
+  h+='<div class="card">';
+  h+='<div class="progress"><div class="progress-bar" style="width:'+(tried/TOTAL*100)+'%"></div></div>';
+  h+='<div class="counter">'+(tried+1)+' / '+TOTAL+'</div>';
+  h+='<div class="q-text">'+q.q+'</div>';
+  h+='<div class="opts" id="opts">';
+  for(var i=0;i<q.o.length;i++){
+    h+='<button class="opt" onclick="answer('+i+',this)">'+q.o[i]+'</button>';
+  }
+  h+='</div>';
+  h+='<div id="exp" class="exp" style="display:none"></div>';
+  h+='<button class="btn btn-next" id="nextBtn" style="display:none" onclick="next()">Next →</button>';
+  h+='</div>';
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+}
+
+function answer(idx,btn){
+  var q=pool[tried];
+  var right=idx===q.a;
+  if(right)correct++;
+  // highlight
+  var opts=document.getElementById('opts').children;
+  for(var i=0;i<opts.length;i++){
+    opts[i].disabled=true;
+    if(i===q.a)opts[i].classList.add('right');
+    else if(i===idx&&!right)opts[i].classList.add('wrong');
+  }
+  btn.classList.add('chosen');
+  // explanation
+  var exp=document.getElementById('exp');
+  exp.style.display='block';
+  exp.innerHTML=right
+    ? '<span style="color:#4caf50">✓ Correct!</span> '+(q.exp||'')
+    : '<span style="color:#ef5350">✗ Wrong.</span> Correct: <b>'+q.o[q.a]+'</b> '+(q.exp||'');
+  document.getElementById('nextBtn').style.display='block';
+}
+
+function next(){
+  tried++;
+  render();
+}
+
+function endScreen(){
+  var pct=Math.round(correct/TOTAL*100);
+  var cls=pct>=80?'ok':(pct>=50?'ok2':'bad');
+  var h='<div class="hz"><div class="hd"><h1>IT English Quiz</h1></div>';
+  h+='<div class="card"><div class="end">';
+  h+='<h2 class="'+cls+'">'+correct+' / '+TOTAL+' ('+pct+'%)</h2>';
+  h+='<p>'+(pct>=80?'Excellent! You\'re ready for the interview!':(pct>=50?'Good! Keep practicing.':'More practice needed.'))+'</p>';
+  h+='<button class="btn btn-next" onclick="start()">Retry All</button>';
+  h+='</div></div></div>';
+  document.getElementById('app').innerHTML=h;
+}
+
+start();
+</script>
+</body>
+</html>
