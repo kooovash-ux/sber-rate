@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cargo Terminal — английский на зум</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1A24; --panel:#16252E; --panel2:#1E3340; --line:#2A4250;
+    --paper:#ECE6D7; --paper-ink:#15242D;
+    --go:#2FB57A; --amber:#EBA43C; --red:#E2564C;
+    --text:#E9EFF3; --muted:#86A0AC; --teal:#3FB3C9;
+    --disp:"Space Grotesk",sans-serif; --mono:"Space Mono",monospace; --body:"Inter",sans-serif;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;}
+  body{
+    background:var(--ink); color:var(--text); font-family:var(--body);
+    display:flex; justify-content:center; min-height:100%;
+  }
+  .app{
+    width:100%; max-width:520px; min-height:100vh; display:flex; flex-direction:column;
+    background:
+      radial-gradient(120% 60% at 50% -10%, #1b3340 0%, var(--ink) 60%);
+    position:relative; overflow:hidden;
+  }
+  /* faint container-board grid lines */
+  .app::before{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.06;
+    background-image:linear-gradient(var(--text) 1px,transparent 1px);
+    background-size:100% 34px;
+  }
+
+  /* ---------- header ---------- */
+  header{padding:18px 18px 12px; position:relative; z-index:2;}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.18em; color:var(--teal); text-transform:uppercase;}
+  h1{font-family:var(--disp); font-weight:700; font-size:23px; line-height:1.05; margin:6px 0 2px; letter-spacing:-.01em;}
+  .sub{color:var(--muted); font-size:12.5px;}
+
+  /* ---------- status bar ---------- */
+  .status{
+    display:flex; gap:8px; align-items:stretch; padding:0 18px 12px; position:relative; z-index:2;
+  }
+  .stat{
+    flex:1; background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:8px 10px; display:flex; flex-direction:column; gap:1px;
+  }
+  .stat .k{font-family:var(--mono); font-size:10px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase;}
+  .stat .v{font-family:var(--mono); font-weight:700; font-size:18px;}
+  .stat.time .v{color:var(--teal);}
+  .stat.miss .v{color:var(--amber);}
+
+  .track{height:6px; background:var(--panel2); border-radius:99px; margin:0 18px 14px; overflow:hidden; position:relative; z-index:2;}
+  .track > i{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--teal),var(--go)); border-radius:99px; transition:width .4s cubic-bezier(.2,.8,.2,1);}
+
+  /* ---------- board ---------- */
+  .board{flex:1; padding:2px 14px 18px; position:relative; z-index:2;}
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .col-head{display:flex; align-items:center; gap:6px; font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--muted); padding:0 4px 6px; text-transform:uppercase;}
+  .col-head .dot{width:7px;height:7px;border-radius:99px;}
+  .col.en .dot{background:var(--teal);}
+  .col.ru .dot{background:var(--amber);}
+  .col{display:flex; flex-direction:column;}
+  .slots{display:flex; flex-direction:column; gap:9px;}
+
+  .card{
+    position:relative; min-height:54px; border-radius:13px; cursor:pointer;
+    background:var(--paper); color:var(--paper-ink);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    padding:8px 10px; font-weight:600; font-size:15px; line-height:1.15;
+    border:1px solid #00000018; box-shadow:0 2px 0 #00000035, 0 6px 14px #0000002e;
+    transition:transform .12s ease, box-shadow .12s ease, opacity .25s ease, background .15s ease;
+    user-select:none; overflow:hidden;
+  }
+  .col.en .card{border-top:3px solid var(--teal);}
+  .col.ru .card{border-top:3px solid var(--amber);}
+  .card .ru-text{font-size:14px;}
+  .card:active{transform:translateY(1px);}
+  .card.sel{
+    background:#FBE9C8; box-shadow:0 0 0 3px var(--amber), 0 6px 16px #0000003a;
+    transform:translateY(-1px);
+  }
+  .card.wrong{animation:shake .42s; background:#F6D2CE; box-shadow:0 0 0 3px var(--red);}
+  .card.cleared{
+    background:transparent; color:transparent; border:1px dashed var(--line); box-shadow:none;
+    pointer-events:none;
+  }
+  .card.cleared::after{
+    content:"CLEARED"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:700; font-size:12px; letter-spacing:.14em; color:var(--go);
+    border:2px solid var(--go); border-radius:9px; transform:rotate(-9deg) scale(1); opacity:.85;
+    margin:6px;
+  }
+  /* stamp pop on match */
+  .card.stamp::before{
+    content:"✓ CLEARED"; position:absolute; inset:0; z-index:3; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:700; font-size:13px; letter-spacing:.12em; color:var(--go);
+    border:3px solid var(--go); border-radius:10px; background:#ffffffd9; margin:4px;
+    animation:stamp .5s ease forwards;
+  }
+  @keyframes stamp{
+    0%{opacity:0; transform:rotate(-22deg) scale(1.7);}
+    35%{opacity:1; transform:rotate(-9deg) scale(.96);}
+    55%{transform:rotate(-9deg) scale(1.02);}
+    100%{opacity:1; transform:rotate(-9deg) scale(1);}
+  }
+  @keyframes shake{
+    10%,90%{transform:translateX(-1px);} 20%,80%{transform:translateX(2px);}
+    30%,50%,70%{transform:translateX(-5px);} 40%,60%{transform:translateX(5px);}
+  }
+
+  /* ---------- overlays (start / win) ---------- */
+  .overlay{
+    position:absolute; inset:0; z-index:10; background:#0c1820f2; backdrop-filter:blur(3px);
+    display:flex; flex-direction:column; justify-content:flex-start; padding:24px 22px; gap:14px;
+    overflow-y:auto;
+  }
+  .overlay.hidden{display:none;}
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px; margin:auto 0;}
+  .panel h2{font-family:var(--disp); font-weight:700; font-size:22px; margin:0 0 4px; letter-spacing:-.01em;}
+  .panel p{color:var(--muted); font-size:13px; margin:0 0 14px; line-height:1.5;}
+  .decks{display:flex; flex-direction:column; gap:8px; margin-bottom:16px;}
+  .deck{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:12px 14px;
+    cursor:pointer; transition:border-color .15s, background .15s;
+  }
+  .deck:hover{border-color:var(--teal);}
+  .deck.on{border-color:var(--teal); background:#1c3a45; box-shadow:0 0 0 2px #3fb3c955 inset;}
+  .deck .nm{font-family:var(--disp); font-weight:600; font-size:15px;}
+  .deck .ct{font-family:var(--mono); font-size:12px; color:var(--muted);}
+  .deck.on .ct{color:var(--teal);}
+
+  .modes{display:flex; gap:8px; margin-bottom:14px;}
+  .mode{
+    flex:1; text-align:center; cursor:pointer; border-radius:12px; padding:11px 8px;
+    background:var(--panel2); border:1px solid var(--line); transition:border-color .15s, background .15s;
+  }
+  .mode .nm{font-family:var(--disp); font-weight:700; font-size:14px; display:block;}
+  .mode .ds{font-family:var(--mono); font-size:10px; color:var(--muted); margin-top:2px; display:block;}
+  .mode.on{border-color:var(--amber); background:#33291a; box-shadow:0 0 0 2px #eba43c55 inset;}
+  .mode.on.calm{border-color:var(--teal); background:#1c3a45; box-shadow:0 0 0 2px #3fb3c955 inset;}
+  .mode.on .ds{color:var(--text);}
+
+  .stat.time.low .v{color:var(--red); animation:pulse .7s ease-in-out infinite;}
+  @keyframes pulse{50%{opacity:.45;}}
+
+  .btn{
+    width:100%; border:none; cursor:pointer; border-radius:13px; padding:15px;
+    font-family:var(--disp); font-weight:700; font-size:16px; letter-spacing:.01em;
+    background:var(--go); color:#05201a; box-shadow:0 3px 0 #1c8c5f;
+    transition:transform .1s, box-shadow .1s;
+  }
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 #1c8c5f;}
+  .btn.ghost{background:var(--panel2); color:var(--text); box-shadow:0 3px 0 #11202a; margin-top:8px;}
+  .btn.ghost:active{box-shadow:0 1px 0 #11202a;}
+
+  .rank{display:none; flex-direction:column; align-items:center; gap:7px; margin:2px 0 16px;}
+  .rank .badge{
+    width:80px; height:80px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:var(--disp); font-weight:700; font-size:40px; border:3px solid; background:#0d1c24;
+  }
+  .rank .rtitle{font-family:var(--disp); font-weight:700; font-size:16px;}
+  .rank .rsub{font-family:var(--mono); font-size:10px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase;}
+  .rank.r-s .badge{color:#F2C84B; border-color:#F2C84B; box-shadow:0 0 26px #f2c84b55;} .rank.r-s .rtitle{color:#F2C84B;}
+  .rank.r-a .badge{color:var(--go); border-color:var(--go);} .rank.r-a .rtitle{color:var(--go);}
+  .rank.r-b .badge{color:var(--teal); border-color:var(--teal);} .rank.r-b .rtitle{color:var(--teal);}
+  .rank.r-c .badge{color:var(--muted); border-color:var(--line);} .rank.r-c .rtitle{color:var(--text);}
+  .rank.r-fail .badge{color:var(--red); border-color:var(--red);} .rank.r-fail .rtitle{color:var(--red);}
+
+  .result{display:flex; gap:10px; margin-bottom:16px;}
+  .result .cell{flex:1; background:var(--panel2); border:1px solid var(--line); border-radius:13px; padding:12px; text-align:center;}
+  .result .cell .k{font-family:var(--mono); font-size:10px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase;}
+  .result .cell .v{font-family:var(--mono); font-weight:700; font-size:24px; margin-top:3px;}
+  .verdict{font-size:13.5px; color:var(--text); line-height:1.5; margin:-2px 0 4px;}
+
+  .hint{font-family:var(--mono); font-size:11px; color:var(--muted); text-align:center; padding:2px 18px 14px; position:relative; z-index:2;}
+
+  @media (max-width:360px){
+    .card{font-size:14px; min-height:50px;} .card .ru-text{font-size:13px;}
+    h1{font-size:21px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001s !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="eyebrow">Cargo Terminal · drill</div>
+    <h1>Английский на зум в Сбер</h1>
+    <div class="sub">Совмести термин и перевод. Пара верна — груз «растаможен».</div>
+  </header>
+
+  <div class="status">
+    <div class="stat time"><span class="k">Время</span><span class="v" id="time">00:00</span></div>
+    <div class="stat"><span class="k">Растаможено</span><span class="v" id="done">0/0</span></div>
+    <div class="stat miss"><span class="k">Ошибки</span><span class="v" id="miss">0</span></div>
+  </div>
+  <div class="track"><i id="bar"></i></div>
+
+  <div class="board">
+    <div class="cols">
+      <div class="col en">
+        <div class="col-head"><span class="dot"></span>English</div>
+        <div class="slots" id="leftCol"></div>
+      </div>
+      <div class="col ru">
+        <div class="col-head"><span class="dot"></span>Перевод</div>
+        <div class="slots" id="rightCol"></div>
+      </div>
+    </div>
+  </div>
+  <div class="hint">Тапни слово, потом его пару · батч за батчем</div>
+
+  <!-- START -->
+  <div class="overlay" id="startOverlay">
+    <div class="panel">
+      <h2>Выбери колоду</h2>
+      <p>205 терминов из твоей работы и вакансии — связки для речи, логистика, таможня, сертификация, бизнес, продукт, сайт, IT. Гоняй до автоматизма.</p>
+      <div class="decks" id="deckList"></div>
+      <div class="modes" id="modeList">
+        <div class="mode calm on" data-mode="calm"><span class="nm">Спокойно</span><span class="ds">секундомер, без давления</span></div>
+        <div class="mode" data-mode="hard"><span class="nm">Жёстко</span><span class="ds">60 сек · +1.5 / −3</span></div>
+      </div>
+      <button class="btn" id="startBtn">Открыть терминал →</button>
+    </div>
+  </div>
+
+  <!-- WIN -->
+  <div class="overlay hidden" id="winOverlay">
+    <div class="panel">
+      <h2 id="winTitle">Контейнер очищен ✓</h2>
+      <p class="verdict" id="verdict"></p>
+      <div class="rank" id="rankWrap">
+        <div class="rsub">Звание · жёсткий режим</div>
+        <div class="badge" id="rankLetter">S</div>
+        <div class="rtitle" id="rankTitle"></div>
+      </div>
+      <div class="result">
+        <div class="cell"><div class="k">Время</div><div class="v" id="wTime">—</div></div>
+        <div class="cell"><div class="k">Ошибки</div><div class="v" id="wMiss">—</div></div>
+        <div class="cell"><div class="k">Точность</div><div class="v" id="wAcc">—</div></div>
+      </div>
+      <button class="btn" id="againBtn">Ещё раз эту колоду</button>
+      <button class="btn ghost" id="changeBtn">Сменить колоду</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------------- DATA: твои слова ---------------- */
+const WORDS = [
+  // Логистика / ВЭД
+  ["freight","фрахт","Логистика"],
+  ["freight forwarder","экспедитор","Логистика"],
+  ["shipment","отправка / партия","Логистика"],
+  ["cargo","груз","Логистика"],
+  ["consignee","грузополучатель","Логистика"],
+  ["shipper","грузоотправитель","Логистика"],
+  ["carrier","перевозчик","Логистика"],
+  ["lead time","срок поставки","Логистика"],
+  ["ETD","дата отправки","Логистика"],
+  ["ETA","дата прибытия","Логистика"],
+  ["FCL","полный контейнер","Логистика"],
+  ["LCL","сборный груз","Логистика"],
+  ["customs clearance","таможенное оформление","Логистика"],
+  ["customs broker","таможенный брокер","Логистика"],
+  ["declaration","декларация","Логистика"],
+  ["duty","пошлина","Логистика"],
+  ["VAT","НДС","Логистика"],
+  ["tariff","тариф","Логистика"],
+  ["HS code","код ТН ВЭД","Логистика"],
+  ["Incoterms","базисы поставки","Логистика"],
+  ["EXW","самовывоз с завода","Логистика"],
+  ["FOB","погрузка на борт","Логистика"],
+  ["CIF","стоимость+страховка+фрахт","Логистика"],
+  ["certificate of conformity","сертификат соответствия","Логистика"],
+  ["compliance","соответствие требованиям","Логистика"],
+  ["surveyor","сюрвейер","Логистика"],
+  ["inspection","инспекция груза","Логистика"],
+  ["supplier","поставщик","Логистика"],
+  ["procurement","закупка","Логистика"],
+  ["sourcing","поиск поставщиков","Логистика"],
+  ["quotation","прайс / КП","Логистика"],
+  ["pickup","забор груза","Логистика"],
+  ["port of loading","порт погрузки","Логистика"],
+  ["demurrage","плата за простой","Логистика"],
+  ["stuffing","загрузка в контейнер","Логистика"],
+  ["stowage","размещение груза","Логистика"],
+  // Продукт / процесс
+  ["scope","границы проекта","Продукт"],
+  ["flow","сценарий / поток","Продукт"],
+  ["step by step","пошагово","Продукт"],
+  ["feature","функция продукта","Продукт"],
+  ["launch","запуск","Продукт"],
+  ["requirement","требование","Продукт"],
+  ["tracking","отслеживание статуса","Продукт"],
+  ["estimate","оценка срока/цены","Продукт"],
+  ["accurate","точный","Продукт"],
+  ["update","обновлять","Продукт"],
+  ["fixed","зафиксированный","Продукт"],
+  ["average","среднее значение","Продукт"],
+  ["input","ввод","Продукт"],
+  ["output","результат","Продукт"],
+  ["error","ошибка","Продукт"],
+  ["case","случай","Продукт"],
+  ["edge case","крайний случай","Продукт"],
+  // IT / Бангалор
+  ["API","связка систем","IT"],
+  ["MVP","мин. рабочая версия","IT"],
+  ["UI","интерфейс","IT"],
+  ["UX","удобство","IT"],
+  ["backend","серверная часть","IT"],
+  ["frontend","клиентская часть","IT"],
+  ["database","база данных","IT"],
+  ["spec","техзадание","IT"],
+  ["endpoint","точка API","IT"],
+  ["integration","интеграция","IT"],
+  ["dashboard","панель данных","IT"],
+  ["validation","проверка ввода","IT"],
+  ["deploy","выкатить в работу","IT"],
+  ["bug","ошибка в коде","IT"],
+  ["fix","исправление","IT"],
+  ["SLA","гарантии сервиса","IT"],
+  // Глаголы-связки
+  ["to handle","вести, заниматься","Глаголы"],
+  ["to set up","настроить","Глаголы"],
+  ["to connect","подключить","Глаголы"],
+  ["to split","разбить","Глаголы"],
+  ["to match","совпадать","Глаголы"],
+  ["to scale","масштабировать","Глаголы"],
+  ["to validate","проверять","Глаголы"],
+
+  // Таможня
+  ["customs duties","таможенные пошлины","Таможня"],
+  ["customs value","таможенная стоимость","Таможня"],
+  ["clearance","выпуск груза","Таможня"],
+  ["import","импорт","Таможня"],
+  ["export","экспорт","Таможня"],
+  ["invoice","инвойс / счёт","Таможня"],
+  ["packing list","упаковочный лист","Таможня"],
+  ["bill of lading","коносамент","Таможня"],
+  ["country of origin","страна происхождения","Таможня"],
+  ["classification","классификация товара","Таможня"],
+  ["restricted goods","товары с ограничениями","Таможня"],
+  ["prohibited","запрещённый","Таможня"],
+  ["excise","акциз","Таможня"],
+  ["customs post","таможенный пост","Таможня"],
+  ["cargo manifest","грузовой манифест","Таможня"],
+  ["temporary import","временный ввоз","Таможня"],
+  ["bonded warehouse","таможенный склад","Таможня"],
+  ["release","выпуск в обращение","Таможня"],
+  ["clearance fee","сбор за оформление","Таможня"],
+  ["broker fee","вознаграждение брокера","Таможня"],
+
+  // Сертификация
+  ["certification","сертификация","Сертификация"],
+  ["declaration of conformity","декларация соответствия","Сертификация"],
+  ["test report","протокол испытаний","Сертификация"],
+  ["laboratory","лаборатория","Сертификация"],
+  ["standard","стандарт (ГОСТ)","Сертификация"],
+  ["technical regulation","техрегламент","Сертификация"],
+  ["marking","маркировка","Сертификация"],
+  ["EAC mark","знак ЕАС","Сертификация"],
+  ["mandatory","обязательный","Сертификация"],
+  ["voluntary","добровольный","Сертификация"],
+  ["sample","образец","Сертификация"],
+  ["batch","партия","Сертификация"],
+  ["approval","одобрение / допуск","Сертификация"],
+  ["registration","регистрация","Сертификация"],
+  ["quality control","контроль качества","Сертификация"],
+  ["shelf life","срок годности","Сертификация"],
+  ["safety","безопасность","Сертификация"],
+  ["permit","разрешение","Сертификация"],
+
+  // Бизнес
+  ["deal","сделка","Бизнес"],
+  ["contract","контракт / договор","Бизнес"],
+  ["agreement","соглашение","Бизнес"],
+  ["terms","условия","Бизнес"],
+  ["payment","оплата","Бизнес"],
+  ["prepayment","предоплата","Бизнес"],
+  ["deposit","задаток","Бизнес"],
+  ["cost price","себестоимость","Бизнес"],
+  ["margin","маржа","Бизнес"],
+  ["markup","наценка","Бизнес"],
+  ["revenue","выручка","Бизнес"],
+  ["profit","прибыль","Бизнес"],
+  ["budget","бюджет","Бизнес"],
+  ["negotiation","переговоры","Бизнес"],
+  ["stakeholder","заинтересованная сторона","Бизнес"],
+  ["deadline","срок / дедлайн","Бизнес"],
+  ["milestone","контрольная точка","Бизнес"],
+  ["scope of work","объём работ","Бизнес"],
+  ["KPI","ключевой показатель","Бизнес"],
+  ["lead","потенциальный клиент","Бизнес"],
+  ["conversion","конверсия","Бизнес"],
+  ["pipeline","воронка сделок","Бизнес"],
+  ["competitor","конкурент","Бизнес"],
+  ["demand","спрос","Бизнес"],
+  ["supply","предложение / поставка","Бизнес"],
+  ["volume","объём","Бизнес"],
+  ["turnover","оборот","Бизнес"],
+  ["risk","риск","Бизнес"],
+  ["liability","ответственность","Бизнес"],
+  ["warranty","гарантия","Бизнес"],
+  ["partnership","партнёрство","Бизнес"],
+  ["onboarding","подключение клиента","Бизнес"],
+  ["retention","удержание клиентов","Бизнес"],
+  ["value","ценность","Бизнес"],
+  ["self-service","самообслуживание","Бизнес"],
+
+  // Сайт / UI
+  ["table","таблица","Сайт"],
+  ["row","строка","Сайт"],
+  ["column","столбец","Сайт"],
+  ["block","блок","Сайт"],
+  ["collapsible block","разворачивающийся блок","Сайт"],
+  ["dropdown","выпадающий список","Сайт"],
+  ["button","кнопка","Сайт"],
+  ["form","форма","Сайт"],
+  ["field","поле ввода","Сайт"],
+  ["checkbox","галочка","Сайт"],
+  ["tab","вкладка","Сайт"],
+  ["menu","меню","Сайт"],
+  ["screen","экран","Сайт"],
+  ["page","страница","Сайт"],
+  ["pop-up","всплывающее окно","Сайт"],
+  ["tooltip","подсказка","Сайт"],
+  ["filter","фильтр","Сайт"],
+  ["search bar","строка поиска","Сайт"],
+  ["progress bar","индикатор прогресса","Сайт"],
+  ["loading","загрузка","Сайт"],
+  ["layout","макет / расположение","Сайт"],
+  ["scroll","прокрутка","Сайт"],
+  ["toggle","переключатель","Сайт"],
+  ["slider","ползунок","Сайт"],
+  ["label","подпись / метка","Сайт"],
+  ["real-time","в реальном времени","Сайт"],
+
+  // Связки — с них начинают НОВОЕ предложение (ставь точку и продолжай)
+  ["First,","Во-первых / Сначала","Связки"],
+  ["Then,","Потом / Затем","Связки"],
+  ["After that,","После этого","Связки"],
+  ["Next,","Дальше","Связки"],
+  ["Finally,","В итоге / Наконец","Связки"],
+  ["So,","Итак / Поэтому","Связки"],
+  ["For example,","Например","Связки"],
+  ["Also,","Ещё / Также","Связки"],
+  ["In addition,","Кроме того","Связки"],
+  ["But","Но","Связки"],
+  ["However,","Однако","Связки"],
+  ["Because of that,","Из-за этого","Связки"],
+  ["That's why","Вот почему","Связки"],
+  ["In my case,","В моём случае","Связки"],
+  ["At PROSCO,","В PROSCO","Связки"],
+  ["My main goal was","Моя главная цель была","Связки"],
+  ["What I did was","Что я сделал —","Связки"],
+  ["The result was","Результат был","Связки"],
+  ["To be honest,","Честно говоря","Связки"],
+  ["Let me explain.","Сейчас объясню.","Связки"],
+  ["Let me give an example.","Приведу пример.","Связки"],
+  ["The point is","Суть в том, что","Связки"],
+  ["In short,","Если коротко","Связки"],
+  ["For me,","Для меня","Связки"],
+  ["Right now,","Сейчас / На данный момент","Связки"],
+  ["Before,","Раньше","Связки"],
+  ["After the launch,","После запуска","Связки"],
+  ["If the cargo is too big,","Если груз слишком большой,","Связки"],
+  ["When the client asks,","Когда клиент спрашивает,","Связки"],
+  ["This means","Это значит, что","Связки"],
+];
+
+const CATS = ["Все","Связки","Логистика","Таможня","Сертификация","Бизнес","Продукт","Сайт","IT","Глаголы"];
+const BATCH = 5;
+const HARD_START = 60;   // секунд на старте жёсткого режима
+const HARD_BONUS = 1.5;  // +сек за верную пару
+const HARD_PENALTY = 3;  // −сек за ошибку
+
+/* ---------------- state ---------------- */
+let deck=[], batches=[], bi=0, board=[], selected=null,
+    matched=0, total=0, miss=0, t0=0, tInt=null, currentCat="Все", busy=false,
+    hard=false, remaining=0, ended=false;
+
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+/* ---------- deck selector ---------- */
+function buildDeckList(){
+  const list=$("deckList"); list.innerHTML="";
+  CATS.forEach(c=>{
+    const n = c==="Все"? WORDS.length : WORDS.filter(w=>w[2]===c).length;
+    const el=document.createElement("div");
+    el.className="deck"+(c===currentCat?" on":"");
+    el.innerHTML=`<span class="nm">${c}</span><span class="ct">${n} слов</span>`;
+    el.onclick=()=>{currentCat=c; buildDeckList();};
+    list.appendChild(el);
+  });
+}
+
+/* ---------- game flow ---------- */
+function startGame(){
+  const pool = currentCat==="Все"? WORDS : WORDS.filter(w=>w[2]===currentCat);
+  deck = shuffle(pool).map((w,i)=>({id:i,en:w[0],ru:w[1]}));
+  batches=[]; for(let i=0;i<deck.length;i+=BATCH) batches.push(deck.slice(i,i+BATCH));
+  bi=0; matched=0; miss=0; total=deck.length; selected=null; busy=false; ended=false;
+  $("done").textContent="0/"+total; $("miss").textContent="0";
+  $("bar").style.width="0%";
+  $("startOverlay").classList.add("hidden");
+  $("winOverlay").classList.add("hidden");
+  const timeStat=document.querySelector(".stat.time");
+  timeStat.querySelector(".k").textContent = hard ? "Осталось" : "Время";
+  timeStat.classList.remove("low");
+  remaining = HARD_START;
+  t0=Date.now(); clearInterval(tInt); tInt=setInterval(tick,200); renderTime();
+  loadBatch();
+}
+
+function fmt(s){s=Math.max(0,Math.ceil(s));return String((s/60|0)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
+
+function renderTime(){
+  if(hard){
+    $("time").textContent=fmt(remaining);
+    document.querySelector(".stat.time").classList.toggle("low", remaining<=10);
+  }else{
+    $("time").textContent=fmt((Date.now()-t0)/1000);
+  }
+}
+
+function tick(){
+  if(ended) return;
+  if(hard){
+    remaining = HARD_START - (Date.now()-t0)/1000;  // base countdown; bonuses/penalties fold into t0
+    if(remaining<=0){ remaining=0; renderTime(); return endGame("timeout"); }
+  }
+  renderTime();
+}
+
+function loadBatch(){
+  board = batches[bi];
+  const L=$("leftCol"), R=$("rightCol"); L.innerHTML=""; R.innerHTML="";
+  shuffle(board).forEach(p=>L.appendChild(makeCard(p,"en")));
+  shuffle(board).forEach(p=>R.appendChild(makeCard(p,"ru")));
+  selected=null;
+}
+
+function makeCard(pair,side){
+  const c=document.createElement("div");
+  c.className="card"; c.dataset.id=pair.id; c.dataset.side=side; c.tabIndex=0;
+  c.setAttribute("role","button");
+  if(side==="ru"){c.innerHTML=`<span class="ru-text">${pair.ru}</span>`;}
+  else{c.textContent=pair.en;}
+  const act=()=>onPick(c);
+  c.addEventListener("click",act);
+  c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}});
+  return c;
+}
+
+function onPick(card){
+  if(busy || ended || card.classList.contains("cleared")) return;
+  const side=card.dataset.side, id=card.dataset.id;
+
+  if(!selected){ select(card); return; }
+  if(selected===card){ deselect(); return; }
+  if(selected.dataset.side===side){ deselect(); select(card); return; }
+
+  // evaluate (one from each column)
+  if(selected.dataset.id===id){
+    const a=selected, b=card; busy=true; deselect(true);
+    if(hard){ t0 += HARD_BONUS*1000; renderTime(); }   // +время
+    [a,b].forEach(el=>el.classList.add("stamp"));
+    setTimeout(()=>{
+      [a,b].forEach(el=>{el.classList.remove("stamp"); el.classList.add("cleared");});
+      matched++; updateProgress();
+      busy=false;
+      if(board.every(p=>boardCleared(p))) nextBatch();
+    },520);
+  }else{
+    const a=selected, b=card; miss++; $("miss").textContent=miss; busy=true;
+    if(hard){
+      t0 -= HARD_PENALTY*1000; renderTime();            // −время
+      if(HARD_START-(Date.now()-t0)/1000 <= 0){
+        [a,b].forEach(el=>el.classList.add("wrong"));
+        return endGame("timeout");
+      }
+    }
+    [a,b].forEach(el=>el.classList.add("wrong"));
+    setTimeout(()=>{[a,b].forEach(el=>el.classList.remove("wrong")); deselect(); busy=false;},460);
+  }
+}
+
+function boardCleared(p){
+  const els=document.querySelectorAll('.card[data-id="'+p.id+'"]');
+  return [...els].every(e=>e.classList.contains("cleared"));
+}
+function select(card){selected=card; card.classList.add("sel");}
+function deselect(skipNull){ if(selected) selected.classList.remove("sel"); if(!skipNull) selected=null; else selected=null;}
+
+function updateProgress(){
+  $("done").textContent=matched+"/"+total;
+  $("bar").style.width=(matched/total*100)+"%";
+}
+
+function nextBatch(){
+  bi++;
+  if(bi<batches.length){ setTimeout(loadBatch,420); }
+  else{ setTimeout(()=>endGame("win"),420); }
+}
+
+function endGame(outcome){
+  if(ended) return; ended=true;
+  clearInterval(tInt);
+  const used = (Date.now()-t0)/1000;                 // фактически прошло
+  const acc=Math.round(matched/(matched+miss||1)*100);
+  const timedOut = outcome==="timeout";
+
+  $("wMiss").textContent=miss;
+  $("wAcc").textContent=acc+"%";
+
+  if(hard){
+    // в жёстком показываем «осталось» при победе, иначе сколько успел
+    $("wTime").textContent = timedOut ? fmt(0) : fmt(remaining>0?remaining:0);
+    document.querySelector('.cell .k').textContent = timedOut ? "Время" : "Осталось";
+  }else{
+    $("wTime").textContent=fmt(used);
+    document.querySelector('.cell .k').textContent="Время";
+  }
+
+  let title, v;
+  if(timedOut){
+    title="Время вышло ⏱";
+    v=`Успел растаможить ${matched} из ${total}. В жёстком режиме слова должны всплывать без раздумий — погоняй ту же колоду в «Спокойно», потом возвращайся.`;
+  }else if(miss===0){
+    title = hard ? "Чисто и в срок ✓" : "Контейнер очищен ✓";
+    v="Ни одной ошибки. Эти слова у тебя в кармане — бери следующую колоду.";
+  }else if(acc>=85){
+    title = hard ? "Партия прошла ✓" : "Партия растаможена";
+    v="Крепко. Пару слов добей повтором — и можно нести на зум.";
+  }else{
+    title="Партия растаможена";
+    v="Точность можно поднять. Прогони эту колоду ещё раз, пока ошибки не уйдут.";
+  }
+  $("verdict").textContent=v;
+  $("winTitle").textContent=title;
+
+  // ----- звание (только жёсткий режим) -----
+  const rankWrap=$("rankWrap");
+  if(hard){
+    let letter,rtitle,cls;
+    if(timedOut){ letter="✗"; rtitle="Груз застрял на таможне"; cls="r-fail"; }
+    else if(miss===0 && remaining>=25){ letter="S"; rtitle="Таможенный инспектор"; cls="r-s"; }
+    else if(miss<=1 && remaining>=15){ letter="A"; rtitle="Старший брокер"; cls="r-a"; }
+    else if(miss<=3 && remaining>=5){ letter="B"; rtitle="Логист терминала"; cls="r-b"; }
+    else { letter="C"; rtitle="Стажёр терминала"; cls="r-c"; }
+    rankWrap.className="rank "+cls;
+    rankWrap.style.display="flex";
+    $("rankLetter").textContent=letter;
+    $("rankTitle").textContent=rtitle;
+  }else{
+    rankWrap.style.display="none";
+  }
+
+  $("winOverlay").classList.remove("hidden");
+}
+
+/* ---------- wire up ---------- */
+buildDeckList();
+document.querySelectorAll("#modeList .mode").forEach(m=>{
+  m.onclick=()=>{
+    document.querySelectorAll("#modeList .mode").forEach(x=>x.classList.remove("on"));
+    m.classList.add("on");
+    hard = m.dataset.mode==="hard";
+  };
+});
+$("startBtn").onclick=startGame;
+$("againBtn").onclick=startGame;
+$("changeBtn").onclick=()=>{ $("winOverlay").classList.add("hidden"); buildDeckList(); $("startOverlay").classList.remove("hidden"); };
+</script>
+</body>
+</html>
