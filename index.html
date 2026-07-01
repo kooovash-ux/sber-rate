@@ -699,7 +699,7 @@ function scrollToCalc(e){
 }
 
 /* ─── TABS ─── */
-function switchTab(id){
+function switchTab(id){if(id==="pf"){location.href="resume.html";return;}
   document.querySelectorAll('#tabs button').forEach(function(b){b.classList.toggle('active',b.dataset.tab==String(id))});
   document.querySelectorAll('.tab-pg').forEach(function(p){p.classList.remove('active')});
   var pg=document.getElementById('page-'+id);if(pg)pg.classList.add('active');
